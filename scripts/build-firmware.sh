@@ -15,7 +15,8 @@ BOARD="${1:-f407-discovery}"
 ARM_GCC=""
 for candidate in arm-none-eabi-gcc \
     /opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc \
-    /home/wa/tools/gcc-arm/bin/arm-none-eabi-gcc; do
+    /home/wa/tools/gcc-arm/bin/arm-none-eabi-gcc \
+    /home/wa/tools/gcc-12/bin/arm-none-eabi-gcc; do
     if command -v "$candidate" &>/dev/null || [[ -x "$candidate" ]]; then
         ARM_GCC="$candidate"
         break

@@ -1,7 +1,7 @@
 # 🏃 Current Sprint
 
 > **Sprint:** Sprint 005
-> **Period:** July 1, 2026
+> **Period:** July 1, 2026 (completed)
 > **Goal:** Compile the rusEFI fork successfully.
 > **Progress:** █████████████████████░░  95%
 
