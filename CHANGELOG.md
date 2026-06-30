@@ -37,10 +37,29 @@ and this project adheres to the Documentation-Driven Development (DDD) policy.
 - Definition of Done checklist implemented
 - Quality gate requirements established
 
+### Changed
+
+#### Build & Toolchain
+- Firmware build toolchain verified and installed: ARM GCC 12.3.Rel1, Java 11.0.23 (Temurin), 7-Zip 23.01, mtools 4.0.43
+- `firmware/upstream/firmware/Makefile`: Added `-Wno-error=shadow` for GCC 12.x compatibility
+- `scripts/build-firmware.sh`: Created, reviewed, and fixed (JAVA_HOME export, ARM GCC auto-detection, diagnostic messaging)
+
+#### Repository
+- Git repository initialized at root (`361f3a4`)
+- `firmware/upstream` configured as git submodule (commit `8540e44`)
+- `.gitignore` created with build output and toolchain exclusions
+- `.github/workflows/ddd-check.yml`: GitHub Actions DDD quality gate CI
+- `START_HERE.md`: Repository entry point created
+- `SESSION.md`: Session handoff document created
+
+### Fixed
+
+- **D-009:** Build toolchain fully installed — ARM GCC 12.3, Java 11, 7-Zip, mtools all working
+- `-Werror=shadow` with GCC 12+ on rusEFI source code — suppressed until code is refactored
+
 ### Upcoming
 
 - [ ] Firmware brand separation (replace all rusEFI customer-facing strings)
-- [ ] Firmware build toolchain verification
 - [ ] Firmware identity system (versioning, board IDs, device IDs)
 - [ ] Configuration profiles (NA, Turbo, Supercharged, Motorcycle)
 - [ ] Studio scaffold (Electron + React + TypeScript)

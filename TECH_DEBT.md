@@ -43,7 +43,7 @@ Each module is classified by replacement difficulty and current strategy.
 | D-006 | No OTA update mechanism | Features: Medium | P2 | Bootloader | Phase 3 |
 | D-007 | Scheduler is not preemptive RTOS | Determinism: Low | P3 | Scheduler | Phase 5 |
 | D-008 | Shallow clone — no full upstream history for tracking changes | Maintenance: Low | P3 | Repository | Phase 1 |
-| D-009 | Build toolchain partially installed — ARM GCC 10.3.1 OK, Java missing (required for rusEFI code generation) | Operational: Medium | P1 | Build | Phase 1 |
+| D-009 | ~~Build toolchain partially installed — ARM GCC 10.3.1 OK, Java missing~~ | Operational: Medium | ✅ RESOLVED | Build | Phase 1 |
 | D-010 | rusEFI branding strings not yet traced in source | Brand: Medium | P2 | Branding | Phase 1 |
 | D-011 | No module-level documentation (fuel.md, ignition.md, etc.) | Documentation: Medium | P2 | Docs | Phase 1 |
 | D-012 | No diagrams (architecture, boot flow, memory map, etc.) | Documentation: Medium | P2 | Docs | Phase 2 |

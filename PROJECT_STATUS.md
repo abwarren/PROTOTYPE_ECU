@@ -1,6 +1,6 @@
 # Project Status
 
-> **Last updated:** 2026-06-30
+> **Last updated:** 2026-07-01
 > **Policy:** Documentation-Driven Development — all work is incomplete until documented.
 
 ---
@@ -21,7 +21,7 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 
 ## Per-Component Status
 
-### Firmware — 22% ██████░░░░░░░░░░░░░░░
+### Firmware — 28% ███████░░░░░░░░░░░░░░░
 
 | Component | Status | Progress |
 |-----------|--------|----------|
@@ -30,7 +30,7 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 | Architecture Audit | ✅ Complete | 100% |
 | Brand Abstraction | ✅ Complete | 100% |
 | Brand Separation | ❌ Not Started | 0% |
-| Firmware Build | 🔄 In Progress — ARM GCC 10.3.1 installed, Java required for build | 50% |
+| Firmware Build | ✅ **Complete** — STM32F407 Discovery binary verified: `rusefi.elf` (26.5 MB), `rusefi.bin` (744 KB), `rusefi.hex` (2 MB) | 100% |
 | Firmware Identity | ❌ Not Started | 0% |
 | Configuration Profiles | ❌ Not Started | 0% |
 | Module Replacement | ❌ Not Started | 0% |
@@ -116,7 +116,7 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 - [x] Architecture audit (16 modules)
 - [x] ADR records (4)
 - [x] DDD policy adopted
-- [ ] rusEFI fork builds successfully
+- [x] rusEFI fork builds successfully
 - [ ] Brand separation complete
 - [ ] Firmware versioned
 

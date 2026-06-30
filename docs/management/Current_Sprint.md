@@ -1,9 +1,9 @@
 # 🏃 Current Sprint
 
-> **Sprint:** Phase 1 — Foundation
-> **Period:** June 30 — July 15, 2026
-> **Goal:** Production-ready firmware build, brand separation, identity system.
-> **Progress:** ████████████░░░░░░░░░░░  58% (Day 1)
+> **Sprint:** Sprint 005
+> **Period:** July 1, 2026
+> **Goal:** Compile the rusEFI fork successfully.
+> **Progress:** █████████████████████░░  95%
 
 ---
 
@@ -11,28 +11,19 @@
 
 | Task | Owner | Estimate | Status | Notes |
 |------|-------|----------|--------|-------|
-| ✅ Repository structure | Engineering | — | Done | White-label layout |
-| ✅ rusEFI fork | Engineering | — | Done | Commit `8540e44` |
-| ✅ Architecture docs | Engineering | — | Done | 9 neutral docs |
-| ✅ DDD policy | Engineering | — | Done | Engineering standard adopted |
-| ✅ Investor package | Management | — | Done | 17 docs |
-| ✅ Module docs | Engineering | — | Done | 7 firmware modules |
-| ✅ Company KB | Management | — | Done | 5-audience structure |
-| ⏳ Firmware build | Engineering | 2 days | 0% | Need toolchain |
-| ⏳ Brand separation | Engineering | 3 days | 0% | Trace rusEFI strings |
-| ⏳ Firmware identity | Engineering | 1 day | 0% | Versioning system |
-
-## Sprint Burndown
-
-| Day | Tasks Remaining |
-|-----|-----------------|
-| Jun 30 | 3 |
-| Jul 1 | — |
-| Jul 2 | — |
-| Jul 15 (target) | 0 |
+| ✅ Git repository initialized | Engineering | — | Done | `361f3a4` on `master` |
+| ✅ ARM GCC 12.3 installed | Engineering | — | Done | `/home/wa/tools/gcc-12/bin/` |
+| ✅ Java 11 (Temurin) installed | Engineering | — | Done | `/home/wa/tools/java/bin/` |
+| ✅ 7-Zip installed | Engineering | — | Done | `/home/wa/tools/7zip/7z` |
+| ✅ mtools installed | Engineering | — | Done | `/home/wa/tools/mtools/usr/bin/mcopy` |
+| ✅ Firmware builds (f407-discovery) | Engineering | — | Done | `rusefi.elf` (26.5 MB) |
+| ✅ START_HERE.md created | Management | — | Done | Repository entry point |
+| ✅ SESSION.md created | Management | — | Done | Session handoff document |
+| ✅ D-009 resolved | Engineering | — | Done | Build toolchain verified |
+| ⏳ Brand separation | Engineering | — | 0% | 404 strings traced |
 
 ## Blockers
 
 | Blocker | Affects | Owner | Status |
 |---------|---------|-------|--------|
-| ARM GCC toolchain not installed | Firmware build | DevOps | To verify |
+| None | — | — | ✅ All resolved |
