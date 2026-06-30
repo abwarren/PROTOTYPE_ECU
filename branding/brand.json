@@ -1,0 +1,132 @@
+{
+  "//": "============================================================================",
+  "//": " BRAND MANAGER - SINGLE SOURCE OF TRUTH",
+  "//": " All branding for the ECU Platform Core is configured here.",
+  "//": " Change this file to rebrand the entire platform without modifying source code.",
+  "//": "",
+  "//": " Every application reads from this file at build time or runtime:",
+  "//": "   - Firmware: ${PRODUCT_NAME}, ${COMPANY_NAME} injected at compile time",
+  "//": "   - Studio (desktop): loads branding dynamically from this config",
+  "//": "   - Cloud: consumes brand.json for portal/spash/copyright",
+  "//": "   - Mobile: reads branding at build time via CI",
+  "//": "   - Installer: uses brand assets during packaging",
+  "//": "   - Docs: templates consume ${PRODUCT_NAME} placeholders",
+  "//": "============================================================================",
+
+  "brand": {
+    "product_name": "ECU Platform Core",
+    "product_short_name": "Core",
+    "product_version": "0.1.0-dev",
+    "company_name": "ECU Platform",
+    "company_legal_name": "ECU Platform Inc.",
+    "company_url": "https://ecuplatform.com",
+    "copyright": "Copyright (c) 2024 ECU Platform Inc. All rights reserved."
+  },
+
+  "firmware": {
+    "usb_vendor_id": "0x1209",
+    "usb_product_id": "0x0001",
+    "usb_manufacturer_string": "${brand.company_name}",
+    "usb_product_string": "${brand.product_name}",
+    "usb_serial_number_prefix": "EPC",
+    "firmware_version_string": "${brand.product_short_name}-${brand.product_version}",
+    "firmware_build_date": "@BUILD_DATE@",
+    "firmware_build_hash": "@BUILD_HASH@",
+    "bootloader_version_string": "${brand.product_short_name}-BL-${brand.product_version}",
+    "board_id_identifier": "EPC-BASE-01",
+    "device_id_format": "${brand.product_short_name}-${board_id_identifier}-${serial_number}",
+    "default_splash_text": "${brand.product_name}\\n${brand.product_version}"
+  },
+
+  "studio": {
+    "application_name": "${brand.product_name} Studio",
+    "application_display_name": "${brand.product_name} Studio",
+    "application_version": "${brand.product_version}",
+    "window_title": "${brand.product_name} Studio",
+    "about_dialog_title": "About ${brand.product_name} Studio",
+    "about_dialog_text": "${brand.product_name} Studio\\nVersion ${brand.product_version}\\n${brand.copyright}",
+    "splash_screen_image": "branding/splash/splash.png",
+    "icon_path": "branding/icons/icon.png",
+    "default_theme": "dark",
+    "supported_themes": ["dark", "light"],
+    "update_feed_url": "https://updates.ecuplatform.com/${brand.product_short_name}/updates.json"
+  },
+
+  "cloud": {
+    "portal_name": "${brand.product_name} Cloud",
+    "portal_display_name": "${brand.product_name} Cloud",
+    "portal_logo": "branding/logos/logo-horizontal.png",
+    "portal_favicon": "branding/icons/favicon.ico",
+    "portal_primary_color": "#1a73e8",
+    "copyright_text": "${brand.copyright}",
+    "support_email": "support@ecuplatform.com",
+    "docs_url": "https://docs.ecuplatform.com",
+    "api_base_url": "https://api.ecuplatform.com/v1",
+    "mqtt_topic_prefix": "epc"
+  },
+
+  "mobile": {
+    "app_name": "${brand.product_name} Mobile",
+    "app_display_name": "${brand.product_name}",
+    "app_version": "${brand.product_version}",
+    "app_icon": "branding/icons/app-icon.png",
+    "splash_screen": "branding/splash/mobile-splash.png",
+    "primary_color": "#1a73e8",
+    "app_store_url": "",
+    "play_store_url": ""
+  },
+
+  "installer": {
+    "product_display_name": "${brand.product_name}",
+    "publisher": "${brand.company_name}",
+    "installer_logo": "branding/installer/installer-logo.bmp",
+    "welcome_text": "Welcome to ${brand.product_name}",
+    "license_file": "LICENSE_NOTES.md",
+    "default_install_path": "C:\\Program Files\\${brand.company_name}\\${brand.product_name}",
+    "uninstall_display_name": "${brand.product_name}"
+  },
+
+  "documentation": {
+    "product_name": "${brand.product_name}",
+    "company_name": "${brand.company_name}",
+    "copyright": "${brand.copyright}",
+    "brand_primary_color": "#1a73e8",
+    "brand_secondary_color": "#0d47a1",
+    "logo_light": "branding/logos/logo-light.png",
+    "logo_dark": "branding/logos/logo-dark.png",
+    "favicon": "branding/icons/favicon.ico"
+  },
+
+  "theme": {
+    "dark": {
+      "primary": "#1a73e8",
+      "secondary": "#0d47a1",
+      "background": "#121212",
+      "surface": "#1e1e1e",
+      "surface_alt": "#2d2d2d",
+      "text_primary": "#ffffff",
+      "text_secondary": "#b0b0b0",
+      "border": "#333333",
+      "success": "#4caf50",
+      "warning": "#ff9800",
+      "error": "#f44336",
+      "info": "#2196f3",
+      "accent": "#00bcd4"
+    },
+    "light": {
+      "primary": "#1a73e8",
+      "secondary": "#0d47a1",
+      "background": "#ffffff",
+      "surface": "#f5f5f5",
+      "surface_alt": "#e8e8e8",
+      "text_primary": "#212121",
+      "text_secondary": "#757575",
+      "border": "#e0e0e0",
+      "success": "#4caf50",
+      "warning": "#ff9800",
+      "error": "#f44336",
+      "info": "#2196f3",
+      "accent": "#00bcd4"
+    }
+  }
+}

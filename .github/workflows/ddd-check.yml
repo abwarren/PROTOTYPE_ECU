@@ -1,0 +1,15 @@
+name: DDD Quality Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+jobs:
+  ddd-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run DDD Quality Gate
+        run: bash scripts/ddd-check.sh --ci
