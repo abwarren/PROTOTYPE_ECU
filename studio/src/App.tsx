@@ -1,5 +1,5 @@
 import { useBrand } from "../core/branding/BrandProvider";
-import { useState } from "react";
+import { EcuConnectionPanel } from "./EcuConnection";
 
 function App() {
   const brand = useBrand();
@@ -20,18 +20,11 @@ function App() {
         <span className="version">v{brand.productVersion}</span>
       </header>
       <main className="app-main">
-        <div className="welcome-card">
-          <h2>Welcome to {brand.productName}</h2>
-          <p>{brand.companyName}</p>
-          <div className="status-indicators">
-            <div className="status-item disconnected">
-              <span className="status-dot" />
-              ECU Disconnected
-            </div>
-            <div className="status-item offline">
-              <span className="status-dot" />
-              Working Offline
-            </div>
+        <div className="content-area">
+          <EcuConnectionPanel />
+          <div className="welcome-card">
+            <h2>Welcome to {brand.productName}</h2>
+            <p>{brand.companyName}</p>
           </div>
         </div>
         <nav className="app-nav">
