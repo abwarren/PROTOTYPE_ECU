@@ -40,8 +40,8 @@
 **Priority:** Medium
 **Session:** 003 (QA Review)
 **Finding:** Branding and application logic not cleanly separated. Studio UI components mix branding concerns.
-**Recommendation:** Separate `studio/branding/` directory with themes, assets, logos, fonts. Studio logic never imports branding directly — uses a BrandProvider.
-**Status:** Open
+**Recommendation:** Separate `studio/core/branding/` directory with themes, assets, logos, fonts. Studio logic never imports branding directly — uses a BrandProvider.
+**Status:** In Progress — BrandProvider created, App.tsx refactored to use it. Branding subdirectories populated.
 **ADR:** —
 
 ### QA-001

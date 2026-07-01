@@ -1,42 +1,8 @@
-import { useState, useEffect } from "react";
-
-interface BrandConfig {
-  brand: {
-    product_name: string;
-    product_short_name: string;
-    company_name: string;
-    product_version: string;
-  };
-  studio: {
-    window_title: string;
-    default_theme: string;
-  };
-}
+import { useBrand } from "../core/branding/BrandProvider";
+import { useState } from "react";
 
 function App() {
-  const [brand, setBrand] = useState<BrandConfig | null>(null);
-
-  useEffect(() => {
-    // Load branding from brand.json (relative to project root)
-    fetch("/branding/brand.json")
-      .then((res) => res.json())
-      .then((data: BrandConfig) => {
-        setBrand(data);
-        document.title = data.brand.product_name;
-      })
-      .catch(() => {
-        // Fallback if brand.json not accessible in dev mode
-        setBrand({
-          brand: {
-            product_name: "Prototype ECU",
-            product_short_name: "ProtoECU",
-            company_name: "ECU Platform",
-            product_version: "0.1.0-dev",
-          },
-          studio: { window_title: "Prototype Studio", default_theme: "dark" },
-        });
-      });
-  }, []);
+  const brand = useBrand();
 
   if (!brand) {
     return (
@@ -50,13 +16,13 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>{brand.brand.product_name}</h1>
-        <span className="version">v{brand.brand.product_version}</span>
+        <h1>{brand.productName}</h1>
+        <span className="version">v{brand.productVersion}</span>
       </header>
       <main className="app-main">
         <div className="welcome-card">
-          <h2>Welcome to {brand.brand.product_name}</h2>
-          <p>{brand.brand.company_name}</p>
+          <h2>Welcome to {brand.productName}</h2>
+          <p>{brand.companyName}</p>
           <div className="status-indicators">
             <div className="status-item disconnected">
               <span className="status-dot" />
@@ -80,8 +46,8 @@ function App() {
         </nav>
       </main>
       <footer className="app-footer">
-        <span>{brand.brand.company_name}</span>
-        <span>Studio v{brand.brand.product_version}</span>
+        <span>{brand.companyName}</span>
+        <span>Studio v{brand.productVersion}</span>
       </footer>
     </div>
   );
