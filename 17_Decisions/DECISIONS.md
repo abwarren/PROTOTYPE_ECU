@@ -12,7 +12,8 @@
 | 006 | Multi-agent R&D system adopted | Accepted | 2026-07-01 |
 | 007 | Architecture change governance — EDR review process | Proposed | 2026-07-01 |
 | 008 | Two-Agent Engineering Model — Principal Engineer + Independent QA | Proposed | 2026-07-01 |
+| 009 | Platform strategy — separate presentation from platform | Proposed | 2026-07-01 |
 
 ## Detailed Records
 
-See full ADRs in this directory: `0001-*` through `0008-*`.
+See full ADRs in this directory: `0001-*` through `0009-*`.
