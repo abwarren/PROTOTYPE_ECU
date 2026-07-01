@@ -8,8 +8,8 @@
 | Session | Date | Milestone | Commit SHA | Agent | Status | Next Task |
 |---------|------|-----------|------------|-------|--------|-----------|
 | [001](./SESSION_001.md) | 2026-07-01 | Repository Discovery & Recovery — Foundation published | `9ecafca` | Hermes Agent | ✅ Complete | Fix .gitmodules, submodule cleanup, CI fix |
-| 002 | — | Specification campaign: Firmware | — | Agent 02 | ⬚ Pending | Produce `04_Firmware/specification.md` |
-| 003 | — | Specification campaign: Hardware | — | Agent 06 | ⬚ Pending | Produce `02_Hardware/specification.md` |
+| [002](./SESSION_002.md) | 2026-07-01 | Engineering Design Review — 30-subsystem audit | branch `edr/architecture-review` | Principal Engineer | ✅ Awaiting Review | Review EDR proposals, accept/reject |
+| 003 | — | Specification campaign: Firmware | — | Agent 02 | ⬚ Pending | Produce `04_Firmware/specification.md` |
 
 ---
 

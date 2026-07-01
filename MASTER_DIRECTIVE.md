@@ -1,9 +1,11 @@
 # 🏛 MASTER_DIRECTIVE.md — The Specification Contract
 
-> **Version:** 1.1.0  
+> **Version:** 1.2.0  
 > **Status:** Active  
 > **Purpose:** This document is the single source of authority for the ECU Platform. Everything below is the contract.  
 > **Rule:** No implementation deviates from the specifications referenced herein. No specification changes without updating this contract.
+>
+> **Engineering Philosophy:** Prototype ECU is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
 
 ---
 
@@ -295,6 +297,52 @@ Prototype ECU shall follow a **Tracer Bullet** development methodology. Tracer b
 
 Full methodology: `TRACER_BULLETS.md`
 
+### 3.16 Engineering Principle — Authority & Review
+
+**Neither agent owns the truth. The repository owns the truth.**
+
+Architecture evolves only through documented proposals, independent review, and accepted decisions.
+
+The Engineering Agent delivers. The QA Agent challenges.
+
+No architectural change shall be merged without:
+- Technical justification
+- Trade-off analysis
+- Risk assessment
+- Migration plan
+- QA approval
+- Updated documentation
+
+Every accepted architectural change shall be recorded as an Architecture Decision Record (ADR).
+
+Rejected proposals shall remain documented for future reference.
+
+QA reviews produce a living backlog in `qa/QA_BACKLOG.md`. Every finding is tracked from identification through resolution. No finding is buried in chat or one-off reports.
+
+The review loop:
+
+```
+Engineering Agent → delivers vertical slice
+        │
+        ▼
+QA Agent → independent review (stateless, evidence-based)
+        │
+        ▼
+QA_BACKLOG.md → findings tracked, prioritized
+        │
+        ▼
+Engineering Agent → addresses findings
+        │
+        ▼
+QA Agent → re-reviews, approves or rejects
+        │
+        ▼
+Merge → main remains stable
+        │
+        ▼
+ADRs → permanent record of accepted decisions
+```
+
 ---
 
 ## 4. Repository Maturity Model
@@ -334,7 +382,11 @@ A level transition requires:
 
 ---
 
-## 5. The 20-Agent Specification Program
+## 5. The 20-Agent Specification Program [SUPERSEDED]
+
+> **Status:** Superseded by ADR-0008 (Two-Agent Engineering Model). Retained for historical reference.
+> **Current:** Engineering Agent (Principal Engineer) owns all delivery. QA Agent (Independent Reviewer) challenges all decisions.
+> See PROJECT_RULES.md §3 for the current engineering model.
 
 The following agents produce and own the specification documents. Each agent produces documentation, not code.
 
@@ -547,6 +599,8 @@ See `11_Documentation/ROADMAP.md` for the full development roadmap.
 | `11_Documentation/management/Current_Sprint.md` | Sprint backlog and blockers |
 | `SESSION.md` | Session-level handoff state |
 | `docs/handoffs/` | Session handoff archive |
+| `qa/QA_BACKLOG.md` | Living architectural backlog (QA-owned) |
+| `qa/REVIEW_HISTORY.md` | Chronological QA review log |
 | `PROJECT_RULES.md` | Agent governance and workflows |
 | `CODING_STANDARDS.md` | Engineering standards |
 | `11_Documentation/ARCHITECTURE.md` | System architecture overview |

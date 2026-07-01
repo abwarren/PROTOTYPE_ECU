@@ -20,8 +20,8 @@ The Prototype ECU Platform is an open-source engine control unit (ECU) built on 
 | **Current Version** | v0.1-foundation |
 | **Current Milestone** | Phase 0 — Specification Campaign |
 | **Last Updated** | 2026-07-01 |
-| **Total Commits** | 13 |
-| **Branches** | 1 (master) |
+| **Total Commits** | 18 |
+| **Branches** | 2 (master, edr/architecture-review) |
 | **GitHub Actions** | 1 workflow (DDD Quality Gate) |
 | **Submodule** | rusefi/rusefi (GPL-3.0) |
 
@@ -54,7 +54,7 @@ ECU_PLATFORM/
 ├── 13_Datasheets/            Component datasheets
 ├── 14_Diagrams/              Architecture diagrams
 ├── 15_Suppliers/             Supplier research
-├── 16_Quality_Audits/        Quality & audit records
+├── 16_Quality_Audits/        Quality audits, EDR reviews, gap reports (10 docs)
 ├── 17_Decisions/             Architecture Decision Records
 ├── 18_Roadmap/               Product roadmap
 ├── branding/                 Brand assets (logos, fonts, themes)
@@ -75,6 +75,9 @@ ECU_PLATFORM/
 │   └── upstream/             → rusEFI fork (submodule)
 ├── hardware/                 Hardware design files
 ├── mobile/                   Mobile app
+├── qa/                       QA backlog & review history
+│   ├── QA_BACKLOG.md
+│   └── REVIEW_HISTORY.md
 ├── scripts/                  Build & validation scripts
 │   ├── build-firmware.sh
 │   └── ddd-check.sh
@@ -89,14 +92,15 @@ ECU_PLATFORM/
 |----------|-------|
 | **Total Markdown Documents** | 143 |
 | **Architecture Documents** (01_Architecture/) | 20 |
-| **Architecture Decision Records** (17_Decisions/) | 6 |
+| **Architecture Decision Records** (17_Decisions/) | 7 |
 | **Research Documents** (10_Market_Research/) | 32 |
 | **Firmware Documents** (04_Firmware/) | 8 |
 | **Hardware Documents** (02_Hardware/) | 2 |
 | **Management Documents** (11_Documentation/management/) | 8 |
 | **Investor Documents** (11_Documentation/investor/) | 17+ |
+| **Quality Audit Documents** (16_Quality_Audits/) | 10 |
 | **Diagrams** (14_Diagrams/) | 1 |
-| **Root Documents** | 8 |
+| **Root Documents** | 11 |
 
 ---
 
@@ -112,6 +116,10 @@ ECU_PLATFORM/
 | `START_HERE.md` | Repository entry point |
 | `README.md` | Project overview & navigation |
 | `TODO.md` | Task priorities |
+| `QA_ENGINEERING_REVIEW.md` | Independent QA architecture review |
+| `TRACER_BULLETS.md` | Tracer bullet development methodology |
+| `CONTEXT_LIFECYCLE.md` | Session lifecycle policy |
+| `16_Quality_Audits/` | Quality audits, EDR reviews, gap reports |
 
 ---
 

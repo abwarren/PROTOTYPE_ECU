@@ -1,70 +1,80 @@
-# CURRENT_STATE.md — Project Status
+# CURRENT_STATE.md — Agent Shared State
 
 > **Last updated:** 2026-07-01
-> **Purpose:** Every agent reads this first to understand current project state.
-> **Reconciliation:** Session fully reconciled.
+> **Purpose:** Quick project pulse for any agent starting a new session.
 
 ---
 
-## Overall Progress
+## Current Status
 
-```
-Firmware         ███████░░░░░░░░░░░░░░░░░  28%
-Studio           ████░░░░░░░░░░░░░░░░░░░░  15%
-Cloud            █░░░░░░░░░░░░░░░░░░░░░░░   5%
-Mobile           █░░░░░░░░░░░░░░░░░░░░░░░   3%
-Hardware         █░░░░░░░░░░░░░░░░░░░░░░░   3%
-Documentation    ████████████████████░░░░  75%
-Manufacturing    ░░░░░░░░░░░░░░░░░░░░░░░░   0%
-Testing          ░░░░░░░░░░░░░░░░░░░░░░░░   0%
-```
+| Field | Value |
+|-------|-------|
+| **Sprint** | MVP — Prototype ECU Phase 1 |
+| **Milestone** | Governance frozen — building product |
+| **Maturity Level** | 2 — Architecture Complete → Level 3: 40% |
+| **Active Branch** | `master` |
+| **Latest Commit** | Pending merge from `edr/architecture-review` |
+| **DDD Gate** | 33/33 PASSING |
 
-## Current Phase
+---
 
-**Phase 1 — Foundation** | Started 2026-06-30 | Target 2026-07-15
+## Governance Status: FROZEN
 
-### Completed
-- ✅ Repository structure (18 directories)
-- ✅ Brand abstraction layer (`branding/brand.json`)
-- ✅ rusEFI fork (submodule, commit `8540e44`)
-- ✅ ARM GCC 12.3, Java 11, 7-Zip, mtools installed
-- ✅ Firmware builds for f407-discovery (commit `7abb688` in submodule)
-- ✅ Architecture documentation (10 files in `01_Architecture/`)
-- ✅ ADR records (4) + Decision log (in `17_Decisions/`)
-- ✅ DDD quality gate (40 checks)
-- ✅ Company knowledge base (5 audiences in `11_Documentation/`)
-- ✅ Investor package (17 docs)
-- ✅ Workshop guides (6 docs)
-- ✅ Management docs (9 docs)
-- ✅ Manufacturing templates (3 docs)
-- ✅ Research corpus (20+ categories in `10_Market_Research/`)
-- ✅ Multi-agent R&D system documented
-- ✅ Repository restructured (18 directories)
-- ✅ Governance files: CURRENT_STATE.md, PROJECT_RULES.md, CODING_STANDARDS.md, TODO.md
-- ✅ Agent system with 11 agents, workflow, locking, branch strategy
+Per ADR-0007, ADR-0008, ADR-0009 — governance is complete. The following are frozen and change only with a real problem discovered during development:
 
-### Remaining
-- ⏳ Brand separation (replace rusEFI strings)
-- ⏳ Firmware identity system (versioning, board IDs)
-- ⏳ Studio scaffold (Electron + React + TypeScript)
+- ✅ Repository structure (18-directory system)
+- ✅ Engineering workflow (Two-Agent Model)
+- ✅ QA process (review loop + QA_BACKLOG)
+- ✅ ADR process (propose → approve → implement → record)
+- ✅ Vertical slicing (one slice per session)
+- ✅ Tracer bullets (9 MVP + 6 long-term)
+- ✅ Session handoffs (docs/handoffs/)
+- ✅ GitHub workflow (feature branch → QA review → merge)
+- ✅ DDD quality gate (scripts/ddd-check.sh)
 
-## Toolchain Status
+**Rule:** Only change governance if you encounter a real problem during implementation. Let the process prove itself.
 
-| Tool | Version | Path | Status |
-|------|---------|------|--------|
-| ARM GCC | 12.3.Rel1 | `/home/wa/tools/gcc-12/bin/` | ✅ |
-| Java (JRE) | 11.0.23 | `/home/wa/tools/java/bin/` | ✅ |
-| 7-Zip | 23.01 | `/home/wa/tools/7zip/7z` | ✅ |
-| mtools | 4.0.43 | `/home/wa/tools/mtools/usr/bin/` | ✅ |
+---
 
-## Key Documents
+## Active ADRs
 
-| File | Location |
-|------|----------|
-| Project status | `11_Documentation/PROJECT_STATUS.md` |
-| Roadmap | `11_Documentation/ROADMAP.md` |
-| Tech debt | `11_Documentation/TECH_DEBT.md` |
-| Changelog | `11_Documentation/CHANGELOG.md` |
-| Architecture | `01_Architecture/` |
-| Decisions | `17_Decisions/` |
-| Current sprint | `11_Documentation/management/Current_Sprint.md` |
+| # | Decision | Status |
+|---|----------|--------|
+| 0001 | White-label platform architecture | Accepted |
+| 0002 | rusEFI as firmware foundation | Accepted |
+| 0003 | V1 differentiator is Studio, not firmware | Accepted |
+| 0004 | BrandManager pattern | Accepted |
+| 0005 | 18-directory repository restructure | Accepted |
+| 0006 | Multi-agent R&D system | Accepted |
+| 0007 | Architecture Change Governance | Accepted |
+| 0008 | Two-Agent Engineering Model | Accepted |
+| 0009 | Platform Strategy — separate Studio from firmware | Accepted |
+
+---
+
+## Next Action: TB-001
+
+**Tracer Bullet 001 — Firmware Builds Under Prototype ECU Project**
+
+Steps:
+1. Configure rusEFI build for Prototype ECU
+2. Apply branding injection (brand.json → firmware strings)
+3. Compile successfully for f407-discovery
+4. Verify binary output
+5. Document build pipeline
+6. Push to GitHub
+
+**P0 Quick Wins (15 minutes — do first):**
+1. Fix .gitmodules URL → `https://github.com/rusefi/rusefi.git`
+2. Fix CI branches → add `master`
+3. Discard submodule generated artifacts
+
+---
+
+## Engineering Philosophy
+
+> Prototype ECU is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
+
+---
+
+*This file is updated at the end of every session. See MASTER_DIRECTIVE.md §3.6.*
