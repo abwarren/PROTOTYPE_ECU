@@ -9,16 +9,17 @@
 
 | Order | Document | Why |
 |-------|----------|-----|
-| 1 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
-| 2 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
-| 3 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
-| 4 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
-| 5 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
-| 6 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
-| 7 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
-| 8 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
+| 1 | **[MASTER_DIRECTIVE.md](./MASTER_DIRECTIVE.md)** | The specification contract — read this first above all |
+| 2 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
+| 3 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
+| 4 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
+| 5 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
+| 6 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
+| 7 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
+| 8 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
+| 9 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
 
-**Only after reading these 8 documents should you start coding.**
+**Only after reading these 9 documents should you start coding.**
 
 ---
 

@@ -16,7 +16,7 @@ START
     git pull --rebase
 
  2. Read project documentation
-    README.md → CURRENT_STATE.md → ROADMAP.md → DECISIONS.md
+    MASTER_DIRECTIVE.md → README.md → CURRENT_STATE.md → ROADMAP.md → DECISIONS.md
 
  3. Read files related to assigned area
 
@@ -28,11 +28,11 @@ START
  6. Run validation/tests
     bash scripts/ddd-check.sh --ci
 
- 7. Update documentation
+ 7. Commit and push per the GitHub Deployment Policy (see §7)
 
- 8. Commit with descriptive message
+ 8. Update documentation
 
- 9. Push changes
+ 9. End-of-session per §7.4
 END
 ```
 
@@ -40,6 +40,7 @@ END
 
 | File | Purpose |
 |------|---------|
+| `MASTER_DIRECTIVE.md` | The specification contract — highest authority |
 | `README.md` | Project overview and navigation |
 | `CURRENT_STATE.md` | Current project status |
 | `ROADMAP.md` | `11_Documentation/ROADMAP.md` — Development roadmap |
@@ -103,7 +104,7 @@ Every agent begins with:
 
 1. `git fetch --all`
 2. `git pull --rebase`
-3. Read `CURRENT_STATE.md`, `ROADMAP.md`, `DECISIONS.md`
+3. Read `MASTER_DIRECTIVE.md`, `CURRENT_STATE.md`, `ROADMAP.md`, `DECISIONS.md`
 4. Check recent commits: `git log --oneline -10`
 5. Determine what has changed since its last run
 6. Continue only with assigned tasks
@@ -118,7 +119,69 @@ All commits must:
 - Mention ADR or issue number when applicable
 - Pass `scripts/ddd-check.sh --ci` before pushing
 
-## 7. Agent Listing
+---
+
+## 7. GitHub Deployment Policy
+
+### 7.1 Repository
+
+The Prototype ECU GitHub repository is the authoritative source of the project.
+
+All completed work must be committed and pushed to the correct GitHub repository.
+
+No completed work may remain only in the local workspace.
+
+| Property | Value |
+|----------|-------|
+| **Repository Owner** | `abwarren` |
+| **Remote** | Verify the configured Git remote before beginning work. Do not create a new repository. Do not change the remote unless explicitly instructed. |
+
+### 7.2 Authentication
+
+Use the existing Git credentials and environment configuration already configured on the development machine.
+
+- Do not print, expose, log, or modify any secrets.
+- Do not display API keys, tokens, SSH keys, or environment variables.
+- If authentication fails, report the failure and the required remediation without exposing secret values.
+
+### 7.3 Failure Policy
+
+If GitHub synchronization fails:
+
+1. **STOP.**
+2. Do not continue development until the repository synchronization issue has been resolved.
+3. Explain the reason for the failure.
+4. Do not expose credentials while troubleshooting.
+
+### 7.4 End-of-Session Protocol
+
+Before ending any session, every agent must:
+
+1. Verify `git status` to review all changes
+2. Stage all approved changes
+3. Create logical, descriptive commits (per §6 standards)
+4. Push to the configured GitHub remote
+5. Verify the push completed successfully
+6. Verify the latest commit exists on GitHub
+7. Report:
+   - Repository
+   - Branch
+   - Commit SHA
+   - Commit Message
+   - Files Changed
+   - Push Status
+
+### 7.5 Project Rule
+
+> **GitHub is the permanent engineering record for the Prototype ECU project.**
+>
+> Every completed milestone must be represented by a verified commit on GitHub.
+
+This gives every agent clear instructions to use existing authentication while protecting credentials. GitHub synchronization is a required part of the workflow without ever exposing or embedding secrets in the repository or documentation.
+
+---
+
+## 8. Agent Listing
 
 | # | Name | Focus |
 |---|------|-------|

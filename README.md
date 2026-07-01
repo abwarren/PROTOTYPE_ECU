@@ -74,6 +74,7 @@ See [Project Status](11_Documentation/PROJECT_STATUS.md) for detailed progress.
 
 | Resource | Location |
 |----------|----------|
+| **Specification contract** | [MASTER_DIRECTIVE.md](./MASTER_DIRECTIVE.md) |
 | First-time guide | [START_HERE.md](./START_HERE.md) |
 | Current session | [SESSION.md](./SESSION.md) |
 | Agent system | [11_Documentation/engineering/agent-system.md](11_Documentation/engineering/agent-system.md) |

@@ -50,17 +50,47 @@
 
 ---
 
-## 🎯 Next Task (Sprint 066)
+## 📋 Phase 0 — Specification Campaign
 
-1. **Brand separation** — Replace 404 rusEFI customer-facing strings with `brand.json` variables
+Per the [20-Agent Documentation Program](MASTER_DIRECTIVE.md), we are now in **Phase 0 — Specification**, where documentation is produced before any implementation code is written.
+
+**Key deliverable:** [`MASTER_DIRECTIVE.md`](./MASTER_DIRECTIVE.md) — The specification contract that defines what must be produced before implementation resumes.
+
+## 🎯 Next Task (Sprint 006)
+
+1. **Brand separation** — Replace rusEFI customer-facing strings with `brand.json` variables
 2. **Firmware identity system** — Versioning, board IDs, device IDs
 3. **Studio scaffold** — Begin Electron + React + TypeScript application
+
+> **Note:** The next batch of specification documents (Firmware, Hardware, PCB, Studio specs) should be produced per the 20-agent contract before heavy implementation begins.
 
 ---
 
 ## ⛔ Blockers
 
-No blockers.
+| Blocker | Impact | Remediation |
+|---------|--------|-------------|
+| **No GitHub remote configured** | Cannot push to `github.com/abwarren/` | Run: `git remote add origin git@github.com:abwarren/<repo>.git` to configure. Remote owner is `abwarren`. Do not change without explicit instruction. |
+
+---
+
+## 📦 End-of-Session Protocol
+
+Per the [GitHub Deployment Policy](PROJECT_RULES.md#7-github-deployment-policy), every session must end with:
+
+1. Verify `git status` to review all changes
+2. Stage all approved changes
+3. Create logical, descriptive commits
+4. Push to the configured GitHub remote
+5. Verify the push completed successfully
+6. Verify the latest commit exists on GitHub
+7. Report:
+   - Repository
+   - Branch
+   - Commit SHA
+   - Commit Message
+   - Files Changed
+   - Push Status
 
 ---
 
@@ -78,7 +108,7 @@ No blockers.
 4ce14f3 Fix shared file references: ARCHITECTURE.md path, add shared files to DDD gate
 ```
 
-All work committed to `master`. No remote configured — push manually when ready.
+All work committed to `master`. **No remote configured** — push manually when ready.
 
 ## 🎯 Recommended Next Prompt
 
