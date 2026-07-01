@@ -191,12 +191,85 @@ This gives every agent clear instructions to use existing authentication while p
 
 A vertical slice is complete only when:
 
+### Completion States
+
+```
+Design Complete
+        │
+        ▼
+Implementation Complete     ← Code written, compiles
+        │
+        ▼
+Build Verified              ← Frontend + backend build without errors
+        │
+        ▼
+Integration Verified        ← Subsystems connected, communication validated
+        │
+        ▼
+Tracer Bullet Passed        ← End-to-end demonstration with evidence
+        │
+        ▼
+QA Approved                 ← Independent review signed off
+        │
+        ▼
+Merged                      ← On master, verified on GitHub
+        │
+        ▼
+Release Ready               ← Tagged, documented, demonstrated
+```
+
+A feature is NOT "complete" when code is written. It is complete only when the tracer bullet has been demonstrated with evidence and QA has signed off.
+
+### Evidence-Based Completion
+
+Nothing is considered complete without objective evidence. Evidence may include:
+- Successful build logs
+- Automated test results
+- Integration test output
+- Hardware demonstration (screenshots, video)
+- ECU communication logs
+- QA verification checklist
+
+Claims are not evidence. Working demonstrations are evidence.
+
+### Tracer Bullet Evidence Directory
+
+Every tracer bullet must produce evidence artifacts:
+
+```
+docs/tracer_bullets/
+└── TB-NNN/
+    ├── README.md          # What was demonstrated
+    ├── screenshots/       # Visual evidence
+    ├── logs/              # Build logs, protocol logs
+    ├── test-results/      # Automated test output
+    └── qa-signoff.md      # QA approval with checklist
+```
+
+### QA Approval Statuses
+
+QA assigns one of:
+
+| Status | Meaning |
+|--------|---------|
+| 🟢 **Approved** | Ready to merge. All gates passed, evidence provided. |
+| 🟡 **Approved with Conditions** | Merge allowed. Follow-up items tracked in QA_BACKLOG. |
+| 🟠 **Changes Requested** | Specific issues must be addressed before re-review. |
+| 🔴 **Rejected** | Architecture or implementation flaw. Requires redesign. |
+
+### Gates
+
 | Gate | Criteria |
 |------|----------|
-| ✅ Feature | Works as specified |
+| ✅ Design | Architecture documented, ADR if applicable |
+| ✅ Implementation | Code written, compiles, committed |
+| ✅ Build | Frontend + backend build without errors |
+| ✅ Integration | Subsystems connected, end-to-end path works |
+| ✅ Tracer Bullet | Demonstrated with evidence in docs/tracer_bullets/ |
 | ✅ Documentation | Updated (MASTER_DIRECTIVE, PROJECT_STATUS, SESSION, CHANGELOG, architecture) |
 | ✅ QA Review | Complete, findings in QA_BACKLOG |
 | ✅ QA Resolution | Findings resolved or formally accepted |
 | ✅ Tests | Executed where applicable |
 | ✅ GitHub | Committed, pushed, verified |
 | ✅ Handoff | SESSION_HANDOFF generated |
+| 🟢 QA Status | Explicit approval (Approved / Approved with Conditions) |

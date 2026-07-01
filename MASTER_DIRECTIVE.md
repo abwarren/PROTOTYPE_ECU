@@ -7,6 +7,8 @@
 >
 > **Engineering Philosophy:** Prototype ECU is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
 
+**Nothing is considered complete without objective evidence.** Claims are not evidence. Working demonstrations are evidence. Evidence may include: successful builds, automated test results, integration tests, hardware demonstrations, screenshots, videos, logs, and QA verification.
+
 ---
 
 ## 1. The Contract
