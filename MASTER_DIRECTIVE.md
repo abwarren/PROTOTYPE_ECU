@@ -9,6 +9,8 @@
 
 **Nothing is considered complete without objective evidence.** Claims are not evidence. Working demonstrations are evidence. Evidence may include: successful builds, automated test results, integration tests, hardware demonstrations, screenshots, videos, logs, and QA verification.
 
+**Code written ≠ Complete. Code compiles ≠ System works.** A feature is only complete when it has been demonstrated under realistic operating conditions.
+
 ---
 
 ## 1. The Contract
