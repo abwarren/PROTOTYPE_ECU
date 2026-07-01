@@ -295,6 +295,52 @@ Prototype ECU shall follow a **Tracer Bullet** development methodology. Tracer b
 
 Full methodology: `TRACER_BULLETS.md`
 
+### 3.16 Engineering Principle — Authority & Review
+
+**Neither agent owns the truth. The repository owns the truth.**
+
+Architecture evolves only through documented proposals, independent review, and accepted decisions.
+
+The Engineering Agent delivers. The QA Agent challenges.
+
+No architectural change shall be merged without:
+- Technical justification
+- Trade-off analysis
+- Risk assessment
+- Migration plan
+- QA approval
+- Updated documentation
+
+Every accepted architectural change shall be recorded as an Architecture Decision Record (ADR).
+
+Rejected proposals shall remain documented for future reference.
+
+QA reviews produce a living backlog in `qa/QA_BACKLOG.md`. Every finding is tracked from identification through resolution. No finding is buried in chat or one-off reports.
+
+The review loop:
+
+```
+Engineering Agent → delivers vertical slice
+        │
+        ▼
+QA Agent → independent review (stateless, evidence-based)
+        │
+        ▼
+QA_BACKLOG.md → findings tracked, prioritized
+        │
+        ▼
+Engineering Agent → addresses findings
+        │
+        ▼
+QA Agent → re-reviews, approves or rejects
+        │
+        ▼
+Merge → main remains stable
+        │
+        ▼
+ADRs → permanent record of accepted decisions
+```
+
 ---
 
 ## 4. Repository Maturity Model
@@ -547,6 +593,8 @@ See `11_Documentation/ROADMAP.md` for the full development roadmap.
 | `11_Documentation/management/Current_Sprint.md` | Sprint backlog and blockers |
 | `SESSION.md` | Session-level handoff state |
 | `docs/handoffs/` | Session handoff archive |
+| `qa/QA_BACKLOG.md` | Living architectural backlog (QA-owned) |
+| `qa/REVIEW_HISTORY.md` | Chronological QA review log |
 | `PROJECT_RULES.md` | Agent governance and workflows |
 | `CODING_STANDARDS.md` | Engineering standards |
 | `11_Documentation/ARCHITECTURE.md` | System architecture overview |

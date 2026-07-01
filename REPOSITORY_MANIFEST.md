@@ -75,6 +75,9 @@ ECU_PLATFORM/
 │   └── upstream/             → rusEFI fork (submodule)
 ├── hardware/                 Hardware design files
 ├── mobile/                   Mobile app
+├── qa/                       QA backlog & review history
+│   ├── QA_BACKLOG.md
+│   └── REVIEW_HISTORY.md
 ├── scripts/                  Build & validation scripts
 │   ├── build-firmware.sh
 │   └── ddd-check.sh

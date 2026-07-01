@@ -20,8 +20,20 @@ Adopt a **Two-Agent Engineering Model**:
 
 ### Engineering Agent (Principal Engineer)
 
-One agent owns all delivery. Responsibilities:
+One agent owns all delivery.
 
+**Owns:**
+- Delivery (all subsystems)
+- Repository management
+- Vertical slicing
+- Tracer bullets
+- Documentation
+- Git workflow
+- Session handoff
+
+**Never approves its own work.**
+
+**Responsibilities:**
 - Firmware
 - Desktop Studio
 - Cloud Platform
@@ -40,8 +52,20 @@ The Engineering Agent produces complete vertical slices — designed, implemente
 
 ### QA Agent (Independent Reviewer)
 
-A separate agent that never writes production features. It performs independent review of every vertical slice. Responsibilities:
+A separate agent that never writes production features unless specifically tasked. It performs independent review of every vertical slice.
 
+**Owns:**
+- Architecture review
+- Regression review
+- Documentation review
+- Repository health
+- Commercial review
+- Long-term scalability assessment
+- QA_BACKLOG.md
+
+**Never implements production features unless specifically tasked.**
+
+**Responsibilities:**
 - Architecture review
 - Regression review
 - Documentation review
@@ -52,6 +76,50 @@ A separate agent that never writes production features. It performs independent 
 - Risk assessment
 
 The QA Agent is **stateless** — it never assumes the Engineering Agent is correct. Every review starts by reading the repository fresh: MASTER_DIRECTIVE.md, the latest SESSION_HANDOFF, the current feature branch, and the Git diff for that slice. It reviews based on evidence, not memory.
+
+### Engineering Principle
+
+**Neither agent owns the truth. The repository owns the truth.**
+
+Architecture evolves only through documented proposals, independent review, and accepted decisions.
+
+No architectural change shall be merged without:
+- Technical justification
+- Trade-off analysis
+- Risk assessment
+- Migration plan
+- QA approval
+- Updated documentation
+
+Every accepted architectural change shall be recorded as an Architecture Decision Record (ADR).
+
+Rejected proposals shall remain documented for future reference.
+
+### QA Backlog System
+
+Every QA review creates entries in `qa/QA_BACKLOG.md` — a living backlog of architectural improvements. Findings are tracked, not buried in chat or one-off reports.
+
+**Entry format:**
+
+```
+QA-001
+Subsystem: Database
+Priority: Critical
+Session: 003
+Finding: Schema does not support versioned calibrations.
+Recommendation: Separate calibration metadata from calibration payload.
+Status: Open
+```
+
+**Priorities:** Critical, High, Medium, Low
+**Statuses:** Open, In Progress, Resolved, Rejected (with rationale)
+**Resolution:** When resolved, entry includes ADR reference and commit SHA.
+
+This provides:
+- A living, prioritized backlog of architectural improvements
+- Traceability from finding → ADR → implementation
+- Historical record of why decisions were made
+- Input for the next QA review (check open backlog items)
 
 ### Mandatory Workflow
 
@@ -72,6 +140,8 @@ QA Agent
     │         UI/UX, Testing, Commercial Readiness
     │ Identifies: Top 10 risks, Top 10 improvements,
     │             Regressions, Technical debt, Documentation gaps
+    │ Creates: qa/QA_BACKLOG.md entries for all findings
+    │          qa/QA_REPORT.md for session review summary
     ▼
 Changes requested
     │
@@ -176,6 +246,8 @@ This ADR **preserves**:
 - TRACER_BULLETS.md (all 6 tracer bullets)
 - CONTEXT_LIFECYCLE.md (session lifecycle)
 - ADR-0007 (Architecture Change Governance)
+- `qa/QA_BACKLOG.md` (living architectural backlog)
+- `qa/REVIEW_HISTORY.md` (chronological review log)
 
 ## Future Scaling
 
