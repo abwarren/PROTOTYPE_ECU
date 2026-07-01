@@ -12,7 +12,7 @@
 | **Sprint** | Sprint 005 ✅ (Complete) |
 | **Next** | Sprint 006 — Brand separation |
 | **Owner** | DeepSeek |
-| **Status** | 🔄 Restructure Complete |
+| **Status** | ✅ Session reconciled |
 | **Milestone** | Phase 1 — Foundation |
 
 ---
@@ -64,20 +64,21 @@ No blockers.
 
 ---
 
-## 📝 Modified Files (129 files changed this session)
+## 📦 Session Commits (9 total)
 
-The entire repository was restructured from a flat layout into 18 numbered directories. Key paths:
+```
+361f3a4 Initial commit: ECU Platform Core
+817a690 Sprint 005: Firmware build verified
+5f4cc69 Update SESSION.md with Sprint 005 completion status
+4f9067e Fix build script candidate paths and sprint period
+78e7b8b Repository restructure: 18-directory multi-agent R&D system
+01fdf8a Restore lost investor docs (16 files)
+108d612 Finalize restructure: placeholder READMEs, submodule fix
+2c36065 Add shared project files and update agent system
+4ce14f3 Fix shared file references: ARCHITECTURE.md path, add shared files to DDD gate
+```
 
-| Old Path | New Path |
-|----------|----------|
-| `docs/firmware-architecture.md` | `01_Architecture/firmware-architecture.md` |
-| `ADR/0001-*` | `17_Decisions/0001-*` |
-| `docs/firmware/fuel.md` | `04_Firmware/docs/fuel.md` |
-| `docs/management/*` | `11_Documentation/management/*` |
-| `docs/investor/*` | `11_Documentation/investor/*` |
-| `research/*` | `10_Market_Research/*` |
-| `ARCHITECTURE.md` | `11_Documentation/ARCHITECTURE.md` |
-| `PROJECT_STATUS.md` | `11_Documentation/PROJECT_STATUS.md` |
+All work committed to `master`. No remote configured — push manually when ready.
 
 ## 🎯 Recommended Next Prompt
 

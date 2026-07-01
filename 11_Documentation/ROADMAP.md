@@ -19,7 +19,7 @@
 | Architecture audit | ✅ Complete | ✅ | 16 modules verified |
 | ADR records | ✅ Complete | ✅ | 4 records |
 | DDD policy | ✅ Complete | ✅ | Engineering standard |
-| Firmware build | ❌ Not Started | ⏳ | Toolchain verification needed |
+| Firmware build | ✅ Complete | ✅ | ARM GCC 12.3, Java 11; f407-discovery builds |
 | Brand separation | ❌ Not Started | ⏳ | Trace all rusEFI strings |
 | Firmware identity | ❌ Not Started | ⏳ | Versioning, board IDs |
 | Configuration profiles | ❌ Not Started | ⏳ | NA, Turbo, etc. |

@@ -2,6 +2,7 @@
 
 > **Last updated:** 2026-07-01
 > **Purpose:** Every agent reads this first to understand current project state.
+> **Reconciliation:** Session fully reconciled.
 
 ---
 
@@ -13,7 +14,7 @@ Studio           ████░░░░░░░░░░░░░░░░░
 Cloud            █░░░░░░░░░░░░░░░░░░░░░░░   5%
 Mobile           █░░░░░░░░░░░░░░░░░░░░░░░   3%
 Hardware         █░░░░░░░░░░░░░░░░░░░░░░░   3%
-Documentation    ██████████████████░░░░░░  72%
+Documentation    ████████████████████░░░░  75%
 Manufacturing    ░░░░░░░░░░░░░░░░░░░░░░░░   0%
 Testing          ░░░░░░░░░░░░░░░░░░░░░░░░   0%
 ```
@@ -27,18 +28,20 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 - ✅ Brand abstraction layer (`branding/brand.json`)
 - ✅ rusEFI fork (submodule, commit `8540e44`)
 - ✅ ARM GCC 12.3, Java 11, 7-Zip, mtools installed
-- ✅ Firmware builds for f407-discovery
-- ✅ Architecture documentation (10 files)
-- ✅ ADR records (4) + Decision log
-- ✅ DDD quality gate (36 checks)
-- ✅ Company knowledge base (5 audiences)
+- ✅ Firmware builds for f407-discovery (commit `7abb688` in submodule)
+- ✅ Architecture documentation (10 files in `01_Architecture/`)
+- ✅ ADR records (4) + Decision log (in `17_Decisions/`)
+- ✅ DDD quality gate (40 checks)
+- ✅ Company knowledge base (5 audiences in `11_Documentation/`)
 - ✅ Investor package (17 docs)
 - ✅ Workshop guides (6 docs)
 - ✅ Management docs (9 docs)
 - ✅ Manufacturing templates (3 docs)
-- ✅ Research corpus (20+ categories)
+- ✅ Research corpus (20+ categories in `10_Market_Research/`)
 - ✅ Multi-agent R&D system documented
 - ✅ Repository restructured (18 directories)
+- ✅ Governance files: CURRENT_STATE.md, PROJECT_RULES.md, CODING_STANDARDS.md, TODO.md
+- ✅ Agent system with 11 agents, workflow, locking, branch strategy
 
 ### Remaining
 - ⏳ Brand separation (replace rusEFI strings)
