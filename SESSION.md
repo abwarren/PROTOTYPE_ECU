@@ -2,6 +2,7 @@
 
 > **Last updated:** 2026-07-01
 > **Purpose:** Persistent session state — any agent can pick up here.
+> **Policy:** See `MASTER_DIRECTIVE.md` §3 and `CONTEXT_LIFECYCLE.md`
 
 ---
 
@@ -9,107 +10,86 @@
 
 | Field | Value |
 |-------|-------|
-| **Sprint** | Sprint 005 ✅ (Complete) |
-| **Next** | Sprint 006 — Brand separation |
-| **Owner** | DeepSeek |
-| **Status** | ✅ Session reconciled |
-| **Milestone** | Phase 1 — Foundation |
+| **Sprint** | Sprint 006 — Repository Foundation |
+| **Owner** | Agent 00 (Program Manager) |
+| **Status** | ✅ Complete |
+| **Milestone** | Phase 0 — Specification Campaign |
+| **Maturity** | Level 2 → working toward Level 3 (40%) |
 
 ---
 
-## ✅ Completed This Session
+## ✅ Completed This Session (Session 001)
 
-### Sprint 005 — Firmware Build
 | Task | Result | Detail |
 |------|--------|--------|
-| Git repository initialized | ✅ | 4 commits on `master` |
-| ARM GCC 12.3 installed | ✅ | `/home/wa/tools/gcc-12/bin/` |
-| Java 11 (Temurin) installed | ✅ | `/home/wa/tools/java/bin/` |
-| 7-Zip 23.01 + mtools installed | ✅ | Toolchain complete |
-| `-Wno-error=shadow` build fix | ✅ | GCC 12+ compatibility |
-| Firmware builds (f407-discovery) | ✅ | `rusefi.elf` (26.5 MB), `rusefi.bin` (744 KB) |
-| D-009 resolved | ✅ | Build toolchain verified |
-
-### Repository Restructure
-| Task | Result | Detail |
-|------|--------|--------|
-| 18 numbered directories created | ✅ | `01_Architecture/` → `18_Roadmap/` |
-| Architecture docs migrated | ✅ | 10 files → `01_Architecture/` |
-| ADR + Decisions migrated | ✅ | 5 files → `17_Decisions/` |
-| Firmware module docs migrated | ✅ | 7 files → `04_Firmware/docs/` |
-| Studio/hardware module docs migrated | ✅ | → `05_Software/docs/`, `02_Hardware/docs/` |
-| Research corpus migrated | ✅ | 20+ categories → `10_Market_Research/` |
-| Management/investor/workshop docs migrated | ✅ | → `11_Documentation/*/` |
-| Manufacturing docs migrated | ✅ | → `07_Manufacturing/docs/` |
-| Diagrams migrated | ✅ | → `14_Diagrams/` |
-| History/reports/meetings migrated | ✅ | → `11_Documentation/*/` |
-| Root tracking docs migrated | ✅ | → `11_Documentation/` |
-| Legacy directories cleaned | ✅ | `research/`, `01_Research/`, `10_Documentation/` removed |
-| All navigation files updated | ✅ | README, START_HERE, SESSION |
-| Agent system documented | ✅ | `11_Documentation/engineering/agent-system.md` |
+| Repository discovery & audit | ✅ | All 8 audit phases complete |
+| Local work committed | ✅ | 2 commits (MASTER_DIRECTIVE + integration) |
+| GitHub published | ✅ | `github.com/abwarren/PROTOTYPE_ECU` |
+| Foundation tag created | ✅ | `v0.1-foundation` |
+| Governance policy elevated | ✅ | Context lifecycle policy integrated into MASTER_DIRECTIVE §3 |
+| Repository Maturity Model | ✅ | Added to MASTER_DIRECTIVE §4 |
+| Session handoff system | ✅ | `docs/handoffs/` created with index + SESSION_001.md |
+| 5 known issues documented | ✅ | See SESSION_001.md for full list |
 
 ---
 
 ## 📋 Phase 0 — Specification Campaign
 
-Per the [20-Agent Documentation Program](MASTER_DIRECTIVE.md), we are now in **Phase 0 — Specification**, where documentation is produced before any implementation code is written.
+Per the [20-Agent Documentation Program](MASTER_DIRECTIVE.md#5-the-20-agent-specification-program), we are in **Phase 0 — Specification**, where documentation is produced before implementation code is written.
 
-**Key deliverable:** [`MASTER_DIRECTIVE.md`](./MASTER_DIRECTIVE.md) — The specification contract that defines what must be produced before implementation resumes.
+**Key deliverable:** [`MASTER_DIRECTIVE.md`](./MASTER_DIRECTIVE.md) v1.1.0 — The specification contract including mandatory context lifecycle policy.
 
-## 🎯 Next Task (Sprint 006)
+---
 
-1. **Brand separation** — Replace rusEFI customer-facing strings with `brand.json` variables
-2. **Firmware identity system** — Versioning, board IDs, device IDs
-3. **Studio scaffold** — Begin Electron + React + TypeScript application
+## 🎯 Next Task (Sprint 007)
 
-> **Note:** The next batch of specification documents (Firmware, Hardware, PCB, Studio specs) should be produced per the 20-agent contract before heavy implementation begins.
+**Repository Housekeeping** — Fix the 5 open issues (see `docs/handoffs/SESSION_001.md`):
+
+1. Fix `.gitmodules` URL → `https://github.com/rusefi/rusefi.git`
+2. Fix CI branches → add `master` to `.github/workflows/ddd-check.yml`
+3. Commit `FORK_METADATA.md` in submodule
+4. Discard generated file changes in submodule
+5. Commit submodule pin
+
+After housekeeping: Specification campaign — Agent 02 produces `04_Firmware/specification.md`.
 
 ---
 
 ## ⛔ Blockers
 
-| Blocker | Impact | Remediation |
-|---------|--------|-------------|
-| **No GitHub remote configured** | Cannot push to `github.com/abwarren/` | Run: `git remote add origin git@github.com:abwarren/<repo>.git` to configure. Remote owner is `abwarren`. Do not change without explicit instruction. |
+No blockers. GitHub remote is configured (`git@github.com:abwarren/PROTOTYPE_ECU.git`). Previous blocker resolved this session.
 
 ---
 
-## 📦 End-of-Session Protocol
-
-Per the [GitHub Deployment Policy](PROJECT_RULES.md#7-github-deployment-policy), every session must end with:
-
-1. Verify `git status` to review all changes
-2. Stage all approved changes
-3. Create logical, descriptive commits
-4. Push to the configured GitHub remote
-5. Verify the push completed successfully
-6. Verify the latest commit exists on GitHub
-7. Report:
-   - Repository
-   - Branch
-   - Commit SHA
-   - Commit Message
-   - Files Changed
-   - Push Status
-
----
-
-## 📦 Session Commits (9 total)
+## 📦 Session Commits (16 total)
 
 ```
-361f3a4 Initial commit: ECU Platform Core
-817a690 Sprint 005: Firmware build verified
-5f4cc69 Update SESSION.md with Sprint 005 completion status
-4f9067e Fix build script candidate paths and sprint period
-78e7b8b Repository restructure: 18-directory multi-agent R&D system
-01fdf8a Restore lost investor docs (16 files)
-108d612 Finalize restructure: placeholder READMEs, submodule fix
+9ecafca docs: add REPOSITORY_MANIFEST — project inventory and directory map
+f8bb7db docs: integrate MASTER_DIRECTIVE into project workflow
+6a5918b docs: add MASTER_DIRECTIVE engineering constitution
+52dae3f Complete session reconciliation: ADRs 5-6, reconciliation report...
+674126b Session reconciliation: update tracking docs for restructure...
+4ce14f3 Fix shared file references: ARCHITECTURE.md path, add shared files...
 2c36065 Add shared project files and update agent system
-4ce14f3 Fix shared file references: ARCHITECTURE.md path, add shared files to DDD gate
+108d612 Finalize restructure: placeholder READMEs, submodule fix, all 18 dirs
+01fdf8a Restore lost investor docs (16 files)
+78e7b8b Repository restructure: 18-directory multi-agent R&D system
+4f9067e Fix build script candidate paths and sprint period
+5f4cc69 Update SESSION.md with Sprint 005 completion status
+817a690 Sprint 005: Firmware build verified
+361f3a4 Initial commit: ECU Platform Core
 ```
 
-All work committed to `master`. **No remote configured** — push manually when ready.
+**Tags:** `v0.1-foundation` (on `f8bb7db`)
+
+---
+
+## 📦 Latest Handoff
+
+→ `docs/handoffs/SESSION_001.md`
+
+---
 
 ## 🎯 Recommended Next Prompt
 
-> "Continue to Sprint 006: Begin brand separation — replace rusEFI customer-facing strings with brand.json variables."
+> "Read `START_HERE.md` and `MASTER_DIRECTIVE.md`, then fix the 5 open issues from SESSION_001. Start with .gitmodules."

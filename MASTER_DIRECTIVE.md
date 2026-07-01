@@ -1,6 +1,6 @@
 # 🏛 MASTER_DIRECTIVE.md — The Specification Contract
 
-> **Version:** 1.0.0  
+> **Version:** 1.1.0  
 > **Status:** Active  
 > **Purpose:** This document is the single source of authority for the ECU Platform. Everything below is the contract.  
 > **Rule:** No implementation deviates from the specifications referenced herein. No specification changes without updating this contract.
@@ -36,13 +36,274 @@ This repository has two agent systems that coexist:
 
 1. **During Phase 0 (Specification),** the 20-agent program is active. Each agent produces documentation for its assigned domain. The 11-agent operational system is dormant during this phase.
 2. **Once all P0 specs are approved**, the 20-agent program is complete. The repository hands off to the 11-agent operational system for implementation.
-3. **During implementation**, the 11-agent system (`PROJECT_RULES.md`) governs coding, research, testing, and quality. Specification updates follow the change process in §7 of this document, filed through `16_Quality_Audits/requests/`.
+3. **During implementation**, the 11-agent system (`PROJECT_RULES.md`) governs coding, research, testing, and quality. Specification updates follow the change process in §9 of this document, filed through `16_Quality_Audits/requests/`.
 
 In short: **the 20-agent program builds the spec; the 11-agent system builds the product.**
 
 ---
 
-## 3. The 20-Agent Specification Program
+## 3. Project Governance — Context Management & Engineering Continuity
+
+**This policy is MANDATORY.**
+
+It applies to every engineering session, every AI agent, every engineer, and every subsystem.
+
+There are no exceptions.
+
+### 3.1 The Repository Is the Project
+
+The Git repository is the company's engineering operating system. It contains:
+
+- Architecture
+- Research
+- Firmware
+- Desktop Studio
+- Cloud Platform
+- Mobile Platform
+- Hardware
+- PCB
+- Manufacturing
+- Testing
+- Documentation
+- Investor Material
+- Workshop Documentation
+- Engineering Standards
+- Roadmaps
+- Decision Records
+- Project History
+
+**GitHub is the permanent engineering record.** Conversation history is temporary. AI context is temporary. The repository is permanent.
+
+### 3.2 Context Is Disposable
+
+AI conversation history must never become a dependency.
+
+- No engineering work may rely upon remembering previous conversations.
+- Every engineering decision must be recoverable from the repository.
+- **If information is not documented or committed, it does not officially exist.**
+
+No chat session is part of the project. The repository is the project. Every session should be considered ephemeral. If the chat disappeared tomorrow, development should continue without loss because everything necessary is already in Git.
+
+### 3.3 Vertical Slicing
+
+All engineering work shall be organised into complete vertical slices. Each vertical slice represents a complete engineering milestone.
+
+**Examples:**
+- Firmware Build System
+- Desktop Dashboard
+- Database Architecture
+- CAN Layer
+- Hardware Architecture
+- PCB Layout
+- Investor Documentation
+- Workshop Installer
+- Cloud Authentication
+- Manufacturing Research
+
+Each slice shall be capable of being:
+
+1. Designed
+2. Implemented
+3. Tested
+4. Documented
+5. Committed
+6. Pushed
+7. Handed over
+
+A vertical slice should leave the repository in a working state. Do not split a vertical slice across multiple sessions unless unavoidable.
+
+### 3.4 Session Length
+
+| Threshold | Tokens |
+|-----------|--------|
+| **Target** | 40,000–60,000 |
+| **Soft limit** | 75,000–100,000 |
+
+**Hard Rule:** Do not intentionally continue beyond the soft limit when a logical engineering milestone has been completed. Engineering quality is more important than conversation length.
+
+### 3.5 Mandatory Session Termination
+
+Every engineering session SHALL terminate when either:
+
+- A logical milestone has been completed
+- The context approaches the recommended limit
+
+Do not continue indefinitely. Do not allow context degradation.
+
+### 3.6 Mandatory Session Checklist
+
+Before ending EVERY session:
+
+1. Complete current engineering slice
+2. Run relevant verification
+3. Run relevant tests
+4. Update documentation
+5. Update diagrams
+6. Update `PROJECT_STATUS.md`
+7. Update `ROADMAP.md`
+8. Update `CURRENT_SPRINT.md`
+9. Update `CHANGELOG.md`
+10. Update `SESSION.md`
+11. Update `REPOSITORY_MANIFEST.md`
+12. Update ADRs if necessary
+13. Commit
+14. Push
+15. Verify GitHub
+16. Generate `docs/handoffs/SESSION_NNN.md`
+
+**No session is complete until every applicable item has been completed.**
+
+### 3.7 Session Handoff
+
+Every session MUST generate `docs/handoffs/SESSION_NNN.md`.
+
+The handoff must include:
+
+| Field | Description |
+|-------|-------------|
+| Session Number | Sequential session ID |
+| Date | Session date |
+| Current Sprint | Active sprint |
+| Current Milestone | Active milestone |
+| Completed Vertical Slice(s) | What was finished |
+| Files Added | New files created |
+| Files Modified | Existing files changed |
+| Architecture Decisions | ADRs created or updated |
+| Open Issues | Known problems |
+| Technical Debt | Deliberate shortcuts |
+| Known Risks | What could go wrong |
+| Blockers | What is blocking progress |
+| Pending Research | Questions needing answers |
+| Recommended Next Slice | What to do next |
+| Recommended Next Agent | Which agent should pick up |
+| Repository Status | Branch, commit SHA, GitHub verification |
+| Estimated Remaining Work | Effort remaining on current workstream |
+| Lessons Learned | Engineering notes |
+
+### 3.8 Session Index
+
+Maintain `docs/handoffs/README.md` containing:
+
+| Session | Date | Milestone | Commit SHA | Engineer / Agent | Status | Next Session |
+
+This becomes the historical engineering timeline.
+
+### 3.9 Session Startup
+
+Every new session MUST begin by reading:
+
+1. `START_HERE.md`
+2. `MASTER_DIRECTIVE.md`
+3. `README.md`
+4. `PROJECT_STATUS.md`
+5. `CURRENT_SPRINT.md`
+6. `ROADMAP.md`
+7. `ARCHITECTURE.md`
+8. `SESSION.md`
+9. Latest `SESSION_HANDOFF.md` (from `docs/handoffs/`)
+10. `TECH_DEBT.md`
+11. Relevant ADRs
+12. Relevant subsystem documentation
+
+Only then may engineering begin.
+
+### 3.10 No Chat Dependencies
+
+Assume every session begins with zero memory.
+
+The repository must contain everything required to continue development. No engineer should ever need access to previous conversations.
+
+### 3.11 Engineering Continuity
+
+Any new engineer or AI agent should be capable of:
+
+1. Cloning the repository
+2. Reading the documentation
+3. Understanding the architecture
+4. Understanding the current sprint
+5. Understanding technical debt
+6. Understanding open risks
+7. Continuing development
+
+**Within one working session.**
+
+### 3.12 Success Criteria
+
+The Prototype ECU repository shall become a complete engineering knowledge base. The repository must be sufficient for:
+
+- Software Engineering
+- Firmware Engineering
+- Hardware Engineering
+- Manufacturing
+- Testing
+- Deployment
+- Operations
+- Investor Reporting
+- Workshop Deployment
+- Customer Support
+- Future AI Engineering
+
+**No project knowledge should be permanently stored in conversation history. All enduring knowledge belongs in the repository.**
+
+### 3.13 Mandatory Compliance
+
+This policy is mandatory. Every AI agent. Every engineering session. Every sprint. Every milestone. Every release.
+
+Failure to comply is considered an incomplete engineering task. **No feature may be considered COMPLETE until this policy has been satisfied.**
+
+### 3.14 Handoff Directory Structure
+
+```
+docs/
+└── handoffs/
+    ├── README.md          # Chronological index
+    ├── SESSION_001.md     # First session
+    ├── SESSION_002.md     # Second session
+    └── ...
+```
+
+The handoff directory is the chronological engineering log — navigable by both humans and AI agents.
+
+---
+
+## 4. Repository Maturity Model
+
+The repository matures through defined levels. Agent 00 (Program Manager) updates the current maturity level at the end of every session. This provides a consistent measure of project evolution and keeps every session aligned with the long-term roadmap.
+
+### 4.1 Maturity Levels
+
+| Level | Name | Criteria | Status |
+|-------|------|----------|--------|
+| **1** | Basic Documentation | README, project structure, initial governance | ✅ Complete |
+| **2** | Architecture Complete | System architecture documented, ADRs established, directory structure finalized | ✅ Complete |
+| **3** | Specifications Complete | All subsystem specifications written, reviewed, and approved per §5 standard | 🔄 In Progress |
+| **4** | Prototype Implementation | Working prototype of core subsystems (firmware, studio, CAN) | ⬚ Future |
+| **5** | Production-Ready | Hardware manufactured, firmware validated, compliance certified | ⬚ Future |
+| **6** | Commercial Platform | Customer deployments, workshop network, revenue operations | ⬚ Future |
+
+### 4.2 Current Maturity
+
+| Metric | Value |
+|--------|-------|
+| **Current Level** | 2 — Architecture Complete |
+| **Next Level** | 3 — Specifications Complete |
+| **Progress to Level 3** | 40% (governance and system architecture established; subsystem specs pending) |
+| **Last Updated** | 2026-07-01 |
+
+### 4.3 Level Transitions
+
+A level is considered **complete** when all its criteria are met and the repository passes the DDD quality gate (33/33).
+
+A level transition requires:
+1. Agent 00 files a level completion report in `11_Documentation/management/`
+2. Agent 19 (QA) validates all criteria
+3. Agent 01 (Architecture) confirms no architectural regressions
+4. This document is updated with the new level and date
+5. A new tag is created: `v{major}.{minor}-L{level}` (e.g., `v0.2-L3`)
+
+---
+
+## 5. The 20-Agent Specification Program
 
 The following agents produce and own the specification documents. Each agent produces documentation, not code.
 
@@ -71,7 +332,7 @@ The following agents produce and own the specification documents. Each agent pro
 
 ---
 
-## 4. The Specification Documents
+## 6. The Specification Documents
 
 The end state of the documentation phase is a complete set of specification documents. Each document below is the **contract** for its subsystem.
 
@@ -140,7 +401,7 @@ The following specifications are required before the implementation phase can be
 
 ---
 
-## 5. The Specification Standard
+## 7. The Specification Standard
 
 Every specification document must meet these criteria to be approved (enforced by Agent 19 -- Quality Assurance):
 
@@ -159,7 +420,7 @@ A specification is **approved** when Agent 19 scores it >= 90/100 against the ab
 
 ---
 
-## 6. Document Hierarchy
+## 8. Document Hierarchy
 
 The diagram below shows how specification documents relate to each other. The MASTER_DIRECTIVE sits at the top; all subsystem specs flow from it.
 
@@ -202,7 +463,7 @@ The diagram below shows how specification documents relate to each other. The MA
 
 ---
 
-## 7. Change Process
+## 9. Change Process
 
 ### For Specification Changes
 
@@ -223,7 +484,7 @@ If during implementation the specification proves insufficient:
 
 ---
 
-## 8. Current State
+## 10. Current State
 
 | Phase | Status |
 |-------|--------|
@@ -242,15 +503,18 @@ See `11_Documentation/ROADMAP.md` for the full development roadmap.
 
 ---
 
-## 9. Quick Reference
+## 11. Quick Reference
 
 | Key File | Purpose |
 |----------|---------|
 | `MASTER_DIRECTIVE.md` | This file -- the specification contract |
+| `CONTEXT_LIFECYCLE.md` | Session lifecycle policy (mandatory governance) |
 | `CURRENT_STATE.md` | Daily project pulse (root) |
+| `REPOSITORY_MANIFEST.md` | Repository inventory and directory map |
 | `11_Documentation/PROJECT_STATUS.md` | Detailed per-component status |
 | `11_Documentation/management/Current_Sprint.md` | Sprint backlog and blockers |
 | `SESSION.md` | Session-level handoff state |
+| `docs/handoffs/` | Session handoff archive |
 | `PROJECT_RULES.md` | Agent governance and workflows |
 | `CODING_STANDARDS.md` | Engineering standards |
 | `11_Documentation/ARCHITECTURE.md` | System architecture overview |

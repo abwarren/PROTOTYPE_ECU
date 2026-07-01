@@ -10,16 +10,19 @@
 | Order | Document | Why |
 |-------|----------|-----|
 | 1 | **[MASTER_DIRECTIVE.md](./MASTER_DIRECTIVE.md)** | The specification contract — read this first above all |
-| 2 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
-| 3 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
-| 4 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
-| 5 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
-| 6 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
-| 7 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
-| 8 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
-| 9 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
+| 2 | **[CONTEXT_LIFECYCLE.md](./CONTEXT_LIFECYCLE.md)** | Mandatory session lifecycle policy |
+| 3 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
+| 4 | **[REPOSITORY_MANIFEST.md](./REPOSITORY_MANIFEST.md)** | Repository inventory and directory map |
+| 5 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
+| 6 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
+| 7 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
+| 8 | **[docs/handoffs/](./docs/handoffs/)** | Session handoff archive — latest session state |
+| 9 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
+| 10 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
+| 11 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
+| 12 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
 
-**Only after reading these 9 documents should you start coding.**
+**Only after reading these 12 documents should you start coding.**
 
 ---
 
@@ -43,8 +46,10 @@ See [11_Documentation/BUILD.md](./11_Documentation/BUILD.md) for full build inst
 
 ## 📋 Policies
 
+- **Context Lifecycle:** Every session is ephemeral — `CONTEXT_LIFECYCLE.md` and `MASTER_DIRECTIVE.md` §3
 - **DDD Policy:** All work is incomplete until documented. See [11_Documentation/CONTRIBUTING.md](./11_Documentation/CONTRIBUTING.md)
 - **Quality Gate:** Run `./scripts/ddd-check.sh` before marking any task complete
+- **Handoff Mandatory:** No session ends without `docs/handoffs/SESSION_NNN.md` — see `MASTER_DIRECTIVE.md` §3.7
 - **ADR First:** Architecture changes require an ADR before implementation
 
 ---

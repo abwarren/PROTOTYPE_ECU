@@ -2,6 +2,7 @@
 
 > **Purpose:** Standardized workflows, agent coordination, and governance rules.
 > **Every agent must read this before making changes.**
+> **Governance:** See `MASTER_DIRECTIVE.md` §3 for mandatory context lifecycle policy and `CONTEXT_LIFECYCLE.md` for standalone reference.
 
 ---
 
@@ -16,7 +17,7 @@ START
     git pull --rebase
 
  2. Read project documentation
-    MASTER_DIRECTIVE.md → README.md → CURRENT_STATE.md → ROADMAP.md → DECISIONS.md
+    MASTER_DIRECTIVE.md → START_HERE.md → README.md → CURRENT_STATE.md → ROADMAP.md → DECISIONS.md → docs/handoffs/
 
  3. Read files related to assigned area
 
@@ -104,7 +105,7 @@ Every agent begins with:
 
 1. `git fetch --all`
 2. `git pull --rebase`
-3. Read `MASTER_DIRECTIVE.md`, `CURRENT_STATE.md`, `ROADMAP.md`, `DECISIONS.md`
+3. Read `MASTER_DIRECTIVE.md`, `CONTEXT_LIFECYCLE.md`, `CURRENT_STATE.md`, `ROADMAP.md`, `DECISIONS.md`, `docs/handoffs/`
 4. Check recent commits: `git log --oneline -10`
 5. Determine what has changed since its last run
 6. Continue only with assigned tasks
@@ -134,7 +135,9 @@ No completed work may remain only in the local workspace.
 | Property | Value |
 |----------|-------|
 | **Repository Owner** | `abwarren` |
-| **Remote** | Verify the configured Git remote before beginning work. Do not create a new repository. Do not change the remote unless explicitly instructed. |
+| **Repository** | `PROTOTYPE_ECU` |
+| **Remote** | `git@github.com:abwarren/PROTOTYPE_ECU.git` |
+| **Rule** | Do not change the remote unless explicitly instructed. |
 
 ### 7.2 Authentication
 
