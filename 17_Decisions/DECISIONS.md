@@ -15,7 +15,8 @@
 | 009 | Platform strategy — separate presentation from platform | Accepted | 2026-07-01 |
 | 010 | Transport abstraction layer — trait-based multi-transport | Accepted | 2026-07-01 |
 | 011 | Repository trait interfaces — database abstraction | Accepted | 2026-07-01 |
+| 012 | Protocol layer separation — three-layer communication architecture | Accepted | 2026-07-01 |
 
 ## Detailed Records
 
-See full ADRs in this directory: `0001-*` through `0011-*`.
+See full ADRs in this directory: `0001-*` through `0012-*`.

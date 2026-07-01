@@ -80,27 +80,32 @@ Error handling → Workspace/project model → Plugin registry (stub)
 
 ---
 
-### TB-003 — Communication Layer (Transport Abstraction)
+### TB-003 — Communication Layer (Three-Layer Architecture)
 
 ```
-Define Transport trait → Implement USB CDC transport → Implement ECU discovery →
-Implement handshake protocol → Implement heartbeat → Connection state machine →
-Studio connects via Communication Service (not direct USB)
+Define Protocol interface → Define Transport interface → Implement USB transport →
+Implement rusEFI protocol → Implement ECU discovery → Implement handshake →
+Implement ECU identity → Implement capability negotiation →
+Implement connection state machine → Implement timeout handling →
+ECU Service layer connects through Protocol, not Transport directly
 ```
 
-**Validates:** Transport abstraction, USB CDC transport, Protocol handshake, Connection lifecycle
-**Subsystems crossed:** 3 (Studio, Transport, Protocol)
-**Architecture:** ADR-0010 — UI depends on Transport trait, not USB directly
+**Validates:** Three-layer communication (Service → Protocol → Transport), USB CDC, Protocol framing, Handshake, ECU identity
+**Subsystems crossed:** 3 (Studio, Protocol, Transport)
+**Architecture:** ADR-0010 (Transport), ADR-0012 (Protocol Layer Separation)
 **Priority:** P0
 
 ```
 Prototype Studio (UI)
         │
         ▼
-  Communication Service
+  ECU Service Layer         ← Business logic (connect, read sensors, write cal)
         │
         ▼
-  Transport Interface (trait)
+  Protocol Layer            ← Packet framing, CRC, handshake, capability exchange
+        │
+        ▼
+  Transport Layer           ← Moving bytes
         │
  ┌──────┼──────────┬──────────┐
  │      │          │          │
@@ -109,7 +114,14 @@ USB    CAN      Ethernet    BLE
  └──────┴──────────┴──────────┘
         │
         ▼
-     Firmware
+   ECU Firmware
+```
+
+**Principle:** Transport moves bytes. Protocol understands ECU messages. Services implement business workflows. UI never talks directly to protocol or transport.
+
+**ECU Identity (returned on handshake):**
+```
+{ vendor, board, firmware, protocol, gitSha, serial, features[] }
 ```
 
 ---
