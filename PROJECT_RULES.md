@@ -52,52 +52,55 @@ END
 | `CHANGELOG.md` | `11_Documentation/CHANGELOG.md` — Change log |
 | `TODO.md` | Task tracking and priorities |
 
-## 3. Agent Locking (File Ownership)
+## 3. Engineering Model
 
-Each agent owns specific directories. **Only Agent 0 (QA) has universal write access.**
-No agent may modify files outside its assigned area without a request filed in `16_Quality_Audits/requests/`.
+Per ADR-0008, the project uses a **Two-Agent Engineering Model**:
 
-| Agent | Owns |
-|-------|------|
-| Agent 0 — Chief Architect/QA | Any folder (review only) |
-| Agent 1 — Hardware Research | `02_Hardware/`, `10_Market_Research/` |
-| Agent 2 — Electronics Design | `03_PCB/` |
-| Agent 3 — Firmware | `04_Firmware/`, `firmware/` |
-| Agent 4 — Software & Cloud | `05_Software/`, `06_Cloud/`, `studio/`, `cloud/` |
-| Agent 5 — Automotive Systems | `10_Market_Research/` (engine management) |
-| Agent 6 — Manufacturing | `07_Manufacturing/`, `15_Suppliers/` |
-| Agent 7 — Testing & Validation | `08_Testing/` |
-| Agent 8 — Compliance | `09_Compliance/` |
-| Agent 9 — Market Intelligence | `10_Market_Research/` |
-| Agent 10 — Documentation & KB | `11_Documentation/`, `14_Diagrams/`, `12_BOM/`, `13_Datasheets/` |
-| Agent 11 — Project Manager | Any (coordination only, no code changes) |
+### Engineering Agent (Principal Engineer)
+Owns all delivery. Produces complete vertical slices — designed, implemented, documented, tested, committed, pushed, and handed over. Never approves its own work.
 
-**Rule:** If an agent needs to edit another agent's area, it creates a request in `16_Quality_Audits/requests/` rather than making the change directly.
+### QA Agent (Independent Reviewer)
+Never writes production features unless specifically tasked. Reviews every vertical slice independently against documented standards. Owns `qa/QA_BACKLOG.md`. Stateless — reviews from evidence, not memory.
+
+### Review Loop
+```
+Engineering Agent → vertical slice → feature branch
+    │
+    ▼
+QA Agent → independent review → qa/QA_BACKLOG.md entries
+    │
+    ▼
+Engineering Agent → addresses findings
+    │
+    ▼
+QA Agent → re-reviews → approves
+    │
+    ▼
+Merge to master → SESSION_HANDOFF
+```
+
+### Engineering Principle (from MASTER_DIRECTIVE §3.16)
+Neither agent owns the truth. The repository owns the truth. No architectural change without: technical justification, trade-off analysis, risk assessment, migration plan, QA approval, updated documentation, and an ADR.
 
 ## 4. Branch Strategy
 
-Instead of all agents committing to `main`, each agent works on its own feature branch:
+Feature branches per vertical slice. Branch naming: `feature/vertical-slice-name`.
 
 ```
-main
-├── hardware       (Agent 1, 2)
-├── pcb            (Agent 2)
-├── firmware       (Agent 3)
-├── software       (Agent 4)
-├── cloud          (Agent 4)
-├── manufacturing  (Agent 6)
-├── testing        (Agent 7)
-├── compliance     (Agent 8)
-├── market-research (Agent 1, 5, 9)
-├── documentation  (Agent 10)
-└── quality        (Agent 0)
+master
+├── feature/repo-housekeeping
+├── feature/tb-001-live-rpm
+├── feature/tb-002-calibration-write
+└── ...
 ```
 
 **Process:**
-1. Each agent works on its own branch
-2. Regularly rebase from `main`
-3. Agent 0 (QA) reviews and merges completed work into `main`
-4. Only Agent 11 (PM) can authorize merges without QA review
+1. Engineering Agent creates feature branch from master
+2. Implements one vertical slice
+3. QA Agent reviews
+4. Findings addressed
+5. QA approves → merge to master
+6. Feature branch deleted after merge
 
 ## 5. Session Startup Protocol
 
@@ -184,19 +187,16 @@ This gives every agent clear instructions to use existing authentication while p
 
 ---
 
-## 8. Agent Listing
+## 8. Definition of Done
 
-| # | Name | Focus |
-|---|------|-------|
-| 0 | Chief Architect / QA | Quality, architecture, reviews |
-| 1 | Hardware Research | ECU hardware, schematics, MCUs |
-| 2 | Electronics Design | PCB, power, sensors, drivers |
-| 3 | Firmware | ECU firmware, FreeRTOS, CAN |
-| 4 | Software & Cloud | Studio, cloud, mobile |
-| 5 | Automotive Systems | Engine management subsystems |
-| 6 | Manufacturing | Supply chain, assembly, BOM |
-| 7 | Testing & Validation | Bench, HIL, EMC, vehicle |
-| 8 | Compliance | ISO, CISPR, AEC, certifications |
-| 9 | Market Intelligence | Competitor analysis, pricing |
-| 10 | Documentation & KB | Knowledge base, diagrams |
-| 11 | Project Manager | Coordination, dependencies, roadmap |
+A vertical slice is complete only when:
+
+| Gate | Criteria |
+|------|----------|
+| ✅ Feature | Works as specified |
+| ✅ Documentation | Updated (MASTER_DIRECTIVE, PROJECT_STATUS, SESSION, CHANGELOG, architecture) |
+| ✅ QA Review | Complete, findings in QA_BACKLOG |
+| ✅ QA Resolution | Findings resolved or formally accepted |
+| ✅ Tests | Executed where applicable |
+| ✅ GitHub | Committed, pushed, verified |
+| ✅ Handoff | SESSION_HANDOFF generated |

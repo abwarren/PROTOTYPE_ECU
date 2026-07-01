@@ -37,6 +37,129 @@ Every tracer bullet must:
 
 ## 3. Defined Tracer Bullets
 
+### MVP Tracer Bullets (Phase 1 — Immediate)
+
+These are the first 9 tracer bullets that deliver a demonstrable MVP. Each is a small, complete vertical slice.
+
+### TB-001 — Firmware Builds Under Prototype ECU Project
+
+```
+Configure rusEFI build → Apply Prototype ECU branding → Compile successfully →
+Verify binary output → Document build pipeline
+```
+
+**Validates:** Build system, toolchain, branding injection
+**Subsystems crossed:** 2 (Firmware, Build)
+**Priority:** P0 — blocks everything
+
+---
+
+### TB-002 — Prototype Studio Launches
+
+```
+Create Tauri/Electron project → Load brand.json → Render window →
+Display Prototype ECU branding → Dark theme → Responsive shell
+```
+
+**Validates:** Studio framework, branding system, build pipeline
+**Subsystems crossed:** 2 (Studio, Branding)
+**Priority:** P0
+
+---
+
+### TB-003 — Studio Connects to ECU
+
+```
+Studio starts → Opens serial port → Sends handshake → ECU responds →
+Connection status displayed in UI
+```
+
+**Validates:** USB CDC, Protocol layer, Firmware ↔ Studio communication
+**Subsystems crossed:** 3 (Studio, Protocol, Firmware)
+**Priority:** P0
+
+---
+
+### TB-004 — Read Live RPM and Coolant Temperature
+
+```
+ECU sends telemetry → Studio parses protocol → Gauges update in real-time →
+RPM gauge + Coolant temp gauge rendered
+```
+
+**Validates:** Telemetry protocol, Real-time UI rendering, Gauge system
+**Subsystems crossed:** 3 (Studio, Protocol, Firmware)
+**Priority:** P0
+
+---
+
+### TB-005 — Modify One Calibration and Write to ECU
+
+```
+Open calibration table → Modify one value → Write to ECU → ECU acknowledges →
+Value verified on next read
+```
+
+**Validates:** Calibration protocol, Table editor UI, Read-modify-write cycle
+**Subsystems crossed:** 3 (Studio, Protocol, Firmware)
+**Priority:** P0
+
+---
+
+### TB-006 — Save Calibration to PostgreSQL
+
+```
+Save calibration → Write to PostgreSQL → Store metadata (vehicle, date, tuner) →
+Calibration appears in vehicle history
+```
+
+**Validates:** Database schema, Studio ↔ DB integration, Version history
+**Subsystems crossed:** 3 (Studio, Database, Protocol)
+**Priority:** P1
+
+---
+
+### TB-007 — Load Calibration from PostgreSQL
+
+```
+Open vehicle → Browse calibration history → Select calibration → Load into Studio →
+Display values in table editor
+```
+
+**Validates:** Database read path, Calibration versioning, Vehicle-calibration relationship
+**Subsystems crossed:** 3 (Studio, Database, Protocol)
+**Priority:** P1
+
+---
+
+### TB-008 — Generate Tuning Session Report
+
+```
+End tuning session → Generate report → Include: vehicle info, calibration changes,
+before/after dyno estimates, tuner notes → Export as PDF/HTML
+```
+
+**Validates:** Reporting engine, Session workflow, Workshop documentation
+**Subsystems crossed:** 4 (Studio, Database, Reporting, Workshop)
+**Priority:** P1
+
+---
+
+### TB-009 — Cloud Sync (Optional MVP)
+
+```
+Studio online → Sync calibrations to cloud → Verify on cloud dashboard →
+Workshop retrieves history from cloud
+```
+
+**Validates:** Cloud infrastructure, Offline/online sync, Multi-device access
+**Subsystems crossed:** 4 (Studio, Database, Cloud, Workshop)
+**Priority:** P2 — Optional for MVP
+
+---
+
+### Long-Term Tracer Bullets (Phase 2-3)
+
 ### Tracer Bullet 001 — Live RPM Pipeline
 
 ```
@@ -117,7 +240,23 @@ Store in cloud → Workshop retrieves history
 
 ## 4. Execution Order
 
-Tracer bullets are executed in order. Each builds on the infrastructure validated by the previous one.
+### MVP Phase (Phase 1 — Immediate)
+
+Tracer bullets are executed in strict sequence. Each builds on the infrastructure validated by the previous one.
+
+| # | Tracer Bullet | Priority | Prerequisites |
+|---|---------------|----------|---------------|
+| TB-001 | Firmware Builds Under Prototype ECU | P0 | None |
+| TB-002 | Prototype Studio Launches | P0 | None (parallel with TB-001) |
+| TB-003 | Studio Connects to ECU | P0 | TB-001, TB-002 |
+| TB-004 | Read Live RPM and Coolant Temp | P0 | TB-003 |
+| TB-005 | Modify One Calibration | P0 | TB-004 |
+| TB-006 | Save Calibration to PostgreSQL | P1 | TB-005 |
+| TB-007 | Load Calibration from PostgreSQL | P1 | TB-006 |
+| TB-008 | Generate Tuning Session Report | P1 | TB-007 |
+| TB-009 | Cloud Sync | P2 | TB-007 |
+
+### Long-Term Phase (Phase 2-3)
 
 | # | Tracer Bullet | Priority | Prerequisites |
 |---|---------------|----------|---------------|
