@@ -12,7 +12,7 @@
 Research Agents  →  Documentation Agent  →  Quality Agent  →  Architecture Review  →  Implementation  →  Validation
        │                    │                     │
        ▼                    ▼                     ▼
-   10 agents           File creation           Gate checks
+   11 agents           File creation           Gate checks
    5 domains           Markdown                Score 0-100
 ```
 
@@ -28,13 +28,16 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 
 **Responsibilities:**
 - Review every agent's work
-- Detect contradictions and duplicate research
+- Detect merge conflicts, duplicate work, contradictory documentation
 - Verify technical claims and sources
-- Enforce folder structure
+- Verify project structure and folder organization
+- Ensure commits follow standards
+- Reject low-quality changes; flag stale branches
+- Review pull requests before merge
 - Check manufacturability, BOMs, pin mappings, PCB layouts
 - Review firmware architecture
 - Ensure ISO terminology is correct
-- Maintain documentation standards
+- Maintain `CHANGELOG.md`, `DECISIONS.md`, `ROADMAP.md`
 
 **Deliverables:**
 - Weekly audit report
@@ -56,6 +59,8 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Schematics, block diagrams, MCU choices
 - CAN topology, power supplies, sensor interfaces
 
+**Owns:** `02_Hardware/`, `10_Market_Research/`
+
 ---
 
 ### ⚡ Agent 2 — Electronics Design
@@ -69,6 +74,8 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - H-bridges
 - ADC conditioning
 
+**Owns:** `03_PCB/`
+
 ---
 
 ### 💻 Agent 3 — Firmware
@@ -81,11 +88,7 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Bootloaders and OTA updates
 - CAN stack, USB, diagnostics
 
-**Design responsibilities:**
-- Task scheduler
-- Module definitions
-- API design
-- Firmware identity system
+**Owns:** `04_Firmware/`, `firmware/`
 
 ---
 
@@ -100,6 +103,8 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - MQTT protocol
 - OTA infrastructure
 - AWS cloud architecture
+
+**Owns:** `05_Software/`, `06_Cloud/`, `studio/`, `cloud/`
 
 ---
 
@@ -117,7 +122,7 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Knock detection
 - Boost control
 
-**Documentation:** How every subsystem works
+**Owns:** `10_Market_Research/` (engine management topics)
 
 ---
 
@@ -129,8 +134,8 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Chinese suppliers (PCB assembly, injection molding, aluminum housings)
 - Wire harnesses and connectors
 - Manufacturing costs, MOQ, lead times
-- Surface-mount vs through-hole tradeoffs
-- Test fixture design
+
+**Owns:** `07_Manufacturing/`, `15_Suppliers/`
 
 ---
 
@@ -146,7 +151,8 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Waterproofing (IP ratings)
 - Vehicle validation
 - Fault injection testing
-- Test procedure documentation
+
+**Owns:** `08_Testing/`
 
 ---
 
@@ -160,12 +166,9 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - ISO 7637 (Electrical disturbances)
 - AEC-Q100 (Component qualification)
 - IATF 16949 (Quality management)
-- CE marking
-- FCC certification
-- RoHS, REACH, WEEE
-- E-mark (UN ECE regulations)
+- CE, FCC, RoHS, REACH, E-mark
 
-**Deliverable:** Determine which standards are mandatory vs recommended for target markets.
+**Owns:** `09_Compliance/`
 
 ---
 
@@ -178,14 +181,7 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - ECUMaster, MaxxECU
 - FuelTech, Emtron
 
-**Analysis dimensions:**
-- Pricing (hardware, software, accessories)
-- Hardware capabilities (processor, inputs/outputs, connectivity)
-- Firmware features (tuning options, closed-loop control, safety)
-- Software experience (UI quality, logging, analysis)
-- Weaknesses and gaps
-
-**Deliverable:** Identify opportunities where our platform can differentiate.
+**Owns:** `10_Market_Research/`
 
 ---
 
@@ -203,16 +199,61 @@ Each deliverable passes through a **Quality Gate** (Agent 0) before acceptance. 
 - Changelog maintenance
 - Folder organization
 
-**Produces:**
-- Developer manual
-- Manufacturing manual
-- Firmware guide
-- API documentation
-- Assembly guide
+**Owns:** `11_Documentation/`, `14_Diagrams/`, `12_BOM/`, `13_Datasheets/`
+
+---
+
+### 📋 Agent 11 — Project Manager / Coordinator
+
+**Mission:** Track dependencies, assign work, update roadmap, ensure correct sequencing.
+
+**Responsibilities:**
+- Track dependencies between agents
+- Assign work to agents based on priority and dependency order
+- Update roadmap and milestone progress
+- Ensure tasks are completed in the correct order
+- Maintain `CURRENT_STATE.md`, `TODO.md`, `PROJECT_RULES.md`
+- Produce session handoffs
+
+**Does NOT perform research or coding.** Focuses purely on coordination.
+
+**Owns:** Any (coordination only, no direct file modifications)
 
 ---
 
 ## Workflow
+
+### Agent Execution (START → END)
+
+```
+START
+ 1. Pull latest changes
+    git fetch --all
+    git pull --rebase
+
+ 2. Read shared project files
+    README.md → CURRENT_STATE.md → ROADMAP.md → DECISIONS.md
+
+ 3. Read files related to assigned area
+
+ 4. Check recent changes by other agents
+    git log --oneline -10
+
+ 5. Do assigned work only
+    (Do not modify files outside owned area)
+
+ 6. Run validation
+    bash scripts/ddd-check.sh --ci
+
+ 7. Update documentation
+
+ 8. Commit with descriptive message
+
+ 9. Push changes
+END
+```
+
+### System Pipeline
 
 ```
 Step 1: Research Agents (1-9)
@@ -228,11 +269,53 @@ Step 4: Architecture Review
         │  Agent 0 + stakeholder review
         ▼
 Step 5: Implementation
-        │  Engineering team executes
+        │  Engineering agents execute
         ▼
 Step 6: Validation
         │  Agent 7 + Agent 0 sign-off
 ```
+
+---
+
+## Agent Locking (File Ownership)
+
+Each agent owns specific directories. No agent may modify files outside its assigned area without creating a request in `16_Quality_Audits/requests/`.
+
+| Agent | Owns |
+|-------|------|
+| Agent 0 (QA) | Any folder (review only) |
+| Agent 1 (Hardware Research) | `02_Hardware/`, `10_Market_Research/` |
+| Agent 2 (Electronics Design) | `03_PCB/` |
+| Agent 3 (Firmware) | `04_Firmware/`, `firmware/` |
+| Agent 4 (Software & Cloud) | `05_Software/`, `06_Cloud/`, `studio/`, `cloud/` |
+| Agent 5 (Automotive Systems) | `10_Market_Research/` (engine topics) |
+| Agent 6 (Manufacturing) | `07_Manufacturing/`, `15_Suppliers/` |
+| Agent 7 (Testing & Validation) | `08_Testing/` |
+| Agent 8 (Compliance) | `09_Compliance/` |
+| Agent 9 (Market Intelligence) | `10_Market_Research/` |
+| Agent 10 (Documentation & KB) | `11_Documentation/`, `14_Diagrams/`, `12_BOM/`, `13_Datasheets/` |
+| Agent 11 (Project Manager) | Any (coordination only) |
+
+---
+
+## Branch Strategy
+
+```
+main
+├── hardware       (Agent 1, 2)
+├── pcb            (Agent 2)
+├── firmware       (Agent 3)
+├── software       (Agent 4)
+├── cloud          (Agent 4)
+├── manufacturing  (Agent 6)
+├── testing        (Agent 7)
+├── compliance     (Agent 8)
+├── market-research (Agent 1, 5, 9)
+├── documentation  (Agent 10)
+└── quality        (Agent 0)
+```
+
+Each agent works on its own branch, regularly rebases from `main`, and Agent 0 reviews and merges into `main`.
 
 ---
 
@@ -253,36 +336,20 @@ Every deliverable must pass these checks (used by Agent 0):
 | 9 | 📦 Organization | Correct folder placement and naming | 5 |
 | 10 | ⭐ Overall | Minimum 90/100 before acceptance | — |
 
-**Scoring:** Each check scored 0-10, multiplied by weight, divided by 10. Max 100.
-
 ---
 
-## Folder Structure
+## Shared Project Files
 
-```
-ECU_PLATFORM/
-│
-├── 01_Architecture/          # System architecture, design docs
-├── 02_Hardware/              # Hardware design files, schematics
-├── 03_PCB/                   # PCB layouts, Gerber files, stackups
-├── 04_Firmware/              # ECU firmware source and module docs
-├── 05_Software/              # Desktop Studio application
-├── 06_Cloud/                 # Cloud platform and services
-├── 07_Manufacturing/         # Manufacturing guides, BOMs, suppliers
-├── 08_Testing/               # Test plans, procedures, fixtures
-├── 09_Compliance/            # Standards, certifications, reports
-├── 10_Market_Research/       # Competitive analysis, market data
-├── 11_Documentation/         # Knowledge base (all audiences)
-├── 12_BOM/                   # Bill of materials by board variant
-├── 13_Datasheets/            # Component datasheets
-├── 14_Diagrams/              # Architecture and flow diagrams
-├── 15_Suppliers/             # Supplier qualification and contacts
-├── 16_Quality_Audits/        # Audit reports, quality scores
-├── 17_Decisions/             # ADRs, decision logs
-├── 18_Roadmap/               # Roadmaps, milestones, sprints
-│
-├── branding/                 # Brand configuration and assets
-├── scripts/                  # Build and automation scripts
-├── tools/                    # Development tools
-└── .github/                  # CI/CD, PR templates
-```
+Every agent reads these files before starting work:
+
+| File | Location | Purpose |
+|------|----------|---------|
+| `README.md` | Root | Project overview |
+| `CURRENT_STATE.md` | Root | Current project status |
+| `ROADMAP.md` | `11_Documentation/ROADMAP.md` | Development roadmap |
+| `DECISIONS.md` | `17_Decisions/DECISIONS.md` | Decision index |
+| `PROJECT_RULES.md` | Root | Governance and workflows |
+| `CODING_STANDARDS.md` | Root | Coding standards |
+| `ARCHITECTURE.md` | `01_Architecture/` | System architecture |
+| `CHANGELOG.md` | `11_Documentation/CHANGELOG.md` | Change log |
+| `TODO.md` | Root | Task priorities |
