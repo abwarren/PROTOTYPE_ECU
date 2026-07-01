@@ -10,19 +10,20 @@
 | Order | Document | Why |
 |-------|----------|-----|
 | 1 | **[MASTER_DIRECTIVE.md](./MASTER_DIRECTIVE.md)** | The specification contract — read this first above all |
-| 2 | **[CONTEXT_LIFECYCLE.md](./CONTEXT_LIFECYCLE.md)** | Mandatory session lifecycle policy |
-| 3 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
-| 4 | **[REPOSITORY_MANIFEST.md](./REPOSITORY_MANIFEST.md)** | Repository inventory and directory map |
-| 5 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
-| 6 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
-| 7 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
-| 8 | **[docs/handoffs/](./docs/handoffs/)** | Session handoff archive — latest session state |
-| 9 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
-| 10 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
-| 11 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
-| 12 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
+| 2 | **[TRACER_BULLETS.md](./TRACER_BULLETS.md)** | Mandatory tracer bullet development methodology |
+| 3 | **[CONTEXT_LIFECYCLE.md](./CONTEXT_LIFECYCLE.md)** | Mandatory session lifecycle policy |
+| 4 | **[README.md](./README.md)** | Company homepage — directory navigation portal |
+| 5 | **[REPOSITORY_MANIFEST.md](./REPOSITORY_MANIFEST.md)** | Repository inventory and directory map |
+| 6 | **[11_Documentation/PROJECT_STATUS.md](./11_Documentation/PROJECT_STATUS.md)** | Current progress across all subsystems |
+| 7 | **[11_Documentation/ROADMAP.md](./11_Documentation/ROADMAP.md)** | 6-phase development strategy through 2029 |
+| 8 | **[SESSION.md](./SESSION.md)** | Current sprint status — what's being worked on now |
+| 9 | **[docs/handoffs/](./docs/handoffs/)** | Session handoff archive — latest session state |
+| 10 | **[11_Documentation/management/Current_Sprint.md](./11_Documentation/management/Current_Sprint.md)** | Sprint backlog, burndown, and blockers |
+| 11 | **[11_Documentation/TECH_DEBT.md](./11_Documentation/TECH_DEBT.md)** | Known technical debt and module replacement roadmap |
+| 12 | **[01_Architecture/](./01_Architecture/)** | System architecture documentation (10 files) |
+| 13 | **[17_Decisions/](./17_Decisions/)** | Architecture Decision Records — why we chose what we did |
 
-**Only after reading these 12 documents should you start coding.**
+**Only after reading these 13 documents should you start coding.**
 
 ---
 

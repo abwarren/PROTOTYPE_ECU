@@ -264,6 +264,37 @@ docs/
 
 The handoff directory is the chronological engineering log — navigable by both humans and AI agents.
 
+### 3.15 Tracer Bullet Development
+
+Prototype ECU shall follow a **Tracer Bullet** development methodology. Tracer bullets validate complete end-to-end workflows early by exercising the entire stack from user interaction to final output.
+
+**Tracer bullets are mandatory.** Every major subsystem must receive a tracer bullet before extensive feature development begins. Tracer bullets become automated regression tests that must continue to pass for the life of the project.
+
+**Principles:**
+- Cross multiple subsystems (minimum 3)
+- Be deployable — produce a working artifact, not a mock
+- Be testable — include automated verification
+- Be documented
+- Be committed and pushed to GitHub
+- Produce measurable, demonstrable value
+
+**Defined Tracer Bullets (see `TRACER_BULLETS.md` for full detail):**
+
+| # | Name | Validates | Priority |
+|---|------|-----------|----------|
+| TB-001 | Live RPM Pipeline | Studio, Firmware, CAN, Database, Cloud, Logging, UI | P0 |
+| TB-002 | Calibration Write Pipeline | Studio, Firmware, Calibration Protocol, Version Control, Cloud | P0 |
+| TB-003 | Live Telemetry Pipeline | Firmware, Cellular/WiFi, Cloud, Mobile, Workshop Dashboard | P1 |
+| TB-004 | Firmware Update Pipeline | OTA, Bootloader, Firmware, Checksum, Version Management | P1 |
+| TB-005 | Vehicle Setup Pipeline | Studio, Calibration Engine, ECU Communication, Vehicle DB | P2 |
+| TB-006 | Customer & Workshop Pipeline | Cloud, Customer Management, Workshop Portal, Reporting | P2 |
+
+**Completion criteria:** A tracer bullet is complete when architecture is validated, integration is proven, documentation is updated, tests pass, work is committed and pushed to GitHub, and SESSION_HANDOFF is updated.
+
+**Tracer bullets vs. vertical slices:** Tracer bullets are the *first* vertical slice through a subsystem's full stack — they prove the architecture works end-to-end. Subsequent vertical slices add depth and features within the validated architecture.
+
+Full methodology: `TRACER_BULLETS.md`
+
 ---
 
 ## 4. Repository Maturity Model
@@ -508,6 +539,7 @@ See `11_Documentation/ROADMAP.md` for the full development roadmap.
 | Key File | Purpose |
 |----------|---------|
 | `MASTER_DIRECTIVE.md` | This file -- the specification contract |
+| `TRACER_BULLETS.md` | Tracer Bullet development methodology (mandatory) |
 | `CONTEXT_LIFECYCLE.md` | Session lifecycle policy (mandatory governance) |
 | `CURRENT_STATE.md` | Daily project pulse (root) |
 | `REPOSITORY_MANIFEST.md` | Repository inventory and directory map |

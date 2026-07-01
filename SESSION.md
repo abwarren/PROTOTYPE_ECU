@@ -43,15 +43,11 @@ Per the [20-Agent Documentation Program](MASTER_DIRECTIVE.md#5-the-20-agent-spec
 
 ## 🎯 Next Task (Sprint 007)
 
-**Repository Housekeeping** — Fix the 5 open issues (see `docs/handoffs/SESSION_001.md`):
+**Option A — Repository Housekeeping:** Fix the 5 open issues from `docs/handoffs/SESSION_001.md`.
 
-1. Fix `.gitmodules` URL → `https://github.com/rusefi/rusefi.git`
-2. Fix CI branches → add `master` to `.github/workflows/ddd-check.yml`
-3. Commit `FORK_METADATA.md` in submodule
-4. Discard generated file changes in submodule
-5. Commit submodule pin
+**Option B — Tracer Bullet 001:** Begin Live RPM Pipeline once firmware specification is complete. See `TRACER_BULLETS.md`.
 
-After housekeeping: Specification campaign — Agent 02 produces `04_Firmware/specification.md`.
+**Priority:** Complete specification campaign first (P0 specs: Firmware, Hardware, PCB, Studio), then begin TB-001. See `MASTER_DIRECTIVE.md` §5 for specification program.
 
 ---
 
