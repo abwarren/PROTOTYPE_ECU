@@ -67,16 +67,50 @@ Display Prototype ECU branding → Dark theme → Responsive shell
 
 ---
 
-### TB-003 — Studio Connects to ECU
+### TB-002A — Application Core
 
 ```
-Studio starts → Opens serial port → Sends handshake → ECU responds →
-Connection status displayed in UI
+Logging system → Configuration manager → Settings persistence →
+Error handling → Workspace/project model → Plugin registry (stub)
 ```
 
-**Validates:** USB CDC, Protocol layer, Firmware ↔ Studio communication
-**Subsystems crossed:** 3 (Studio, Protocol, Firmware)
+**Validates:** Application architecture, configuration, error handling, project model
+**Subsystems crossed:** 2 (Studio, Configuration)
+**Priority:** P0 — foundational capabilities needed by all subsequent bullets
+
+---
+
+### TB-003 — Communication Layer (Transport Abstraction)
+
+```
+Define Transport trait → Implement USB CDC transport → Implement ECU discovery →
+Implement handshake protocol → Implement heartbeat → Connection state machine →
+Studio connects via Communication Service (not direct USB)
+```
+
+**Validates:** Transport abstraction, USB CDC transport, Protocol handshake, Connection lifecycle
+**Subsystems crossed:** 3 (Studio, Transport, Protocol)
+**Architecture:** ADR-0010 — UI depends on Transport trait, not USB directly
 **Priority:** P0
+
+```
+Prototype Studio (UI)
+        │
+        ▼
+  Communication Service
+        │
+        ▼
+  Transport Interface (trait)
+        │
+ ┌──────┼──────────┬──────────┐
+ │      │          │          │
+USB    CAN      Ethernet    BLE
+ │      │          │          │
+ └──────┴──────────┴──────────┘
+        │
+        ▼
+     Firmware
+```
 
 ---
 
@@ -248,10 +282,11 @@ Tracer bullets are executed in strict sequence. Each builds on the infrastructur
 |---|---------------|----------|---------------|
 | TB-001 | Firmware Builds Under Prototype ECU | P0 | None |
 | TB-002 | Prototype Studio Launches | P0 | None (parallel with TB-001) |
-| TB-003 | Studio Connects to ECU | P0 | TB-001, TB-002 |
+| TB-002A | Application Core | P0 | TB-002 |
+| TB-003 | Communication Layer (Transport Abstraction) | P0 | TB-002A |
 | TB-004 | Read Live RPM and Coolant Temp | P0 | TB-003 |
 | TB-005 | Modify One Calibration | P0 | TB-004 |
-| TB-006 | Save Calibration to PostgreSQL | P1 | TB-005 |
+| TB-006 | Save Calibration to PostgreSQL | P1 | TB-005, ADR-0011 |
 | TB-007 | Load Calibration from PostgreSQL | P1 | TB-006 |
 | TB-008 | Generate Tuning Session Report | P1 | TB-007 |
 | TB-009 | Cloud Sync | P2 | TB-007 |

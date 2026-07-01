@@ -8,6 +8,42 @@
 
 ## Open
 
+### QA-016
+**Subsystem:** Architecture
+**Priority:** High
+**Session:** 003 (QA Review)
+**Finding:** TB-003 originally coupled Studio directly to USB. Adding CAN/Ethernet/BLE later would require rewriting communication logic.
+**Recommendation:** Build Transport Abstraction Layer (ADR-0010). Studio depends on Transport trait, not USB directly.
+**Status:** Resolved
+**ADR:** ADR-0010
+
+### QA-017
+**Subsystem:** Architecture
+**Priority:** High
+**Session:** 003 (QA Review)
+**Finding:** No database abstraction. UI would couple directly to SQLite, requiring rewrite when PostgreSQL/cloud is added.
+**Recommendation:** Define Repository trait interfaces now (ADR-0011). Implementations for SQLite, PostgreSQL, cloud follow.
+**Status:** Resolved
+**ADR:** ADR-0011
+
+### QA-018
+**Subsystem:** Architecture
+**Priority:** Medium
+**Session:** 003 (QA Review)
+**Finding:** TB-002 (Studio launch) jumps directly to TB-003 (ECU connection) without application infrastructure.
+**Recommendation:** Insert TB-002A (Application Core) — logging, configuration, error handling, project model — before any hardware communication.
+**Status:** Resolved
+**ADR:** — (updated TRACER_BULLETS.md)
+
+### QA-019
+**Subsystem:** Architecture
+**Priority:** Medium
+**Session:** 003 (QA Review)
+**Finding:** Branding and application logic not cleanly separated. Studio UI components mix branding concerns.
+**Recommendation:** Separate `studio/branding/` directory with themes, assets, logos, fonts. Studio logic never imports branding directly — uses a BrandProvider.
+**Status:** Open
+**ADR:** —
+
 ### QA-001
 **Subsystem:** Repository
 **Priority:** Critical
