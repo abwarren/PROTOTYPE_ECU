@@ -279,7 +279,8 @@ Step 6: Validation
 
 ## Agent Locking (File Ownership)
 
-Each agent owns specific directories. No agent may modify files outside its assigned area without creating a request in `16_Quality_Audits/requests/`.
+Each agent owns specific directories. **Only Agent 0 (QA) has universal write access.**
+No agent may modify files outside its assigned area without creating a request in `16_Quality_Audits/requests/`.
 
 | Agent | Owns |
 |-------|------|
@@ -350,6 +351,6 @@ Every agent reads these files before starting work:
 | `DECISIONS.md` | `17_Decisions/DECISIONS.md` | Decision index |
 | `PROJECT_RULES.md` | Root | Governance and workflows |
 | `CODING_STANDARDS.md` | Root | Coding standards |
-| `ARCHITECTURE.md` | `01_Architecture/` | System architecture |
+| `ARCHITECTURE.md` | `11_Documentation/ARCHITECTURE.md` | System architecture overview |
 | `CHANGELOG.md` | `11_Documentation/CHANGELOG.md` | Change log |
 | `TODO.md` | Root | Task priorities |

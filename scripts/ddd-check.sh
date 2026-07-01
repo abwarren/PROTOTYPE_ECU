@@ -233,6 +233,10 @@ section "Root Documents"
 check_file "README.md" "README.md — Project overview"
 check_file "START_HERE.md" "START_HERE.md — Repository entry point"
 check_file "SESSION.md" "SESSION.md — Session handoff"
+check_file "CURRENT_STATE.md" "CURRENT_STATE.md — Agent shared state"
+check_file "PROJECT_RULES.md" "PROJECT_RULES.md — Governance & workflows"
+check_file "CODING_STANDARDS.md" "CODING_STANDARDS.md — Coding standards"
+check_file "TODO.md" "TODO.md — Task priorities"
 
 # =============================================================================
 # Tracking Documents (11_Documentation/)

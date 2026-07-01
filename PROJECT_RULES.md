@@ -46,13 +46,14 @@ END
 | `DECISIONS.md` | `17_Decisions/DECISIONS.md` — Decision index |
 | `PROJECT_RULES.md` | This file — governance and workflows |
 | `CODING_STANDARDS.md` | Coding standards and conventions |
-| `ARCHITECTURE.md` | `01_Architecture/` — System architecture |
+| `ARCHITECTURE.md` | `11_Documentation/ARCHITECTURE.md` — System architecture overview |
 | `CHANGELOG.md` | `11_Documentation/CHANGELOG.md` — Change log |
 | `TODO.md` | Task tracking and priorities |
 
 ## 3. Agent Locking (File Ownership)
 
-Each agent owns specific directories. No agent may modify files outside its assigned area without a request.
+Each agent owns specific directories. **Only Agent 0 (QA) has universal write access.**
+No agent may modify files outside its assigned area without a request filed in `16_Quality_Audits/requests/`.
 
 | Agent | Owns |
 |-------|------|
