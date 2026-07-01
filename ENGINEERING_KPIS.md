@@ -11,9 +11,9 @@
 |--------|--------|--------|--------|
 | Open QA findings | ≤ 20 | 16 | ✅ |
 | Critical QA findings | 0 | 0 | ✅ |
-| ADRs accepted | Increasing | 11 | ✅ |
+| ADRs accepted | Increasing | 12 | ✅ |
 | ADRs rejected | Documented | 0 | ✅ |
-| Tracer bullets completed | Increasing | 2 (TB-001, TB-002) | 🔄 |
+| Tracer bullets completed | Increasing | 2 (TB-001, TB-002, TB-002A) | 🔄 |
 | Regression defects | 0 | 0 | ✅ |
 | Documentation coverage | 100% for completed slices | 100% | ✅ |
 | Build success (firmware) | 100% | 100% | ✅ |
