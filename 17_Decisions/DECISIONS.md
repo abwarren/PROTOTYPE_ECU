@@ -10,7 +10,9 @@
 | 004 | V1 differentiator is Studio, not firmware | Accepted | 2024-06-30 |
 | 005 | Repository restructured into 18 numbered directories | Accepted | 2026-07-01 |
 | 006 | Multi-agent R&D system adopted | Accepted | 2026-07-01 |
+| 007 | Architecture change governance — EDR review process | Proposed | 2026-07-01 |
+| 008 | Two-Agent Engineering Model — Principal Engineer + Independent QA | Proposed | 2026-07-01 |
 
 ## Detailed Records
 
-See full ADRs in this directory: `0001-*` through `0006-*`.
+See full ADRs in this directory: `0001-*` through `0008-*`.
