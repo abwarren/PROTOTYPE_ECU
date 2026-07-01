@@ -13,7 +13,9 @@
 | 007 | Architecture change governance — EDR review process | Accepted | 2026-07-01 |
 | 008 | Two-Agent Engineering Model — Principal Engineer + Independent QA | Accepted | 2026-07-01 |
 | 009 | Platform strategy — separate presentation from platform | Accepted | 2026-07-01 |
+| 010 | Transport abstraction layer — trait-based multi-transport | Accepted | 2026-07-01 |
+| 011 | Repository trait interfaces — database abstraction | Accepted | 2026-07-01 |
 
 ## Detailed Records
 
-See full ADRs in this directory: `0001-*` through `0009-*`.
+See full ADRs in this directory: `0001-*` through `0011-*`.

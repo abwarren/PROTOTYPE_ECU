@@ -8,8 +8,9 @@
 | Session | Date | Milestone | Commit SHA | Agent | Status | Next Task |
 |---------|------|-----------|------------|-------|--------|-----------|
 | [001](./SESSION_001.md) | 2026-07-01 | Repository Discovery & Recovery — Foundation published | `9ecafca` | Hermes Agent | ✅ Complete | Fix .gitmodules, submodule cleanup, CI fix |
-| [002](./SESSION_002.md) | 2026-07-01 | Engineering Design Review — 30-subsystem audit | branch `edr/architecture-review` | Principal Engineer | ✅ Awaiting Review | Review EDR proposals, accept/reject |
-| 003 | — | Specification campaign: Firmware | — | Agent 02 | ⬚ Pending | Produce `04_Firmware/specification.md` |
+| [002](./SESSION_002.md) | 2026-07-01 | Engineering Design Review — 30-subsystem audit | branch `edr/architecture-review` | Principal Engineer | ✅ Complete | Review EDR proposals, accept/reject |
+| [003](./SESSION_003.md) | 2026-07-01 | MVP Development — Governance freeze, TB-001 + TB-002 | `cf6baff` | Engineering Agent | ✅ Awaiting QA | TB-003 — Studio connects to ECU |
+| 004 | — | TB-003: Studio connects to ECU | — | Engineering Agent | ⬚ Pending | Implement USB CDC protocol |
 
 ---
 
