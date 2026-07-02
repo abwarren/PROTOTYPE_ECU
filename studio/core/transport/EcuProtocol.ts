@@ -1,21 +1,39 @@
-// Protocol layer — ADR-0012
-// Understands ECU messages. Transport moves bytes. Protocol understands frames.
-// Service layer implements business workflows on top of Protocol.
+/**
+ * EcuProtocol — interface that all firmware adapters must implement
+ *
+ * Architecture (ADR-0012):
+ *   7100CPT Studio → EcuService → EcuProtocol (interface) ← Adapter → Transport → ECU
+ *
+ * Protocol understands ECU messages.
+ * Transport moves bytes.
+ * Adapter implements this interface for a specific firmware (rusEFI, Haltech, etc.).
+ * EcuService implements business workflows on top of Protocol.
+ *
+ * Current adapters:
+ *   adapters/RusEFIProtocolAdapter.ts — rusEFI firmware (TS protocol)
+ * Future adapters:
+ *   adapters/7100CPTProtocolAdapter.ts    — 7100CPT native firmware
+ *   adapters/HaltechProtocolAdapter.ts    — Haltech Elite
+ *   adapters/LinkProtocolAdapter.ts       — Link ECU
+ *   adapters/BoschProtocolAdapter.ts      — Bosch Motorsport
+ */
 
-import { EcuTransport, Connection, EcuDevice } from "./EcuTransport";
+import { EcuTransport, Connection } from "./EcuTransport";
 
-// ---- ECU Identity ----
+// ─── ECU Identity (returned on handshake) ──────────────────────────────
+
 export interface EcuIdentity {
-  vendor: string;
-  board: string;
-  firmware: string;
-  protocol: number;
-  gitSha: string;
-  serial: string;
-  features: string[];
+  vendor: string;           // "rusEFI", "7100CPT", "Haltech", "Link", "Bosch"
+  board: string;            // "f407-discovery", "7100CPT-v1", etc.
+  firmware: string;         // Firmware version string
+  protocol: number;         // Protocol version number
+  gitSha: string;           // Build commit SHA or timestamp
+  serial: string;           // ECU serial number
+  features: string[];       // Supported features: ["sensors", "calibration", "diagnostics"]
 }
 
-// ---- Sensor Data ----
+// ─── Sensor Data ──────────────────────────────────────────────────────
+
 export interface SensorChannel {
   id: string;
   name: string;
@@ -24,7 +42,8 @@ export interface SensorChannel {
   timestamp: number;
 }
 
-// ---- Calibration Table ----
+// ─── Calibration Table ────────────────────────────────────────────────
+
 export interface CalTable {
   id: string;
   name: string;
@@ -34,98 +53,52 @@ export interface CalTable {
   data: number[][];
 }
 
-// ---- Diagnostic Codes ----
+// ─── Diagnostic Codes ─────────────────────────────────────────────────
+
 export interface DiagnosticCode {
   code: string;              // "P0301"
   description: string;
   status: "active" | "pending" | "historic";
 }
 
-// ---- Protocol Interface ----
+// ─── Protocol Interface ───────────────────────────────────────────────
+
 export interface EcuProtocol {
-  // Handshake — identify the connected ECU
+  /** Identify the connected ECU (firmware, board, features) */
   handshake(transport: EcuTransport, conn: Connection): Promise<EcuIdentity>;
 
-  // Read sensor channels in real-time
+  /** Read sensor channels in real-time */
   readSensors(
     transport: EcuTransport,
     conn: Connection,
     channels: string[]
   ): Promise<SensorChannel[]>;
 
-  // Calibration read/write
+  /** Read a calibration table from ECU */
   readCalibration(
     transport: EcuTransport,
     conn: Connection,
     tableId: string
   ): Promise<CalTable>;
 
+  /** Write a calibration table to ECU */
   writeCalibration(
     transport: EcuTransport,
     conn: Connection,
     table: CalTable
   ): Promise<void>;
 
-  // Diagnostics
+  /** Read diagnostic trouble codes */
   readDTCs(transport: EcuTransport, conn: Connection): Promise<DiagnosticCode[]>;
+
+  /** Clear all diagnostic trouble codes */
   clearDTCs(transport: EcuTransport, conn: Connection): Promise<void>;
 
-  // Low-level — for protocol extensions
+  /** Low-level command — for protocol extensions */
   sendCommand(
     transport: EcuTransport,
     conn: Connection,
     cmd: number,
     payload: Uint8Array
   ): Promise<Uint8Array>;
-}
-
-// ---- ECU Service Layer ----
-// Business logic that the UI calls. Never knows about USB, CAN, or protocol frames.
-
-export class EcuService {
-  private _identity: EcuIdentity | null = null;
-
-  constructor(
-    private protocol: EcuProtocol,
-    private transport: EcuTransport
-  ) {}
-
-  async discover(): Promise<EcuDevice[]> {
-    return this.transport.discover();
-  }
-
-  async connect(device: EcuDevice): Promise<EcuIdentity> {
-    const conn = await this.transport.connect(device);
-    this._identity = await this.protocol.handshake(this.transport, conn);
-    return this._identity;
-  }
-
-  async disconnect(connection: Connection): Promise<void> {
-    await this.transport.disconnect(connection);
-    this._identity = null;
-  }
-
-  get identity(): EcuIdentity | null {
-    return this._identity;
-  }
-
-  async getLiveData(channels: string[], connection: Connection): Promise<SensorChannel[]> {
-    return this.protocol.readSensors(this.transport, connection, channels);
-  }
-
-  async loadCalibration(tableId: string, connection: Connection): Promise<CalTable> {
-    return this.protocol.readCalibration(this.transport, connection, tableId);
-  }
-
-  async saveCalibration(table: CalTable, connection: Connection): Promise<void> {
-    return this.protocol.writeCalibration(this.transport, connection, table);
-  }
-
-  async getFaultCodes(connection: Connection): Promise<DiagnosticCode[]> {
-    return this.protocol.readDTCs(this.transport, connection);
-  }
-
-  async clearFaultCodes(connection: Connection): Promise<void> {
-    return this.protocol.clearDTCs(this.transport, connection);
-  }
 }

@@ -1,6 +1,6 @@
-# Prototype ECU Firmware Build Pipeline
+# 7100CPT Firmware Build Pipeline
 
-> **TB-001:** Firmware builds under Prototype ECU project
+> **TB-001:** Firmware builds under 7100CPT project
 > **Date:** 2026-07-01
 > **Status:** ✅ Complete
 
@@ -68,5 +68,5 @@ The firmware uses compile-time branding injection from `branding/brand.json`:
 ## Notes
 
 - The GCC 12 fix (`-Wno-error=shadow`) is applied as a local submodule commit (`7abb688`). Should be submitted upstream and the submodule tracked at upstream HEAD.
-- The build produces `rusefi.bin` (not `prototype_ecu.bin`). Output naming should be updated in Phase 2 once a custom build configuration exists.
+- The build produces `rusefi.bin` (not `7100cpt.bin`). Output naming should be updated in Phase 2 once a custom build configuration exists.
 - Full branding verification requires extracting USB descriptor strings from the binary — this will be done in TB-002 (Studio launch).

@@ -1,7 +1,7 @@
 [package]
 name = "prototype-studio"
 version = "0.1.0"
-description = "Prototype ECU Desktop Tuning Studio"
+description = "7100CPT Desktop Tuning Studio"
 authors = ["ECU Platform"]
 edition = "2021"
 

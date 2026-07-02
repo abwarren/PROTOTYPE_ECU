@@ -38,7 +38,7 @@ export async function loadBrandConfig(): Promise<BrandConfig> {
     const res = await fetch("/branding/brand.json");
     const data = await res.json();
     brandConfig = {
-      productName: data.brand?.product_name ?? "Prototype ECU",
+      productName: data.brand?.product_name ?? "7100CPT",
       productShortName: data.brand?.product_short_name ?? "ProtoECU",
       productVersion: data.brand?.product_version ?? "0.1.0-dev",
       companyName: data.brand?.company_name ?? "ECU Platform",
@@ -65,7 +65,7 @@ export async function loadBrandConfig(): Promise<BrandConfig> {
   } catch {
     // Fallback for dev mode when brand.json isn't accessible
     brandConfig = {
-      productName: "Prototype ECU",
+      productName: "7100CPT",
       productShortName: "ProtoECU",
       productVersion: "0.1.0-dev",
       companyName: "ECU Platform",

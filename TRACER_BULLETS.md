@@ -292,16 +292,20 @@ Tracer bullets are executed in strict sequence. Each builds on the infrastructur
 
 | # | Tracer Bullet | Priority | Prerequisites |
 |---|---------------|----------|---------------|
-| TB-001 | Firmware Builds Under Prototype ECU | P0 | None |
-| TB-002 | Prototype Studio Launches | P0 | None (parallel with TB-001) |
+| TB-001 | Firmware Builds Under 7100CPT | P0 | None |
+| TB-002 | 7100CPT Studio Launches | P0 | None (parallel with TB-001) |
 | TB-002A | Application Core | P0 | TB-002 |
-| TB-003 | Communication Layer (Transport Abstraction) | P0 | TB-002A |
-| TB-004 | Read Live RPM and Coolant Temp | P0 | TB-003 |
-| TB-005 | Modify One Calibration | P0 | TB-004 |
-| TB-006 | Save Calibration to PostgreSQL | P1 | TB-005, ADR-0011 |
-| TB-007 | Load Calibration from PostgreSQL | P1 | TB-006 |
-| TB-008 | Generate Tuning Session Report | P1 | TB-007 |
-| TB-009 | Cloud Sync | P2 | TB-007 |
+| TB-003 | Communication Layer Architecture | P0 | TB-002A |
+| TB-004 | RusEFIProtocolAdapter | P0 | TB-003 |
+| TB-005 | USB Communication | P0 | TB-004 |
+| TB-006 | ECU Identity | P0 | TB-005 |
+| TB-007 | Live Telemetry | P0 | TB-006 |
+| TB-008 | Calibration | P0 | TB-007 |
+| TB-009 | Diagnostics | P0 | TB-008 |
+| TB-010 | Save Calibration to PostgreSQL | P1 | TB-008, ADR-0011 |
+| TB-011 | Load Calibration from PostgreSQL | P1 | TB-010 |
+| TB-012 | Generate Tuning Session Report | P1 | TB-011 |
+| TB-013 | Cloud Sync | P2 | TB-011 |
 
 ### Long-Term Phase (Phase 2-3)
 

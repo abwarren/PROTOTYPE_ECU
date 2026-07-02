@@ -1,68 +1,62 @@
-# 🏢 ECU Platform Core
+# 7100CPT ECU Platform
 
-**The digital headquarters for a next-generation automotive ECU platform.**
+**The digital headquarters for the 7100CPT automotive ECU platform.**
 
-This repository is the single source of truth for the entire platform — organized as a multi-agent R&D system with 18 dedicated directories.
-
----
-
-## 🧭 Quick Navigation
-
-```
-🏗 Architecture    → 01_Architecture/
-⚡ Hardware        → 02_Hardware/ + 03_PCB/
-💻 Firmware        → 04_Firmware/
-🌐 Software/Cloud  → 05_Software/ + 06_Cloud/
-🏭 Manufacturing   → 07_Manufacturing/
-🔬 Testing         → 08_Testing/
-📜 Compliance      → 09_Compliance/
-📈 Market Research → 10_Market_Research/
-📚 Documentation   → 11_Documentation/
-📦 BOM             → 12_BOM/
-📋 Datasheets      → 13_Datasheets/
-📐 Diagrams        → 14_Diagrams/
-🏪 Suppliers       → 15_Suppliers/
-📊 Quality Audits  → 16_Quality_Audits/
-📝 Decisions       → 17_Decisions/
-🗺️ Roadmap        → 18_Roadmap/
-```
+This repository is the single source of truth for the entire platform — firmware,
+Studio, hardware, cloud, and manufacturing — organized as a multi-agent R&D system.
 
 ---
 
-## 🚀 What We're Building
+## What We're Building
 
-A **white-label, cloud-connected ECU platform** for the automotive performance market.
+A professional standalone engine management ECU for professional tuners,
+motorsport, performance workshops, and OEM retrofit.
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **ECU Firmware** | Engine control based on proven rusEFI foundation | 🟡 In progress |
-| **Prototype Studio** | Modern desktop tuning application | 🟡 Planning |
+| **rusEFI Firmware** | Engine control based on proven rusEFI foundation | ✅ Building |
+| **7100CPT Studio** | Modern desktop tuning application | 🟡 Architecture complete |
+| **7100CPT ECU** | Custom hardware (NXP S32K344, 6-layer PCB) | 🟡 Phase 0 approved |
 | **Cloud Platform** | Telemetry, OTA, fleet management | ⚪ Future |
 | **Mobile App** | BLE diagnostics companion | ⚪ Future |
-| **Custom Hardware** | Professional ECU PCB + enclosure | ⚪ Future |
+
+---
+
+## Quick Navigation
+
+```
+🏗 Architecture    → 01_Architecture/
+⚡ Hardware        → docs/hardware/
+💻 Firmware        → firmware/upstream/  (rusEFI fork)
+🖥️ Studio         → studio/             (7100CPT Studio)
+🏭 Manufacturing   → 07_Manufacturing/
+📚 Documentation   → 11_Documentation/
+📊 Quality Audits  → 16_Quality_Audits/
+📝 Decisions       → 17_Decisions/
+```
+
+---
+
+## Current State
+
+| Metric | Value |
+|--------|-------|
+| **Phase** | Phase 1 — Foundation |
+| **Branding** | 7100CPT (Prototype codename deprecated 2026-07-03) |
+| **Firmware** | rusEFI upstream fork at commit `8540e44` ✅ |
+| **Studio** | Tauri 2 + React 18 + TS, 3-layer architecture ✅ |
+| **Hardware** | Phase 0 approved, TB-HW-002 KiCad schematic unlocked |
+| **Governance** | 12 ADRs accepted, Two-Agent model |
 
 See [Project Status](11_Documentation/PROJECT_STATUS.md) for detailed progress.
 
 ---
 
-## 📋 Current State
+## Five Audiences
 
-| Metric | Value |
-|--------|-------|
-| **Phase** | Phase 1 — Foundation |
-| **Overall Progress** | ~18% |
-| **Documentation** | 68% ████████████████░░░░ |
-| **Firmware** | 28% ███████░░░░░░░░░░░░ |
-| **rusEFI Upstream** | Commit `8540e44` (June 30, 2026) |
-| **Build Toolchain** | ARM GCC 12.3 ✅ — Java 11 ✅ — DDD Gate ✅ |
-
----
-
-## 👥 Five Audiences
-
-``` 
+```
 👨‍💼 Management    → 11_Documentation/management/   → "What's the status?"
-👨‍💻 Engineering   → 04_Firmware/ + 01_Architecture/ → "How do I build it?"
+👨‍💻 Engineering   → firmware/ + studio/ + docs/     → "How do I build it?"
 💼 Investors      → 11_Documentation/investor/     → "Why should I invest?"
 👨‍🔧 Workshop     → 11_Documentation/workshop/     → "How do I install it?"
 🏭 Manufacturing  → 07_Manufacturing/               → "How do I make it?"
@@ -70,19 +64,20 @@ See [Project Status](11_Documentation/PROJECT_STATUS.md) for detailed progress.
 
 ---
 
-## 📖 Start Here
+## Start Here
 
 | Resource | Location |
 |----------|----------|
 | **Specification contract** | [MASTER_DIRECTIVE.md](./MASTER_DIRECTIVE.md) |
+| **Product identity** | [BRANDING.md](./BRANDING.md) |
+| **Current state** | [CURRENT_STATE.md](./CURRENT_STATE.md) |
+| **Project rules** | [PROJECT_RULES.md](./PROJECT_RULES.md) |
 | First-time guide | [START_HERE.md](./START_HERE.md) |
-| Current session | [SESSION.md](./SESSION.md) |
-| Agent system | [11_Documentation/engineering/agent-system.md](11_Documentation/engineering/agent-system.md) |
-| Quality gate | `./scripts/ddd-check.sh` |
+| Hardware status | [docs/hardware/HARDWARE_STATUS.md](docs/hardware/HARDWARE_STATUS.md) |
 
 ---
 
-## 📄 License
+## License
 
-See [11_Documentation/LICENSE_NOTES.md](11_Documentation/LICENSE_NOTES.md). The firmware is GPL-3.0 (upstream rusEFI);
-the Studio, Cloud, and Mobile applications are proprietary.
+Firmware: GPL-3.0 (upstream rusEFI). Studio, Cloud, and Mobile: proprietary.
+See [11_Documentation/LICENSE_NOTES.md](11_Documentation/LICENSE_NOTES.md).

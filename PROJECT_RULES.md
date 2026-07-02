@@ -200,3 +200,70 @@ A vertical slice is complete only when:
 | ✅ Tests | Executed where applicable |
 | ✅ GitHub | Committed, pushed, verified |
 | ✅ Handoff | SESSION_HANDOFF generated |
+
+---
+
+## 9. Hardware Design Policy
+
+### 9.1 NXP S32K344 Reference-Following Mandate
+
+All core MCU circuitry follows NXP S32K344 reference design guidance unless a
+documented engineering reason to deviate exists.
+
+**Reference sources (in priority order):**
+
+1. NXP S32K344-EVB (S32K344EVB-Q257) — evaluation board schematics
+2. NXP AN13537 — S32K3xx Hardware Design Guidelines
+3. NXP S32K344 datasheet — electrical specifications, decoupling, layout
+4. NXP application notes for specific peripherals (TJA1043, etc.)
+
+**Policy:**
+
+- Every circuit block MUST be traceable to a row in `docs/hardware/REUSE_MATRIX.md`
+- Every deviation from an NXP reference design MUST appear in REUSE_MATRIX.md with:
+  - Technical justification
+  - Risk assessment
+  - QA approval
+- "New Design" blocks require peer design review before schematic capture
+- "Adapt" blocks require documented rationale for the adaptation
+- "Reuse" blocks require verification that the reference circuit is correctly
+  transcribed — no silent modifications
+
+### 9.2 REUSE_MATRIX.md Authority
+
+`docs/hardware/REUSE_MATRIX.md` is the Phase 0 gate for all KiCad work. No
+schematic capture begins until the Reuse Matrix is approved.
+
+### 9.3 Hardware Change Process
+
+1. Proposed change → document in DESIGN_REVIEW.md
+2. Update REUSE_MATRIX.md if the change affects circuit provenance
+3. Update affected domain specification in docs/hardware/
+4. Peer review → QA approval
+5. Implement in KiCad
+6. ERC/DRC clean → commit
+
+---
+
+## 10. Implementation Policy
+
+### 10.1 Do Not Rebuild Existing Functionality
+
+Before implementing any feature, directive, or requirement:
+
+1. Compare the directive against the current repository state.
+2. Identify completed work.
+3. Identify partially completed work.
+4. Identify missing work.
+5. Implement ONLY the missing work.
+6. Update documentation to match reality.
+7. Commit with descriptive message.
+8. Push to GitHub.
+
+**Engineering progress is measured by verified capability, not duplicated implementation.**
+
+This prevents:
+- Rebuilding interfaces that already exist
+- Re-documenting architecture that is already documented
+- Duplicating effort across sessions
+- Inflated completion percentages that mislead future sessions

@@ -8,7 +8,7 @@ function App() {
     return (
       <div className="app-loading">
         <div className="spinner" />
-        <p>Loading Prototype Studio...</p>
+        <p>Loading 7100CPT Studio...</p>
       </div>
     );
   }

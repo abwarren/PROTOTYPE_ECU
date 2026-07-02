@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicedoc/tauri/main/core/tauri-config-schema/schema.json",
-  "productName": "Prototype Studio",
+  "productName": "7100CPT Studio",
   "version": "0.1.0",
   "identifier": "com.prototype-ecu.studio",
   "build": {
@@ -13,7 +13,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "Prototype Studio",
+        "title": "7100CPT Studio",
         "width": 1280,
         "height": 800,
         "minWidth": 1024,
