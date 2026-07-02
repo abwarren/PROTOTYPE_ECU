@@ -1,18 +1,26 @@
 # TB-004 — RusEFIProtocolAdapter
 
-> **Status:** ⬚ Next (TB-003 architecture complete)
+> **Status:** ✅ Architecture Complete (architecture frozen 2026-07-03)
 > **Prerequisite:** TB-003 (Architecture)
+> **Next:** TB-005 (USB Transport) — capability delivery
 > **Architecture:** ADR-0012 (Protocol Layer Separation)
+> **Policy:** Architecture frozen. No redesign without ADR + Engineering Review.
 
 ---
 
 ## Objective
 
-Implement a working RusEFIProtocolAdapter that bridges the EcuProtocol
-interface to rusEFI's TunerStudio (TS) protocol. Verify the adapter can
-produce correct rusEFI command frames and parse responses.
+Architecture baseline established. RusEFIProtocolAdapter exists as the bridge
+between EcuProtocol interface and rusEFI firmware.
 
-The adapter is the ONLY class in 7100CPT Studio aware of rusEFI protocol details.
+This TB is complete as an ARCHITECTURE MILESTONE. Implementation verification
+happens in TB-005 (USB Transport) where the adapter will carry real bytes.
+
+**This TB gates TB-005.** Architecture must be stable before capability delivery begins.
+
+---
+
+## Architecture (FROZEN)
 
 ---
 

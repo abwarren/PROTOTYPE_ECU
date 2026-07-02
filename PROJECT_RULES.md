@@ -267,3 +267,41 @@ This prevents:
 - Re-documenting architecture that is already documented
 - Duplicating effort across sessions
 - Inflated completion percentages that mislead future sessions
+
+---
+
+## 11. Capability Delivery Policy
+
+### 11.1 Architecture Freeze
+
+As of 2026-07-03, the 7100CPT software architecture is FROZEN:
+
+```
+7100CPT Studio → EcuService → EcuProtocol (interface) ← RusEFIProtocolAdapter → UsbTransport → rusEFI
+```
+
+No architectural changes without:
+- Architecture Decision Record (ADR)
+- Engineering Review
+- QA Approval
+- Documentation update
+
+### 11.2 Demo Gates (Mandatory)
+
+From TB-005 onward, no Tracer Bullet is complete without a verified demonstration.
+
+Every implementation TB must include:
+- **Demo Gate** — specific, observable criteria (e.g., "USB device detected in discover()")
+- **Evidence** — console log, screenshot, protocol dump
+- **QA sign-off** — explicit approval
+
+A TB cannot advance to COMPLETE until its Demo Gate passes.
+
+### 11.3 Capability Matrix
+
+`CAPABILITY_MATRIX.md` is the single-page answer to "What can 7100CPT do today?"
+
+Update it whenever a Tracer Bullet completes. Every capability must be backed
+by evidence — a build log, screenshot, or QA sign-off.
+
+Progress is measured by verified capabilities, not lines of code or documents written.

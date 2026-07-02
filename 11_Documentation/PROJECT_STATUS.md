@@ -107,16 +107,17 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-## Current Phase: 7100CPT MVP Foundation
+## Current Phase: 7100CPT Capability Delivery
 
 | Field | Value |
 |-------|-------|
 | **Governance** | FROZEN — 12 ADRs accepted |
 | **Engineering Model** | Two-Agent (Engineer + QA) |
-| **Branding** | 7100CPT (Prototype codename deprecated 2026-07-03) |
-| **Tracer Bullets Complete** | 4 (TB-001, TB-002, TB-002A, TB-HW-001) |
-| **Tracer Bullets In Progress** | 2 (TB-003 architecture complete, TB-HW-002 unlocked) |
-| **Next** | TB-004 RusEFIProtocolAdapter + TB-HW-002 KiCad Schematic |
+| **Architecture** | FROZEN (2026-07-03) |
+| **Phase** | Architecture Complete → Capability Delivery |
+| **Tracer Bullets Complete** | 5 (TB-001, TB-002, TB-002A, TB-003, TB-004 + TB-HW-001) |
+| **Next** | TB-005 USB Transport — first capability demo |
+| **Metric** | 5 verified capabilities (see CAPABILITY_MATRIX.md) |
 
 ---
 

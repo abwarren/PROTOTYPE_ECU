@@ -9,12 +9,12 @@
 
 | Field | Value |
 |-------|-------|
-| **Sprint** | MVP — 7100CPT Phase 1 |
-| **Milestone** | Governance frozen — building product |
-| **Maturity Level** | 2 — Architecture Complete → Level 3: 45% |
+| **Sprint** | 7100CPT — Capability Delivery Phase |
+| **Milestone** | Architecture frozen — delivering capabilities |
+| **Maturity Level** | 2 → 3: Architecture Complete → Capability Delivery |
 | **Active Branch** | `feature/tb-004-rusefi-protocol-adapter` |
-| **Latest Commit** | Pending push |
-| **Branding** | 7100CPT (Prototype codename deprecated 2026-07-03) |
+| **Phase** | Architecture Frozen (2026-07-03) |
+| **Next Action** | TB-005 USB Transport |
 
 ---
 

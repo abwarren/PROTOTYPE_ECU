@@ -1,11 +1,13 @@
 # 🏛 MASTER_DIRECTIVE.md — The Specification Contract
 
-> **Version:** 1.2.0  
+> **Version:** 1.3.0  
 > **Status:** Active  
-> **Purpose:** This document is the single source of authority for the ECU Platform. Everything below is the contract.  
+> **Purpose:** This document is the single source of authority for the 7100CPT Platform. Everything below is the contract.  
 > **Rule:** No implementation deviates from the specifications referenced herein. No specification changes without updating this contract.
 >
-> **Engineering Philosophy:** Prototype ECU is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
+> **Engineering Philosophy:** 7100CPT is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
+>
+> **Phase:** Architecture Frozen → Capability Delivery (2026-07-03)
 
 ---
 
