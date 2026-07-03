@@ -4,7 +4,7 @@
   (title_block
     (title "7100CPT ECU — Root Schematic")
     (date "2026-07-03")
-    (rev "0.1")
+    (rev "0.2")
     (company "${COMPANY}")
     (comment 1 "12 Hierarchical Sheets")
     (comment 2 "Architecture: Phase 0 Approved | REUSE_MATRIX.md gate passed")
