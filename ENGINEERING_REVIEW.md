@@ -1,439 +1,301 @@
-# ENGINEERING_REVIEW.md — 7100CPT Platform Independent Audit
+# ENGINEERING_REVIEW.md — Independent Engineering Assessment
 
-> **Review Date:** 2026-07-03
-> **Reviewer:** Principal Engineer (Independent Audit)
-> **Scope:** Full repository audit — architecture, governance, code, docs, CI/CD, QA
-> **Methodology:** Evidence-based. Every finding traceable to a specific file, commit, or runtime output.
-> **Governance:** This is a review document. It proposes — it does not modify baseline documents. Changes accepted through separate PR per ADR-0007.
-
----
-
-## 1. Executive Summary
-
-The 7100CPT ECU Platform repository demonstrates **strong governance discipline and clean architecture** for a project transitioning from design to delivery. The frozen 3-layer architecture (Service → Protocol → Transport) is well-designed with proper separation of concerns via TypeScript interfaces. The Tracer Bullet methodology, C0-C4 capability tracking, and 7-artifact completion rule create a solid engineering framework.
-
-**The primary gap is the complete absence of automated testing.** 1,452 lines of TypeScript and Rust source code with zero test files — no unit tests, no integration tests, no end-to-end tests. Three engineering debt items (ED-020, ED-021, ED-022) acknowledge this but remain open with no scheduled resolution. Every code change requires manual regression testing against hardware the team may not yet have.
-
-**The secondary concern is QA backlogs not reflecting reality.** The QA_BACKLOG.md shows 15 items as "Open" but at least 4 (QA-016 through QA-019) are described as "Resolved" in their own finding text. This mismatch between description and status section means future sessions will waste time re-investigating closed findings.
-
-**Repository Maturity Score: 7/10**
-
-Architecture and governance are mature. Quality assurance infrastructure is absent. The project is well-prepared to build capabilities but poorly prepared to verify them.
+> **Date:** 2026-07-03
+> **Reviewer:** Principal Engineer
+> **Branch:** feature/hardware-schematic-v1
+> **Methodology:** Read-only inspection. Evidence from git and filesystem, not documentation claims.
 
 ---
 
-## 2. Repository Maturity Score
+## Executive Summary
 
-| Category | Score | Rationale |
-|----------|-------|-----------|
-| Architecture | 8/10 | Clean 3-layer design, well-defined interfaces, frozen appropriately |
-| Governance | 9/10 | Exceptionally thorough: ADRs, QA loop, handoff protocol, Capability Matrix |
-| Code Quality | 6/10 | Clean TypeScript and Rust, but App.tsx couples to concrete UsbTransport |
-| Testing | 1/10 | Zero automated tests. Not a single test file exists. |
-| Documentation | 8/10 | Comprehensive (214 docs), but some stale references (README phase, QA_BACKLOG) |
-| CI/CD | 3/10 | Pipeline YAML exists but never triggered. DDD check runs on PR but no build CI. |
-| Build Pipeline | 7/10 | Firmware builds verified. Studio frontend builds. Native Tauri build blocked on deps. |
-| Operational Readiness | 5/10 | Good for design phase, insufficient for capability verification |
+The 7100CPT ECU Platform is a specification-rich, architecturally mature project at an early implementation stage. Governance is frozen, architecture is well-designed, and the engineering process is professional. The project's primary risk is not architectural but existential: it has produced 140+ documents against zero verified end-to-end capability. The gap between documentation confidence (~78%) and actual working software+hardware capability (~10%) is the central challenge.
 
-**Overall: 7/10**
+**Repository Maturity Score: 42/100**
 
----
+| Dimension | Score | Grade |
+|-----------|-------|-------|
+| Architecture & Design | 78/100 | B+ |
+| Documentation & Governance | 82/100 | A- |
+| Software Implementation | 28/100 | F |
+| Hardware Implementation | 8/100 | F |
+| Testing & Verification | 0/100 | F |
+| Build & CI Pipeline | 52/100 | D- |
+| Manufacturing Readiness | 5/100 | F |
+| Commercial Readiness | 35/100 | F |
 
-## 3. Architecture Assessment
-
-### 3.1 Frozen Architecture (D-001)
-
-The architecture is correctly frozen at:
-
-```
-7100CPT Studio → EcuService → EcuProtocol (interface) ← RusEFIProtocolAdapter → UsbTransport → rusEFI
-```
-
-This is a well-layered design. Evidence from source code confirms it is implemented as documented.
-
-### 3.2 Layer-by-Layer Assessment
-
-#### Transport Layer (ADR-0010) — STRONG
-
-- `EcuTransport` interface: 6 methods (discover, connect, disconnect, sendFrame, heartbeat, onStateChange)
-- Concrete: `UsbTransport.ts` (155 lines) — clean implementation wrapping Tauri serial commands
-- Rust backend (`lib.rs`, 155 lines): 5 Tauri commands, proper state management with Mutex<HashMap>
-- **Evidence:** Source at `studio/core/transport/EcuTransport.ts`, `studio/core/transport/UsbTransport.ts`, `studio/src-tauri/src/lib.rs`
-
-#### Protocol Layer (ADR-0012) — STRONG
-
-- `EcuProtocol` interface: 7 methods (handshake, readSensors, readCalibration, writeCalibration, readDTCs, clearDTCs, sendCommand)
-- Concrete: `RusEFIProtocolAdapter.ts` (239 lines) — knows rusEFI TS protocol framing, CRC stub, 7 command IDs documented
-- Protocol framing documented: cmd + len16 + reserved + payload + CRC32
-- **Evidence:** Source at `studio/core/transport/EcuProtocol.ts`, `studio/adapters/RusEFIProtocolAdapter.ts`
-
-#### Service Layer — STRONG
-
-- `EcuService` (72 lines): business logic facade, never touches Transport directly
-- Proper dependency injection: constructor takes `EcuProtocol` + `EcuTransport`
-- **Evidence:** Source at `studio/core/services/EcuService.ts`
-
-#### UI Layer — ADEQUATE WITH CONCERN
-
-- `App.tsx` (230 lines): functional, state-driven, clean
-- **Concern:** App.tsx creates singleton instances directly (line 15-17):
-
-```typescript
-const transport = new UsbTransport();
-const adapter = new RusEFIProtocolAdapter();
-const ecu = new EcuService(adapter, transport);
-```
-
-This hard-codes UsbTransport — switching to CAN or mock transport requires editing App.tsx. The DI is correct in EcuService constructor but the wiring at top-level App couples the UI to concrete implementations.
-
-#### Repository Traits (ADR-0011) — DESIGNED, NOT IMPLEMENTED
-
-Five repository interfaces defined at `studio/core/repositories/types.ts`: CalibrationRepository, VehicleRepository, FirmwareRepository, TelemetryRepository, SessionRepository. All remain unimplemented. This is appropriate for current phase — interfaces are defined per the pattern, concrete implementations can follow when TB-013/014 (Calibration DB) begin.
-
-### 3.3 Dependency Direction — CORRECT
-
-Dependencies flow UI → Service → Protocol Interface ← Adapter → Transport Interface ← Concrete Transport → Tauri → Serial Port. No upward dependencies. Service depends on interfaces, not concretions. Protocol layer is decoupled from transport layer.
-
-### 3.4 Naming Consistency — GOOD
-
-`EcuProtocol`, `EcuTransport`, `EcuService`, `EcuIdentity`, `EcuDevice`, `RusEFIProtocolAdapter`, `UsbTransport` — consistent prefix pattern. Minor inconsistency: `CalTable` vs `Calibration` (abbreviated in data type, full in service methods).
+**The single most important sentence in this review:** The project has defined 9 MVP tracer bullets, completed 3 (all C0/C1 — designed, not verified on hardware), and has no integration tests, no QA sign-off on any TB, and no working end-to-end demonstration. The architecture is ready. The product is not.
 
 ---
 
-## 4. Strengths
+## Architecture Assessment
 
-### 4.1 Governance Infrastructure (Exceptional)
+### Strengths
 
-- 12 ADRs with full rationale, alternatives considered, and approval records
-- Two-Agent model with clear Engineer/QA boundaries
-- 7-artifact TB completion rule prevents "code written = done" drift
-- C0-C4 capability levels with mandatory evidence gates
-- Session handoff protocol with chronological index
-- Architecture freeze with change governance
+1. **Three-layer communication architecture (ADR-0010, ADR-0012).** Transport (EcuTransport) → Protocol (EcuProtocol) → Service (EcuService) is well-defined with clean interfaces. The UI never touches USB/CAN directly. This is professional-grade architecture — correct dependency direction, mockable interfaces, extensible for future transports.
 
-### 4.2 Specification-First Engineering
+2. **Repository trait abstraction (ADR-0011).** CalibrationRepository, VehicleRepository, TelemetryRepository, SessionRepository are defined as traits before any concrete implementation. This ensures SQLite → PostgreSQL migration requires zero UI changes.
 
-- Hardware: 16 documents, Phase 0 Reuse Matrix (41 blocks with provenance)
-- Firmware: rusEFI upstream unmodified, adapter pattern isolates dependency
-- Studio: 3-layer architecture designed before implementation
-- Decision log with 5 records documenting rationale
+3. **Platform-Studio separation (ADR-0009).** The decision to treat Studio as the product and firmware as the invisible engine is strategically correct. rusEFI is a foundation, not a differentiator. The protocol adapter pattern isolates GPL firmware from proprietary Studio.
 
-### 4.3 Tracer Bullet Methodology
+4. **BrandProvider pattern (ADR-0004).** Single source of truth for branding. UI components consume BrandProvider, never import brand assets directly. White-label ready.
 
-- 13 MVP + 6 long-term tracer bullets defined
-- TB-005 A/B split correctly separates implementation (C1) from verification (C2/C3)
-- Dependency graph shows parallelizable workstreams
+5. **Two-Agent engineering model (ADR-0008).** Clear separation of Engineering Agent (delivers) and QA Agent (challenges). Governance frozen — this prevents process thrashing.
 
-### 4.4 Hardware Design Discipline
+6. **Specification-first hardware design.** 16 design specification documents covering architecture, MCU selection, power, protection, CAN, USB, EMC, PCB, DFM, DFT, components, interface, compliance, and risks. This is a complete SDS that any professional PCB house can implement.
 
-- NXP reference-following mandate with REUSE_MATRIX.md
-- 34-pin consolidated interface frozen
-- Phase 0 gate prevents schematic work without approved design baseline
+### Architecture Smells
 
-### 4.5 Code Quality (What Exists)
+1. **No capability matrix exists despite governance documents referencing it.** PROJECT_STATUS.md tracks progress informally but there is no CAPABILITY_MATRIX.md with evidence-backed C0-C4 levels. This makes it impossible to answer "what works today?" with objective evidence.
 
-- Clean TypeScript with proper interfaces
-- Rust backend follows idiomatic patterns
-- No lint errors
-- CSS module approach for styling
-- BrandProvider for branding separation
+2. **MASTER_DIRECTIVE.md §5 is marked SUPERSEDED but §6 still lists 20-agent specification documents as pending.** The governance documentation carries contradictory models. The specification program is dead; the document should reflect reality or archive the references.
+
+3. **REPOSITORY_MANIFEST.md claims 143 markdown documents and 18-directory structure but is stale.** It references Phase 0 Specification Campaign (superseded), 2 branches (there are more), and the 11-agent operational system (replaced by Two-Agent Model).
+
+4. **QA_BACKLOG.md has 15 items still in "Open" section, 4 marked "Resolved" in their Status field but never moved to the Resolved section.** This is the "Resolved in text, Open in section" failure mode identified in the engineering-review skill. QA-001 (.gitmodules), QA-002 (CI branches), QA-008 (submodule artifacts), QA-010 (competing agent systems) all have Status: Resolved in their descriptions but sit under ## Open.
+
+5. **Dual notation hazard.** DESIGN_PACKAGE.md specifies 34-pin AMPSEAL connector. RISK_REGISTER.md references 42-pin Deutsch DTM. This is a contradiction in the specification — both cannot be true. The 34-pin appears to be the authoritative source (frozen in INTERFACE_SPECIFICATION.md) but the risk register was not updated.
+
+6. **12 empty firmware directories.** firmware/bootloader/, can/, config/, diagnostics/, drivers/, fuel/, ignition/, logging/, platform/, scheduler/, sensors/, storage/ are all empty directories. QA-011 flagged this and it remains Open. These imply an architecture that doesn't exist.
 
 ---
 
-## 5. Weaknesses
+## Capability Review
 
-### 5.1 Zero Automated Tests (CRITICAL)
+### What Works (Verified by Evidence)
 
-| Debt ID | Finding | Impact |
-|---------|---------|--------|
-| ED-020 | No Studio tests (TypeScript) | Every UI change is manual regression |
-| ED-021 | No firmware build tests | Cannot verify build produces correct binary |
-| ED-022 | No integration tests | Cannot verify Studio ↔ ECU communication without hardware |
+| Capability | Level | Evidence |
+|-----------|-------|----------|
+| rusEFI firmware builds for f407-discovery | C1 | Binary exists (727KB), committed build pipeline |
+| Studio frontend builds (Vite) | C1 | dist/ committed, 31 modules, 508ms |
+| Studio loads brand.json at runtime | C1 | BrandProvider fetches and parses brand.json |
+| DDD quality gate passes | C1 | scripts/ddd-check.sh — 33/33 |
 
-Not a single `*.test.ts`, `*.spec.ts`, or `*.test.rs` file exists outside node_modules. The project has 1,452 lines of source code with 0 test lines. The 7-artifact completion rule (PROJECT_RULES §11.4) requires "Automated test" as artifact #2, yet TB-001 through TB-005A have all been marked complete without any test files.
+### What Exists but Is Not Verified
 
-**Impact:** When TB-005B requires verification against real hardware, there is no way to validate that changes to UsbTransport or RusEFIProtocolAdapter don't break existing behavior. The CI pipeline (TB-CI-001) will run TypeScript checks but cannot run test suites because none exist.
+| Capability | Status | Reality |
+|-----------|--------|---------|
+| Studio connects to ECU (TB-003) | Claimed "C2" in PROJECT_STATUS.md | No USB transport implementation exists. EcuTransport is an interface. No concrete implementation of discover(), connect(), sendFrame(). |
+| Communication layer (TB-003) | Claimed "100%" in PROJECT_STATUS.md | 100% of interfaces defined, 0% of implementations. EcuProtocol passes transport as a parameter — correct design, zero code behind it. |
+| Application Core (TB-002A) | Engineered | 7 service interfaces (Logger, ConfigManager, Workspace, NotificationService, TelemetryService, UpdateManager, LicenseService). All are interfaces only. No implementations. |
 
-### 5.2 QA_BACKLOG Staleness
+### What Is Genuinely Missing
 
-The QA_BACKLOG.md has 15 items all in the "Open" section. Actual status by evidence:
-
-| Item | Backlog Status | Actual Status | Evidence |
-|------|---------------|---------------|----------|
-| QA-001 | Open | Resolved | .gitmodules fixed in `55e750d` |
-| QA-002 | Open | Resolved | CI triggers master in `6cb1487` |
-| QA-010 | Open | Resolved | ADR-0008 accepted, 20-agent marked SUPERSEDED |
-| QA-013 | Open | Resolved | Tauri adopted, Electron abandoned |
-| QA-016 | Open → "Resolved" in text | Resolved | ADR-0010 implemented |
-| QA-017 | Open → "Resolved" in text | Resolved | ADR-0011 defined |
-| QA-018 | Open → "Resolved" in text | Resolved | TB-002A completed |
-
-At minimum 7 of 15 items are resolved but not moved. **This is a governance failure — the backlog is supposed to track findings from identification through resolution, but it's being used as a write-only log.** Future sessions will re-investigate resolved findings.
-
-### 5.3 Documentation-to-Code Ratio (Doc-Heavy)
-
-214 markdown documents for 1,452 lines of source code. Roughly 7:1 doc-to-code ratio by file count. While documentation discipline is valuable, the MASTER_DIRECTIVE itself lists 10+ subsystem specifications as "To Be Produced" that may never be needed at current project scale. Several specification documents reference capabilities (Mobile, Cloud, Manufacturing) that won't be built for years.
-
-### 5.4 Stale Document References
-
-| Document | Stale Reference | Reality |
-|----------|----------------|---------|
-| README.md | "Phase 1 — Foundation" | Phase is now "Engineering Execution" |
-| MASTER_DIRECTIVE §10 | "Phase 0 — Specification: In Progress" | Architecture frozen, capability delivery phase |
-| QA_BACKLOG header | "Session: 002, Branch: edr/architecture-review" | Current branch: feature/tb-004 |
-| PROJECT_DASHBOARD "Next Action" | "Implement UsbTransport" | TB-005A already implemented (C1) |
-
-### 5.5 App.tsx Coupling
-
-The singleton instantiation at the top of App.tsx couples the UI module to concrete UsbTransport. This contradicts the architecture's own design principle ("UI never touches Transport directly"). While App.tsx does use `ecu.connect()` through EcuService for the handshake path, it directly calls `transport.discover()`, `transport.connect()`, and `transport.disconnect()` for device management.
-
-**Evidence:** App.tsx lines 15, 51, 64, 82 — all direct transport calls.
+1. No concrete USB transport implementation (UsbTransport class implementing EcuTransport)
+2. No concrete rusEFI protocol implementation (RusEfiProtocol class implementing EcuProtocol)
+3. No concrete service implementations (ConsoleLogger, JsonConfigManager, SqliteWorkspace)
+4. No integration between Studio and firmware
+5. No automated tests (despite "testable" being a mandatory tracer bullet criterion)
+6. No CI beyond documentation checks
+7. No installer / packaging pipeline
+8. KiCad schematic has zero circuit components placed — 12 empty sheets
 
 ---
 
-## 6. Risks
+## Hardware Reality Check
 
-### Top 10 Risks (Impact × Probability)
+The documentation describes TB-HW-002 as "in progress" with "project skeleton created." The filesystem evidence:
 
-| # | Risk | Severity | Evidence |
-|---|------|----------|----------|
-| R-001 | S32K344 lead time > 26 weeks | 🔴 Critical | PROJECT_DASHBOARD, RISK_REGISTER |
-| R-002 | No test infrastructure — every change risks regression | 🔴 Critical | Zero test files exist |
-| R-003 | QA_BACKLOG staleness causes wasted investigation time | 🟠 High | 7/15 items stale |
-| R-004 | rusEFI divergence (33 commits behind upstream) | 🟠 High | `git log HEAD...origin/master` |
-| R-005 | TB-005B blocked on native build dependencies | 🟠 High | Linux: GTK headers; Windows: need CI |
-| R-006 | Buck converter thermal marginal at 85°C | 🟠 Medium | ED-016, RISK_REGISTER R-002 |
-| R-007 | No hardware available for TB-005B verification | 🟠 Medium | TB-005 README blockers section |
-| R-008 | Single developer bus factor | 🟡 Medium | All commits from one author |
-| R-009 | CI never triggered — unknown if windows-build.yml works | 🟡 Medium | No GitHub Actions run history |
-| R-010 | Injector driver IC selection deferred | 🟡 Medium | ED-015 gates TB-HW-002 |
+| Artifact | Documentation Claim | Actual State |
+|----------|-------------------|--------------|
+| 12 hierarchical sheets | "Created" | Exist — are empty title blocks (29 lines each, zero symbols) |
+| Root sheet | Has sub-sheet symbols | 13 hierarchical sheet symbol instances — correct, no circuits |
+| Symbol library | 7100CPT.kicad_sym created | Exists — empty (no custom symbols defined) |
+| Footprint library | 7100CPT.pretty/ created | Directory exists — empty (no custom footprints) |
+| PCB layout (.kicad_pcb) | Not started | Does not exist |
+| BOM | Referenced in docs | Does not exist |
+| Gerbers | Referenced in docs | Do not exist |
+| STEP enclosure | Referenced in docs | Does not exist (enclosure.md has text description) |
+| Pick-and-place | Referenced in docs | Does not exist |
+| Manufacturing package | Referenced in docs | Does not exist |
 
----
-
-## 7. Technical Debt
-
-### Summary
-
-```
-Open:           12
-Accepted:        2  (conformal coating, single LDO — accepted for prototype)
-Resolved:        0
-───────────────────
-Total:          14
-```
-
-### Highest Priority Debt
-
-| ID | Title | Blocks | Effort |
-|----|-------|--------|--------|
-| ED-015 | Driver IC selection | TB-HW-002 schematic capture | Large |
-| ED-016 | Buck thermal redesign | TB-HW-002 schematic capture | Large |
-| ED-020 | No automated tests | ALL future TB verification | Medium |
-| ED-022 | No integration test framework | TB-005B and beyond | Large |
-| ED-004 | No CI/CD pipeline for Studio | TB-005B verification (if local build blocked) | Medium |
-
-### Debt Not Yet In Register (Found During This Review)
-
-- **ED-NEW-1:** QA_BACKLOG status tracking broken — resolved items not moved to Resolved section
-- **ED-NEW-2:** App.tsx singleton coupling to UsbTransport contradicts architecture principle
-- **ED-NEW-3:** MASTER_DIRECTIVE contains stale phase/section content (20-agent listing, Phase 0 status)
-- **ED-NEW-4:** README phase references stale
-- **ED-NEW-5:** rusEFI 33 commits behind upstream — no sync since fork
+**Hardware status: 0% circuit design complete.** The skeleton is correct — sheet hierarchy matches the specification — but every circuit remains to be designed. The claimed "10% KiCad progress" reflects file structure only, not circuit capture.
 
 ---
 
-## 8. Capability Review
+## Technical Debt
 
-### Current Capability Distribution
+### Critical (Blocks Progress)
 
-```
-Software Capabilities (19)
-  C4 Production:   0
-  C3 QA Verified:   3  (Firmware build, Studio launch, Studio launch QA)
-  C2 Demonstrated:  1  (Application core)
-  C1 Implemented:   2  (Protocol adapter, USB transport impl)
-  C0 Designed:     13  (Comm arch through Cloud sync)
+| ID | Item | Impact |
+|----|------|--------|
+| D-001 | rusEFI submodule is 30+ commits behind upstream | Build compatibility risk if upstream API changes |
+| D-002 | No test framework exists | Cannot verify any TB — violates mandatory completion criteria |
+| D-003 | QA_BACKLOG.md has stale items | 4 items "Resolved" but still listed as Open |
+| D-004 | Zero circuit components in KiCad | Hardware implementation has not started |
 
-Hardware Capabilities (6)
-  C3 QA Verified:   2  (System design spec, Reuse matrix)
-  C2 Demonstrated:  1  (Interface spec)
-  C0 Designed:       3  (Schematic, PCB, Manufacturing package)
-```
+### High (Will Block Next Phase)
 
-### Key Metric
+| ID | Item | Impact |
+|----|------|--------|
+| D-005 | No protocol wire format specification | TB-003 cannot implement transport |
+| D-006 | No database schema | TB-006/007 blocked |
+| D-007 | 12 empty firmware directories | Implies architecture that doesn't exist |
+| D-008 | GPL license boundary not defined | Legal risk for commercial distribution |
+| D-009 | No safety architecture | Product controls engine without documented fail-safe analysis |
 
-**Capabilities at C2 or above (demonstrated + verified): 7 of 25**
+### Medium (Process Quality)
 
-This is the single most useful metric per the engineering-review skill. 7 capabilities have been demonstrated or QA verified. The remaining 18 are at C1 (code written) or C0 (designed only).
-
-### Next Capability to Advance
-
-**TB-005B: USB Transport C0 → C2**
-- Prerequisite: Native binary + hardware
-- Blocked by: Linux build dependencies OR CI pipeline run
-
----
-
-## 9. CI/CD Assessment
-
-### Current State
-
-| Pipeline | File | Status |
-|----------|------|--------|
-| DDD Quality Gate | `.github/workflows/ddd-check.yml` | Exists — triggers on PR, push to master |
-| Windows Build | `.github/workflows/windows-build.yml` | Exists — NEVER TRIGGERED |
-
-The Windows build pipeline (TB-CI-001) is well-structured:
-- Checkout → Node 20 → Rust → Tauri CLI → tsc check → Vite build → Tauri NSIS → artifact upload → smoke test
-- 13 steps, all correctly ordered
-- Caching configured for cargo and npm
-
-**But it has never been pushed to trigger.** The workflow triggers on push to master and pull_request to master. The current branch (`feature/tb-004-rusefi-protocol-adapter`) would not trigger it. To verify the pipeline works, a push to master (or opening a PR to master) is needed.
+| ID | Item | Impact |
+|----|------|--------|
+| D-010 | REPOSITORY_MANIFEST.md stale | Misleading for new engineers |
+| D-011 | Connector pin count contradiction | 34-pin AMPSEAL vs 42-pin Deutsch — unclear which is authoritative |
+| D-012 | No ENGINEERING_DEBT.md at root | Debt tracked in TECH_DEBT.md only (firmware-focused) |
+| D-013 | MASTER_DIRECTIVE.md §5 SUPERSEDED but §6 references it | Documentation inconsistency |
 
 ---
 
-## 10. Recommended Priorities
+## Risks — Top 10
 
-### High Impact (Do First)
-
-| # | Recommendation | Effort | Impact |
-|---|---------------|--------|--------|
-| H1 | **Fix QA_BACKLOG staleness.** Move QA-001, QA-002, QA-010, QA-013, QA-016-019 to Resolved section. Update statuses to reflect reality. | 5 min | Prevents wasted future investigation |
-| H2 | **Trigger TB-CI-001.** Push to master or open PR to verify Windows Build pipeline works. This unblocks TB-005B verification path. | 15 min | Capability multiplier — enables binary verification without local build deps |
-| H3 | **Sync rusEFI upstream.** 33 commits behind. Documented sync procedure exists (`04_Firmware/UPSTREAM_SYNC.md`). Execute it before divergence widens. | 30 min | Prevents merge debt accumulation |
-| H4 | **Implement test framework scaffold.** Create at minimum a Jest/Vitest config for Studio. Add one trivial test to prove the pipeline. This addresses ED-020 and QA-014 simultaneously. | 2 hrs | Closes 3 debt items, enables future TB test artifacts |
-| H5 | **Resolve App.tsx coupling.** Wrap transport/adapter/service creation in a factory or composition root. App.tsx should receive pre-built EcuService, not construct the chain. | 30 min | Aligns code with documented architecture principle |
-
-### Medium Impact
-
-| # | Recommendation | Effort | Impact |
-|---|---------------|--------|--------|
-| M1 | **Add build-only CI check.** A simple workflow that runs `npx tsc --noEmit` and `npm run build` on every push to any branch. This catches regressions before they merge. | 20 min | Prevents broken builds on master |
-| M2 | **Fix stale document references.** Update README phase, MASTER_DIRECTIVE §10, PROJECT_DASHBOARD next action. | 15 min | Prevents agent confusion on next session |
-| M3 | **Clean MASTER_DIRECTIVE §5 (20-agent program).** The section is marked SUPERSEDED but retains 24 lines of agent listing. Trim to 3-line pointer to ADR-0008. | 10 min | Reduces reading load for new sessions |
-| M4 | **Rename rusefi.bin → 7100cpt.bin** (ED-002). Low-effort, high-visibility. | 30 min | Professionalizes firmware output |
-| M5 | **Add markdown link checker to DDD quality gate** (QA-012). 214 documents with cross-references — link rot is certain. | 1 hr | Prevents documentation drift |
-
-### Low Impact
-
-| # | Recommendation | Effort | Impact |
-|---|---------------|--------|--------|
-| L1 | **Fix app identifier namespace** (ED-006). Change `com.prototype-ecu.studio` → `com.7100cpt.studio` in tauri.conf.json. | 5 min | Branding consistency |
-| L2 | **Automate session handoff** (ED-023). Add git hook or script that prompts for SESSION_HANDOFF.md before push. | 1 hr | Enforces mandatory governance |
-| L3 | **Add CalTable → CalibrationTable consistency.** Either abbreviate all or none of the data type names. | 10 min | Naming hygiene |
-| L4 | **Trim "To Be Produced" specifications.** MASTER_DIRECTIVE §6 lists 13 subsystem specs as required before implementation. At least 6 are for future phases (Cloud, Mobile, Manufacturing, Compliance, Business Model). Move to future-phase appendices. | 15 min | Reduces perceived unfinished work |
+| # | Risk | Probability | Impact | 
+|---|------|------------|--------|
+| 1 | Project produces documentation indefinitely without shipping code | High | Existential |
+| 2 | No integration verified — all components tested in isolation only | Certain | Technical |
+| 3 | rusEFI protocol incompatible with designed protocol layer | Medium | High |
+| 4 | S32K344 lead time (26+ weeks) delays hardware validation | Medium | High |
+| 5 | No test framework means no regression protection | Certain | Medium |
+| 6 | Upstream rusEFI diverges beyond mergeability | Low | High |
+| 7 | GPL legal risk not assessed — could block commercial launch | Medium | High |
+| 8 | No hardware target exists — all firmware development on Discovery board | Certain | Medium |
+| 9 | Single engineer bus-factor | High | Medium |
+| 10 | Architecture designed for scale with zero users | Medium | Low |
 
 ---
 
-## 11. Quick Wins (Under 30 Minutes Total)
+## Recommended Priorities
 
-All five can be done in a single short session:
+### P0 — Do First (Next 2 Sessions)
 
-1. Fix QA_BACKLOG.md — move resolved items to correct sections (5 min)
-2. Update PROJECT_DASHBOARD.md Next Action: "TB-005B: native binary + demo gate" (2 min)
-3. Update README.md Phase: "Engineering Execution" (1 min)
-4. Fix app identifier in tauri.conf.json (5 min)
-5. Add triggers for feature branches to windows-build.yml so it runs on push to `feature/*` (5 min)
+1. **Build a test framework.** Tests are mandatory per TRACER_BULLETS.md §5. Without tests, no TB can meet its own completion criteria. Scaffold: Jest + React Testing Library for Studio, Google Test for firmware adapter.
 
-**Total: ~18 minutes.** This closes 3 stale document references, 1 branding inconsistency, and enables CI verification on the active branch.
+2. **Implement UsbTransport (concrete class for EcuTransport interface).** The interface exists. Make it real. Discover USB devices, connect, send raw frames — even if the protocol doesn't understand the response yet.
 
----
+3. **Define the wire protocol specification.** Frame format, CRC algorithm, handshake sequence, error codes. This unblocks TB-003. Write it as a markdown spec, not as code — both firmware adapter and Studio implement from the same spec.
 
-## 12. Process Observations
+4. **Fix QA_BACKLOG.md staleness.** Move QA-001, QA-002, QA-008, QA-010 from Open → Resolved. This is a 5-minute fix that restores the backlog's credibility.
 
-### What Works Well
+### P1 — Next Sprint
 
-- **Tracer Bullet A/B split:** Separating implementation (C1) from verification (C2) prevents false completion claims. TB-005A correctly reports C1 — code compiles but not yet demonstrated.
-- **Architecture freeze decision:** Correctly timed. Further architecture iteration would delay capability delivery without adding value.
-- **Demo Gates:** The requirement for specific, observable criteria before TB completion is the right standard.
-- **Reuse Matrix:** Hardware provenance tracking per circuit block prevents design drift.
+5. **Implement RusEfiProtocol (concrete class for EcuProtocol interface).** Handshake, readSensors, readCalibration, writeCalibration. Implement the protocol spec from P0 item 3.
 
-### Process Gaps
+6. **Wire end-to-end: Studio → UsbTransport → RusEfiProtocol → ECU.** TB-003 demo gate: discover, connect, handshake, ECU identity displayed in Studio.
 
-- **QA_BACKLOG maintenance is not being enforced.** The backlog's value comes from accurate status tracking. Stale entries destroy that value.
-- **7-artifact rule is being honored selectively.** Artifact #2 (automated test) has been skipped for every completed TB. Either enforce it or formally accept the skip in DECISION_LOG.
-- **Session handoff index incomplete.** README shows Sessions 1-3 complete, Session 4 pending. But git log shows work beyond Session 3 (TB-003, TB-004, TB-005A). Handoffs for Sessions 4+ are missing.
+7. **Populate KiCad schematic.** Place components on power sheet and MCU sheet first (these are prerequisite for all others). Use NXP reference designs from REUSE_MATRIX.
 
----
+8. **Sync rusEFI submodule to current upstream.** Resolve the GCC 12 build fix via build script (as documented in repository-audit skill). Keep submodule at pristine upstream commit.
 
-## 13. Long-Term Recommendations
+### P2 — This Month
 
-These are architectural or process improvements that aren't urgent but would improve engineering quality over time:
+9. **Create CAPABILITY_MATRIX.md with C0-C4 levels.** Every capability backed by evidence. This becomes the single-page answer to "what works?"
 
-1. **Dependency injection container.** As the number of services grows, manual wiring in App.tsx becomes unmaintainable. A lightweight DI approach (service locator or composable factory) would keep the composition root clean.
+10. **Implement concrete services for Application Core.** ConsoleLogger, JsonConfigManager, SqliteWorkspace. The interfaces exist. Make them real.
 
-2. **Mock Transport for testing.** Implement a `MockTransport` that implements EcuTransport for integration testing Studio ↔ Protocol without hardware. This is already architected (the Transport trait supports it) but not built.
+11. **Define database schema.** Required by TB-006 and TB-007. SQLite for V1, but defined through the Repository trait interfaces (ADR-0011).
 
-3. **Snapshot testing for UI.** When calibration tables and telemetry dashboards are built, visual regression tests via screenshot comparison would catch rendering bugs.
+12. **Define GPL/proprietary boundary.** Formalize in an ADR. This is a legal prerequisite for commercial distribution.
 
-4. **Canonical error code registry.** Define error codes for Studio (ECU-XXX pattern from ENGINEERING_STANDARDS) and maintain them in a single file. Currently errors are string messages — no structured error handling.
+### P3 — Before Hardware Fab
 
-5. **Multi-transport readiness.** The architecture supports CAN/BLE/Ethernet but the device enumeration in App.tsx assumes USB. A transport-agnostic device model would reduce future refactoring.
+13. **Complete KiCad schematic capture.** All 12 sheets populated, ERC clean. This is 80% of the hardware development effort and the gate before PCB layout.
+
+14. **Resolve connector specification.** Freeze on 34-pin AMPSEAL or 42-pin Deutsch. Update all documents to match.
+
+15. **Write safety architecture document.** What happens when the ECU crashes? What are the fail-safe states? Required before any vehicle testing.
 
 ---
 
-## 14. Review Sign-Off
+## What Should NOT Be Changed
 
-| Section | Status | Notes |
-|---------|--------|-------|
-| Architecture | 🟢 APPROVED | Clean 3-layer design, correctly frozen |
-| Implementation | 🟢 APPROVED WITH CONDITIONS | Code quality good; App.tsx coupling should be resolved |
-| Governance | 🟡 APPROVED WITH CONDITIONS | QA_BACKLOG maintenance gap must be fixed |
-| Documentation | 🟡 APPROVED WITH CONDITIONS | 4 stale references need updating |
-| Testing | 🔴 NOT VERIFIED | Zero tests exist — critical gap |
-| CI/CD | 🟡 APPROVED WITH CONDITIONS | Pipeline exists but never triggered |
-| Overall | 🟡 APPROVED WITH CONDITIONS | Proceed with TB-005B after fixing Quick Wins |
+1. **Three-layer communication architecture.** Transport → Protocol → Service. This is correct.
+2. **Repository trait pattern.** Interface-before-implementation for all data access. Correct.
+3. **Two-Agent engineering model.** Engineering Agent delivers, QA Agent challenges. Correct and frozen.
+4. **Tracer Bullet methodology.** Small vertical slices, each proven end-to-end. Correct approach.
+5. **Specification-first hardware design.** The 16 hardware spec documents are professional-grade. Do not restart.
+6. **rusEFI as firmware foundation.** Strategic decision validated by ADR-0002. Only change if real integration problems emerge.
+7. **Governance freeze.** Process is established. More process is procrastination. Build.
 
 ---
 
-## Appendix A: Files Reviewed
+## Quick Wins (Under 30 Minutes Total)
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `MASTER_DIRECTIVE.md` | 623 | Specification contract |
-| `PROJECT_RULES.md` | 385 | Engineering governance |
-| `PROJECT_DASHBOARD.md` | 135 | Project pulse |
-| `CURRENT_STATE.md` | 75 | Agent shared state |
-| `CAPABILITY_MATRIX.md` | 83 | Verified capabilities |
-| `ROADMAP.md` (11_Documentation) | 122 | Development roadmap |
-| `DECISION_LOG.md` | 108 | Engineering decisions |
-| `ENGINEERING_DEBT.md` | 58 | Technical debt register |
-| `ENGINEERING_STANDARDS.md` | 170 | Engineering standards |
-| `README.md` | 83 | Project overview |
-| `SESSION_003.md` | 139 | Session handoff |
-| `QA_BACKLOG.md` | 213 | QA findings |
-| `EcuTransport.ts` | 51 | Transport interface |
-| `EcuProtocol.ts` | 104 | Protocol interface |
-| `EcuService.ts` | 72 | Service layer |
-| `UsbTransport.ts` | 155 | USB transport impl |
-| `RusEFIProtocolAdapter.ts` | 239 | Protocol adapter |
-| `App.tsx` | 230 | Main UI |
-| `lib.rs` | 155 | Rust backend |
-| `windows-build.yml` | 124 | CI pipeline |
-| `ddd-check.yml` | 15 | Quality gate |
-| `TB-005/README.md` | 85 | Current TB |
-| `REUSE_MATRIX.md` | 186 | Hardware provenance |
-| `INTERFACE_SPECIFICATION.md` | 178 | Pinout specification |
-| `DECISIONS.md` | 22 | ADR index |
-
-**Total: 3,610 lines across 26 core documents, plus source code review.**
+| # | Action | Time |
+|---|--------|------|
+| 1 | Move QA-001/002/008/010 from Open → Resolved in QA_BACKLOG.md | 5 min |
+| 2 | Fix RISK_REGISTER.md R-008 (42-pin → 34-pin AMPSEAL) | 2 min |
+| 3 | Update REPOSITORY_MANIFEST.md to reflect current state | 10 min |
+| 4 | Add MASTER_DIRECTIVE.md §6 note that P0 specs are superseded by TB approach | 5 min |
+| 5 | Update ENGINEERING_KPIS.md session 004 entry | 5 min |
 
 ---
 
-## Appendix B: Evidence Summary
+## If I Joined This Project as Chief Engineer Today
 
-All findings in this report are traceable to specific files or git evidence:
+### 90-Day Roadmap
 
-- **Git log:** 20 commits on `feature/tb-004-rusefi-protocol-adapter`, pushed to origin
-- **Submodule:** rusEFI at `7abb688`, 33 commits behind upstream `0c955db`
-- **Source lines:** 1,452 TS/RS (excluding rusEFI, node_modules)
-- **Test files:** 0 (zero)
-- **Markdown docs:** 214 (excluding rusEFI, node_modules)
-- **ADRs:** 12 accepted, all in `17_Decisions/`
-- **QA backlog:** 15 items, 7 stale
-- **Engineering debt:** 14 items, 12 open
-- **CI pipelines:** 2 YAML files, 0 verified runs
+**Week 1-2: Make something work end-to-end.**
+- Implement UsbTransport (concrete)
+- Implement RusEfiProtocol (concrete)  
+- Connect Studio to Discovery board over USB CDC
+- Demonstrate: ECU identity displayed in Studio
+- This proves the architecture works. Until this happens, nothing else matters.
+
+**Week 3-4: Add verification.**
+- Test framework: Jest for Studio, Google Test for firmware adapter
+- TB-003 demo gate evidence: USB detect, connect, handshake, identity
+- Live RPM from ECU displayed in Studio (TB-004)
+- Every TB from now on requires demo evidence before "complete"
+
+**Week 5-8: Build the MVP.**
+- Calibration read/write (TB-005)
+- PostgreSQL persistence (TB-006, TB-007)
+- Datalogging and session report (TB-008)
+- Synchronize rusEFI submodule to latest upstream
+
+**Week 9-12: Hardware gets real.**
+- Complete KiCad schematic for all 12 sheets (TB-HW-002)
+- ERC clean, design review, PCB layout begin (TB-HW-003)
+- Build pipeline: CI produces a Linux AppImage or .deb
+- Write GPL boundary ADR
+
+**Month 4-6 (beyond 90 days):**
+- PCB fabrication + assembly
+- Hardware bring-up
+- Port firmware adapter from Discovery to S32K344
+- First vehicle bench test
+
+### What I Would Stop Immediately
+
+1. **Producing more specification documents.** 16 hardware specs, 12 ADRs, 140+ markdown files. The architecture is documented. Build.
+2. **Updating governance documents.** Governance is frozen. Stop refining it.
+3. **Writing documentation for subsystems that have no implementation.** Documentation without code is speculation.
+
+### What I Would Start Immediately
+
+1. Code that exercises the architecture end-to-end.
+2. Tests that prove it works.
+3. Evidence that replaces documentation claims.
 
 ---
 
-*Review complete. This document proposes changes. It does not modify baseline documents. Per ADR-0007, accepted recommendations should be implemented in a separate PR with QA approval.*
+## Engineering Debt Register
+
+This review identifies 13 debt items (D-001 through D-013 above). A formal `ENGINEERING_DEBT.md` should be created at root level tracking these with assigned owners and target resolution dates. See `engineering-review` skill references for template.
+
+---
+
+## Conclusion
+
+The 7100CPT ECU Platform has an unusually strong architecture and governance foundation for a project at this stage. The design decisions are sound. The interfaces are correct. The process is professional.
+
+The project is now at a critical inflection point. 140+ documents, 12 ADRs, frozen governance — this is the maximum reasonable amount of process for a 3-session-old project. The architecture has been designed. The specifications have been written. The interfaces have been defined. The governance has been frozen.
+
+The only thing left to do is build.
+
+Every session from this point forward should produce verified capability, not more documentation. Measure progress in TB demo gates passed, not markdown files committed. The next commit that adds a specification document without corresponding implementation code should be questioned.
+
+**Final verdict:** Architecture is ready. Product is not. Build TB-003 this session.
+
+---
+
+*Review completed 2026-07-03. Based on filesystem and git evidence, not documentation claims.*
+*See QA_BACKLOG.md for findings to be tracked.*
