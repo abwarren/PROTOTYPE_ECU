@@ -124,7 +124,6 @@
     (at 25 47 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
   )
-)
 
   (sheet_instances
     (path "/" (page "0"))
