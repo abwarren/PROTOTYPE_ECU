@@ -6,59 +6,76 @@
 
 ---
 
-## Verified Capabilities
+## Capability Levels
 
-| # | Capability | Status | TB | Evidence | Date |
-|---|-----------|--------|-----|----------|------|
-| 1 | Firmware builds | ✅ Verified | TB-001 | Build log: `rusefi.bin` 727 KB | 2026-07-01 |
-| 2 | Studio launches | ✅ Verified | TB-002 | Tauri window, dark theme, branding | 2026-07-01 |
-| 3 | Application core | ✅ Verified | TB-002A | 7 service interfaces, BrandProvider | 2026-07-01 |
-| 4 | Comm architecture | ✅ Design Complete | TB-003 | 3-layer: Service → Protocol → Transport | 2026-07-03 |
-| 5 | Protocol adapter | ✅ Stub | TB-004 | RusEFIProtocolAdapter, 7 command map | 2026-07-03 |
+| Level | Meaning | Gate |
+|-------|---------|------|
+| **C0** | Designed | Architecture documented, interfaces defined |
+| **C1** | Implemented | Code written, compiles, committed |
+| **C2** | Demonstrated | Demo Gate passed, evidence captured |
+| **C3** | QA Verified | Independent QA review approved |
+| **C4** | Production Ready | Tested on target hardware, documentation complete |
+
+A capability advances one level at a time. No skipped levels.
 
 ---
 
-## Capabilities In Progress
+## Software Capabilities
 
-| # | Capability | Status | TB | Required Demo |
-|---|-----------|--------|-----|---------------|
-| 6 | USB detection | ⏳ NEXT | TB-005 | Detect, connect, heartbeat, disconnect |
-| 7 | ECU discovery | ⬚ | TB-006 | Scan, identify, firmware version, serial |
-| 8 | ECU handshake | ⬚ | TB-007 | HELLO command, response, timeout, retry |
-| 9 | Live telemetry | ⬚ | TB-008 | RPM, CLT, TPS streaming to Studio |
-| 10 | Calibration read | ⬚ | TB-009 | Read cal table, validate checksum, display |
-| 11 | Calibration write | ⬚ | TB-010 | Write cal table, burn, verify |
-| 12 | Diagnostics | ⬚ | TB-011 | Read DTCs, clear DTCs, verify clear |
-| 13 | Firmware flash | ⬚ | TB-012 | Flash via USB, verify checksum, reboot |
-| 14 | Calibration DB save | ⬚ | TB-013 | Save to PostgreSQL, version history |
-| 15 | Calibration DB load | ⬚ | TB-014 | Load from PostgreSQL, display values |
-| 16 | Tuning session report | ⬚ | TB-015 | Generate PDF/HTML report |
-| 17 | Cloud sync | ⬚ | TB-016 | Sync to cloud, verify dashboard |
+| # | Capability | Level | TB | Evidence |
+|---|-----------|-------|-----|----------|
+| 1 | Firmware builds | C3 | TB-001 | Build log: `rusefi.bin` 727 KB, QA verified |
+| 2 | Studio launches | C3 | TB-002 | Tauri window, dark theme, branding, QA verified |
+| 3 | Application core | C2 | TB-002A | 7 service interfaces, BrandProvider |
+| 4 | Comm architecture | C0 | TB-003 | 3-layer: Service → Protocol → Transport |
+| 5 | Protocol adapter | C1 | TB-004 | RusEFIProtocolAdapter, 7 command map |
+
+| 6 | USB transport | C0 | TB-005 | NEXT — design complete, implementation pending |
+| 7 | ECU discovery | C0 | TB-006 | Architecture defined |
+| 8 | ECU handshake | C0 | TB-007 | Architecture defined |
+| 9 | Live telemetry | C0 | TB-008 | Architecture defined |
+| 10 | Calibration read | C0 | TB-009 | Architecture defined |
+| 11 | Calibration write | C0 | TB-010 | Architecture defined |
+| 12 | Diagnostics | C0 | TB-011 | Architecture defined |
+| 13 | Firmware flash | C0 | TB-012 | Architecture defined |
+| 14 | Calibration DB save | C0 | TB-013 | Architecture defined |
+| 15 | Calibration DB load | C0 | TB-014 | Architecture defined |
+| 16 | Tuning session report | C0 | TB-015 | Architecture defined |
+| 17 | Cloud sync | C0 | TB-016 | Architecture defined |
 
 ---
 
 ## Hardware Capabilities
 
-| # | Capability | Status | TB | Evidence |
-|---|-----------|--------|-----|----------|
-| H1 | System design spec | ✅ Verified | TB-HW-001 | 16 spec documents |
-| H2 | Reuse matrix | ✅ Approved | Phase 0 | 41 blocks, 4 deferred |
-| H3 | Interface spec | ✅ Frozen | — | 34-pin, 12 sheets |
-| H4 | KiCad schematic | ⬚ Unlocked | TB-HW-002 | Phase 0 gate passed |
-| H5 | PCB layout | ⬚ | TB-HW-003 | Gated by schematic |
-| H6 | Manufacturing package | ⬚ | TB-HW-004 | Gated by PCB layout |
+| # | Capability | Level | TB | Evidence |
+|---|-----------|-------|-----|----------|
+| H1 | System design spec | C3 | TB-HW-001 | 16 spec documents, QA verified |
+| H2 | Reuse matrix | C3 | Phase 0 | 41 blocks, 4 deferred, approved |
+| H3 | Interface spec | C2 | — | 34-pin, 12 sheets, frozen |
+| H4 | KiCad schematic | C0 | TB-HW-002 | Phase 0 gate passed, unlocked |
+| H5 | PCB layout | C0 | TB-HW-003 | Gated by schematic |
+| H6 | Manufacturing package | C0 | TB-HW-004 | Gated by PCB layout |
 
 ---
 
-## Summary
+## Level Summary
 
 ```
-Verified:       5  ████░░░░░░░░░░░░░░░░
-In Progress:    0  ░░░░░░░░░░░░░░░░░░░░
-Next:           1  ░░░░░░░░░░░░░░░░░░░░  (TB-005 USB Transport)
-Pending:       11  ░░░░░░░░░░░░░░░░░░░░
-──────────────────
-Total:         17
+Software
+  C4 Production:   0
+  C3 QA Verified:   3  ████░░░░░░░░░░░░░░░░
+  C2 Demonstrated:  1  █░░░░░░░░░░░░░░░░░░░
+  C1 Implemented:   1  █░░░░░░░░░░░░░░░░░░░
+  C0 Designed:     12  ██████████████░░░░░░
+
+Hardware
+  C3 QA Verified:   2  ████████████░░░░░░░░
+  C2 Demonstrated:  1  ██████░░░░░░░░░░░░░░
+  C0 Designed:       3  ██████████████████░░
 ```
 
-**Next capability to verify:** USB Transport (TB-005) — detect, connect, heartbeat, disconnect.
+**Next capability to advance:** TB-005 USB Transport (C0 → C1: implement UsbTransport)
+
+---
+
+*Updated per PROJECT_RULES.md §11.3. Every capability must be backed by evidence.*

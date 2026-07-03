@@ -1,85 +1,122 @@
-# Development Roadmap
+# 7100CPT Platform Roadmap
 
-> **DDD Policy:** Every completed task requires documentation updates. See [Definition of Done](./CONTRIBUTING.md).
-
----
-
-## Phase 1: Foundation ✅ (In Progress)
-
-**Target:** rusEFI fork compiles, branded, documented.
-
-| Task | Status | Docs | Notes |
-|------|--------|------|-------|
-| Repository structure | ✅ Complete | ✅ | White-label layout |
-| Brand abstraction layer | ✅ Complete | ✅ | `branding/brand.json` |
-| Root documentation | ✅ Complete | ✅ | 10 documents |
-| Research corpus | ✅ Complete | ✅ | Migrated to `research/` |
-| Architecture documentation | ✅ Complete | ✅ | 9 neutral docs |
-| rusEFI fork | ✅ Complete | ✅ | Commit `8540e44` |
-| Architecture audit | ✅ Complete | ✅ | 16 modules verified |
-| ADR records | ✅ Complete | ✅ | 4 records |
-| DDD policy | ✅ Complete | ✅ | Engineering standard |
-| Firmware build | ✅ Complete | ✅ | ARM GCC 12.3, Java 11; f407-discovery builds |
-| Brand separation | ❌ Not Started | ⏳ | Trace all rusEFI strings |
-| Firmware identity | ❌ Not Started | ⏳ | Versioning, board IDs |
-| Configuration profiles | ❌ Not Started | ⏳ | NA, Turbo, etc. |
-
-## Phase 2: Studio v1
-
-**Target:** Modern desktop application with dashboard, calibration, datalogging.
-
-| Task | Status | Docs | Notes |
-|------|--------|------|-------|
-| Studio scaffold | ❌ | ⏳ | Electron + React + TypeScript |
-| Dashboard with live gauges | ❌ | ⏳ | Drag-and-drop widgets |
-| Dark mode UI | ❌ | ⏳ | Brand theme from brand.json |
-| USB CDC communication | ❌ | ⏳ | Protocol implementation |
-| Basic calibration | ❌ | ⏳ | Fuel/ignition table editors |
-| Datalogging and export | ❌ | ⏳ | Binary + CSV/MLV |
-| Firmware update | ❌ | ⏳ | Via Studio UI |
-| Installer packages | ❌ | ⏳ | Windows, macOS, Linux |
-
-## Phase 3: Cloud & Mobile
-
-**Target:** Telemetry, OTA, mobile diagnostics.
-
-| Task | Status | Docs | Notes |
-|------|--------|------|-------|
-| Cloud scaffold | ❌ | ⏳ | API + auth + device mgmt |
-| Telemetry ingestion | ❌ | ⏳ | MQTT + time-series DB |
-| OTA infrastructure | ❌ | ⏳ | A/B updates |
-| Mobile app | ❌ | ⏳ | BLE diagnostics |
-
-## Phase 4: Production Readiness
-
-**Target:** Hardware prototype, testing, manufacturing.
-
-| Task | Status | Docs | Notes |
-|------|--------|------|-------|
-| Hardware prototype | ❌ | ⏳ | PCB + enclosure |
-| Manufacturing package | ❌ | ⏳ | Gerber, BOM, assembly |
-| EMC testing | ❌ | ⏳ | CISPR 25 |
-| Functional safety | ❌ | ⏳ | ISO 26262 analysis |
-
-## Phase 5: Proprietary Evolution
-
-**Target:** Independent firmware, AI-assisted tuning, plugin ecosystem.
-
-| Task | Status | Docs | Notes |
-|------|--------|------|-------|
-| Proprietary algorithms | ❌ | ⏳ | Replace upstream modules |
-| Custom RTOS/AUTOSAR | ❌ | ⏳ | Phase 5 |
-| AI tuning assistant | ❌ | ⏳ | Reserved panel in Studio |
-| Plugin ecosystem | ❌ | ⏳ | Third-party extensions |
+> **Phase:** Architecture Frozen → Capability Delivery
+> **Last updated:** 2026-07-03
+> **Tracks:** 5 parallel development tracks, advancing independently
 
 ---
 
-## Versioning
+## Product Vision
 
-The platform uses the version string from `branding/brand.json`. Releases follow:
+7100CPT is a professional standalone engine management platform: custom ECU
+hardware, modern desktop tuning Studio, cloud telemetry, and AI-assisted
+calibration — built on a proven rusEFI firmware foundation.
 
-- **Major:** Breaking changes (incompatible protocol, new hardware rev)
-- **Minor:** New features (new tuning capability, cloud feature)
-- **Patch:** Bug fixes, stability improvements
+---
 
-Version format: `${PRODUCT_SHORT_NAME}-${MAJOR}.${MINOR}.${PATCH}`
+## Five Parallel Tracks
+
+```
+FOUNDATION     ██████████████████████████  COMPLETE
+  Firmware     ██████████████████████████  rusEFI fork builds, architecture frozen
+  Governance   ██████████████████████████  12 ADRs, Two-Agent model
+  QA           ██████████████████████████  Review loop, QA_BACKLOG
+  Docs         ██████████████████████████  17 hardware specs, 5 TB docs, DECISION_LOG
+
+CONNECTIVITY   ██░░░░░░░░░░░░░░░░░░░░░░░░  NEXT
+  USB          ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-005 — detect, connect, heartbeat, disconnect
+  Discovery    ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-006 — scan, identify, version
+  Handshake    ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-007 — HELLO, response, timeout, retry
+  Identity     ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-007 — vendor, board, firmware, serial
+
+CONTROL        ░░░░░░░░░░░░░░░░░░░░░░░░░░  PLANNED
+  Telemetry    ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-008 — RPM, CLT, TPS, MAP live streaming
+  Calibration  ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-009 — read, TB-010 — write, verify
+  Diagnostics  ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-011 — read DTCs, clear DTCs
+
+INTELLIGENCE   ░░░░░░░░░░░░░░░░░░░░░░░░░░  FUTURE
+  AI tuning    ░░░░░░░░░░░░░░░░░░░░░░░░░░  AI-assisted calibration recommendations
+  Reports      ░░░░░░░░░░░░░░░░░░░░░░░░░░  Session reports, dyno estimates
+  Cloud        ░░░░░░░░░░░░░░░░░░░░░░░░░░  Telemetry sync, OTA, fleet management
+
+HARDWARE       ███░░░░░░░░░░░░░░░░░░░░░░░  DESIGN PHASE
+  Specs        ██████████████████████████  TB-HW-001 — 16 documents, NXP S32K344
+  Design       ██████████████████████████  Phase 0 approved, 34-pin interface frozen
+  Schematic    ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-HW-002 — KiCad, 12 sheets, unlocked
+  PCB          ░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-HW-003 — 6-layer layout
+  Manufacturing░░░░░░░░░░░░░░░░░░░░░░░░░░  TB-HW-004 — Gerbers, BOM, assembly
+  Prototype    ░░░░░░░░░░░░░░░░░░░░░░░░░░  5 units, enclosure, vehicle testing
+```
+
+---
+
+## Track Details
+
+### Foundation (✅ Complete)
+
+| Item | Status | Reference |
+|------|--------|-----------|
+| Repository structure | ✅ | 18-directory system |
+| Firmware fork | ✅ | rusEFI at `8540e44`, builds f407-discovery |
+| Architecture | ✅ Frozen | 3-layer: Service → Protocol → Transport |
+| Governance | ✅ | 12 ADRs, Two-Agent model |
+| QA process | ✅ | Review loop, QA_BACKLOG |
+| Capability tracking | ✅ | CAPABILITY_MATRIX.md, C0-C4 levels |
+| Decision log | ✅ | docs/engineering/DECISION_LOG.md |
+| Branding | ✅ | 7100CPT, BRANDING.md |
+
+### Connectivity (⬚ Next: TB-005)
+
+| TB | Capability | Level | Demo Gate |
+|----|-----------|-------|-----------|
+| TB-005 | USB Transport | C0 | Detect, connect, heartbeat, disconnect |
+| TB-006 | ECU Discovery | C0 | Scan, identify, version, serial |
+| TB-007 | Handshake | C0 | HELLO, response, timeout, retry |
+
+**End-to-end**: 7100CPT Studio → USB detect → connect → handshake → identity → disconnect
+
+### Control (⬚ Planned)
+
+| TB | Capability | Level |
+|----|-----------|-------|
+| TB-008 | Live Telemetry | C0 |
+| TB-009 | Calibration Read | C0 |
+| TB-010 | Calibration Write | C0 |
+| TB-011 | Diagnostics | C0 |
+| TB-012 | Firmware Flash | C0 |
+
+### Intelligence (⬚ Future)
+
+| TB | Capability | Level |
+|----|-----------|-------|
+| TB-013 | Calibration DB Save | C0 |
+| TB-014 | Calibration DB Load | C0 |
+| TB-015 | Session Reports | C0 |
+| TB-016 | Cloud Sync | C0 |
+
+### Hardware (🟡 Design Phase)
+
+| TB | Milestone | Status |
+|----|-----------|--------|
+| TB-HW-001 | System Design Spec | ✅ C3 |
+| Phase 0 | Reuse Matrix | ✅ C3 |
+| TB-HW-002 | KiCad Schematic | ⬚ C0 (unlocked) |
+| TB-HW-003 | PCB Layout | ⬚ C0 |
+| TB-HW-004 | Manufacturing Package | ⬚ C0 |
+| TB-HW-MRP | Manufacturer Release Package | 🟡 Integrated |
+
+---
+
+## Current Sprint
+
+```
+Next action:  TB-005 — USB Transport (C0 → C1)
+Goal:         First working capability demonstration
+              Studio detects USB ECU, connects, sends heartbeat, disconnects
+Blocked by:   Nothing
+Estimates:    One engineering session
+```
+
+---
+
+*Progress tracked in CAPABILITY_MATRIX.md. Decisions in DECISION_LOG.md.*

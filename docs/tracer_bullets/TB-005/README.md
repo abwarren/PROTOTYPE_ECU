@@ -1,9 +1,9 @@
 # TB-005 — USB Transport
 
-> **Status:** ⬚ NEXT — Capability delivery
-> **Prerequisite:** TB-004 (RusEFIProtocolAdapter)
+> **Status:** ⬚ NEXT — C0 Designed (advancing to C1)
+> **Prerequisite:** TB-004 (RusEFIProtocolAdapter — architecture frozen)
 > **Architecture:** ADR-0010 (Transport Abstraction)
-> **Policy:** Architecture frozen — no redesign without ADR
+> **Policy:** Architecture frozen. No redesign. Demo Gate mandatory. 7 artifacts required.
 
 ---
 
@@ -84,11 +84,12 @@ This TB is NOT complete until:
 
 ---
 
-## Completion Criteria
+## Completion Criteria (7 Artifacts — PROJECT_RULES §11.4)
 
-- [ ] Demo Gate passes
-- [ ] QA approves
-- [ ] CAPABILITY_MATRIX.md updated (#6 USB detection → ✅)
-- [ ] SESSION_HANDOFF.md generated
-- [ ] Git committed
-- [ ] GitHub pushed
+- [ ] Artifact 1: Working capability — `UsbTransport.ts` compiled, committed, functional
+- [ ] Artifact 2: Automated test — unit test proving discover/connect/heartbeat/disconnect
+- [ ] Artifact 3: Documentation — TB-005 README updated with results, architecture docs if changed
+- [ ] Artifact 4: Capability Matrix — CAPABILITY_MATRIX.md #6 USB transport advanced to C2
+- [ ] Artifact 5: QA evidence — console log, screenshot, QA sign-off
+- [ ] Artifact 6: Session handoff — SESSION_HANDOFF.md generated
+- [ ] Artifact 7: GitHub commit — committed, pushed, verified on remote

@@ -305,3 +305,20 @@ Update it whenever a Tracer Bullet completes. Every capability must be backed
 by evidence — a build log, screenshot, or QA sign-off.
 
 Progress is measured by verified capabilities, not lines of code or documents written.
+
+### 11.4 Tracer Bullet Completion — 7 Artifacts
+
+Every completed Tracer Bullet MUST leave behind all seven artifacts.
+A TB is not complete until every artifact exists.
+
+| # | Artifact | Description |
+|---|----------|-------------|
+| 1 | **Working capability** | Code compiled, committed, functional |
+| 2 | **Automated test** | Unit/integration test proving the capability works |
+| 3 | **Documentation update** | TB README updated with results + architecture docs if changed |
+| 4 | **Capability Matrix update** | CAPABILITY_MATRIX.md level advanced (C0→C1→C2→C3) |
+| 5 | **QA evidence** | Demo log, screenshot, or protocol dump with QA approval |
+| 6 | **Session handoff** | SESSION_HANDOFF.md generated for next session |
+| 7 | **GitHub commit** | Committed, pushed, verified on remote |
+
+No skipped artifacts. No partial completion.
