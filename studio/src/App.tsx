@@ -1,5 +1,4 @@
 import { useBrand } from "../core/branding/BrandProvider";
-import { useState } from "react";
 
 function App() {
   const brand = useBrand();
