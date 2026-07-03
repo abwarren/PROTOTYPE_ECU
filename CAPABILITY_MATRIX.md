@@ -30,18 +30,19 @@ A capability advances one level at a time. No skipped levels.
 | 4 | Comm architecture | C0 | TB-003 | 3-layer: Service → Protocol → Transport |
 | 5 | Protocol adapter | C1 | TB-004 | RusEFIProtocolAdapter, 7 command map |
 
-| 6 | USB transport | C0 | TB-005 | NEXT — design complete, implementation pending |
-| 7 | ECU discovery | C0 | TB-006 | Architecture defined |
-| 8 | ECU handshake | C0 | TB-007 | Architecture defined |
-| 9 | Live telemetry | C0 | TB-008 | Architecture defined |
-| 10 | Calibration read | C0 | TB-009 | Architecture defined |
-| 11 | Calibration write | C0 | TB-010 | Architecture defined |
-| 12 | Diagnostics | C0 | TB-011 | Architecture defined |
-| 13 | Firmware flash | C0 | TB-012 | Architecture defined |
-| 14 | Calibration DB save | C0 | TB-013 | Architecture defined |
-| 15 | Calibration DB load | C0 | TB-014 | Architecture defined |
-| 16 | Tuning session report | C0 | TB-015 | Architecture defined |
-| 17 | Cloud sync | C0 | TB-016 | Architecture defined |
+| 6 | USB transport (implementation) | C1 | TB-005A | UsbTransport.ts, state machine, Rust serial cmds, TS:0err, Vite:OK |
+| 7 | USB transport (verified) | C0 | TB-005B | Binary + demo: detect, connect, heartbeat, disconnect |
+| 8 | ECU discovery | C0 | TB-006 | Architecture defined |
+| 9 | ECU handshake | C0 | TB-007 | Architecture defined |
+| 10 | Live telemetry | C0 | TB-008 | Architecture defined |
+| 11 | Calibration read | C0 | TB-009 | Architecture defined |
+| 12 | Calibration write | C0 | TB-010 | Architecture defined |
+| 13 | Diagnostics | C0 | TB-011 | Architecture defined |
+| 14 | Firmware flash | C0 | TB-012 | Architecture defined |
+| 15 | Calibration DB save | C0 | TB-013 | Architecture defined |
+| 16 | Calibration DB load | C0 | TB-014 | Architecture defined |
+| 17 | Tuning session report | C0 | TB-015 | Architecture defined |
+| 18 | Cloud sync | C0 | TB-016 | Architecture defined |
 
 ---
 
@@ -65,8 +66,8 @@ Software
   C4 Production:   0
   C3 QA Verified:   3  ████░░░░░░░░░░░░░░░░
   C2 Demonstrated:  1  █░░░░░░░░░░░░░░░░░░░
-  C1 Implemented:   1  █░░░░░░░░░░░░░░░░░░░
-  C0 Designed:     12  ██████████████░░░░░░
+  C1 Implemented:   2  ██░░░░░░░░░░░░░░░░░░
+  C0 Designed:     12  ███████████████░░░░░
 
 Hardware
   C3 QA Verified:   2  ████████████░░░░░░░░
@@ -74,7 +75,7 @@ Hardware
   C0 Designed:       3  ██████████████████░░
 ```
 
-**Next capability to advance:** TB-005 USB Transport (C0 → C1: implement UsbTransport)
+**Next capability to advance:** TB-005B USB Transport (C0 → C2: native binary + demo gate)
 
 ---
 

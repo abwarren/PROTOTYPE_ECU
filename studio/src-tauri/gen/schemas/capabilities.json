@@ -1,0 +1,1 @@
+{"serial-commands":{"identifier":"serial-commands","description":"Serial port communication commands for ECU transport","local":true,"windows":["main"],"permissions":["core:default"]}}

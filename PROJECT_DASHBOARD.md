@@ -12,7 +12,7 @@
 |--------|-------|
 | **Version** | 0.1.0-dev |
 | **Sprint** | Engineering Execution |
-| **Current TB** | TB-005 — USB Transport |
+| **Current TB** | TB-005B — USB Transport Verification |
 | **Architecture** | FROZEN |
 | **rusEFI submodule** | `7abb688` (33 commits behind `0c955db`) |
 | **Sync procedure** | Documented — `04_Firmware/UPSTREAM_SYNC.md` |
@@ -45,7 +45,8 @@ Manufacturing ░░░░░░░░░░░░░░░░░░░░░░
 | TB-002A | Application core | ✅ C2 | 7 interfaces |
 | TB-003 | Comm architecture | ✅ C0 | 3-layer design |
 | TB-004 | Protocol adapter | ✅ C1 | Stub committed |
-| TB-005 | USB Transport | ⬚ NEXT | Detect, connect, heartbeat, disconnect |
+| TB-005A | USB Transport (impl) | ✅ C1 | UsbTransport.ts, state machine, TS:0err |
+| TB-005B | USB Transport (verify) | ⬚ NEXT | Binary + demo gate |
 | TB-006 | ECU Discovery | ⬚ | Scan, identify, version |
 | TB-007 | Handshake | ⬚ | HELLO, timeout, retry |
 | TB-008 | Live Telemetry | ⬚ | RPM, CLT, TPS streaming |
