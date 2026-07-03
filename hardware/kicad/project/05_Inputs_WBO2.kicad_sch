@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid fe0e069c-3ae4-41ce-ad99-5d0f9cb0d8f9)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — Analog Inputs & WBO2")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "Analog (RC filtered), knock, WBO2 (CJ125), digital inputs")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "ANALOG INPUTS & WBO2 — Sheet 05"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "RC filtered analog inputs (1k + 10nF) | WBO2 via CJ125 | Knock sensor conditioning"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "BAV99 clamp diodes on all external inputs | 5.0V VREF from REF5050"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/INTERFACE_SPECIFICATION.md | REUSE_MATRIX.md rows I1-I12"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/05_inputs_wbo2/" (page "6"))
+  )
+)

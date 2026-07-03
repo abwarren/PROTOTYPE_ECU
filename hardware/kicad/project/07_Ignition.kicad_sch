@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid 5d4363ad-032c-40e1-8f1a-9355f95752a0)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — IGBT Ignition Gate Drive x6")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "IGBT gate drive x6, overcurrent protection, fault feedback")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "IGNITION DRIVERS — Sheet 07"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "6x IGBT gate drive channels | Overcurrent protection per channel"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Fault feedback to MCU | Dedicated ignition ground plane"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/PROTECTION_CIRCUITS.md | REUSE_MATRIX.md rows G1-G6"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/07_ignition/" (page "8"))
+  )
+)

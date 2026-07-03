@@ -1,6 +1,6 @@
 # HARDWARE_STATUS.md — Hardware Development Status
 
-> **Last Updated:** 2026-07-01
+> **Last Updated:** 2026-07-03
 > **Policy:** Per Mandatory Git & GitHub Policy — this document is updated with every commit.
 
 ---
@@ -9,8 +9,8 @@
 
 | Milestone | Status | Branch | Commit |
 |-----------|--------|--------|--------|
-| TB-HW-001 | ✅ Complete | feature/hardware-schematic-v1 | 2383820 |
-| TB-HW-002 | ⬚ Pending | — | — |
+| TB-HW-001 | ✅ C3 (QA Verified) | feature/hardware-schematic-v1 | 2383820 |
+| TB-HW-002 | 🔄 In Progress | feature/hardware-schematic-v1 | — |
 | TB-HW-003 | ⬚ Pending | — | — |
 | TB-HW-004 | ⬚ Pending | — | — |
 
@@ -63,4 +63,12 @@
 
 ## Next Milestone
 
-TB-HW-002: KiCad Schematic Capture — 10 hierarchical sheets, ERC clean.
+TB-HW-002: KiCad Schematic Capture — 12 hierarchical sheets, ERC clean.
+
+**Status 2026-07-03:** Project skeleton created — `hardware/kicad/project/`
+with ECU.kicad_pro, ECU.kicad_sch (root), 12 sheet files, symbol library,
+footprint library, sym-lib-table, fp-lib-table. Components not yet placed
+on sheets. Next step: populate sheets with components per REUSE_MATRIX.md.
+
+**Design Package:** `hardware/kicad/DESIGN_PACKAGE.md` — full index of
+all 18 specification documents + KiCad project files.

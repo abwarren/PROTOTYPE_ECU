@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid aa00a14d-149f-46a4-9aa0-b80e8b18ee84)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — Cover & Revision History")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "Revision history, block diagram, BOM summary, REUSE_MATRIX reference")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "COVER SHEET — 7100CPT ECU Platform"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "Document revision history and design overview"
+    (at 25 30 0) (effects (font (size 2.0 2.0)) (justify left bottom)))
+  (text "REUSE_MATRIX.md: 41 blocks — 37% Reuse, 17% Adapt, 46% New Design"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Phase 0 Gate: APPROVED | Designer: 7100CPT Engineering | Date: 2026-07-03"
+    (at 25 42 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/00_cover/" (page "1"))
+  )
+)

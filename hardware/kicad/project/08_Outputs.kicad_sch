@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid 1296b5e7-ee6a-4779-bf13-f9277c9de0e3)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — ETC, Boost, Relays, Tach")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "ETC (DRV8873), boost solenoid, relays (low-side), tachometer")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "OUTPUT DRIVERS — Sheet 08"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "ETC: DRV8873 H-bridge (3A) | Boost: low-side FET | Tach: 12V square wave"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Relay drivers: low-side NFETs with flyback diodes | Fuel pump output"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/INTERFACE_SPECIFICATION.md | REUSE_MATRIX.md rows O1-O8"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/08_outputs/" (page "9"))
+  )
+)

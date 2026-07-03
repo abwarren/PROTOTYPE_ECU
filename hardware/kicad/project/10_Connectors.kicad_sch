@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid 7adb6735-2cfe-49f0-b5f5-ed605b2e56a7)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — 34-Pin, CAN, USB, Debug, Exp")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "34-pin AMPSEAL 16 main, CAN x2, USB-C, SWD, expansion header")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "CONNECTORS — Sheet 10"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "34-pin AMPSEAL 16 main harness | CAN1, CAN2 DEUTSCH DT 4-pin"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "USB-C (panel mount) | SWD debug (Tag-Connect) | Expansion header"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/INTERFACE_SPECIFICATION.md — 34-pin frozen pinout"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/10_connectors/" (page "11"))
+  )
+)

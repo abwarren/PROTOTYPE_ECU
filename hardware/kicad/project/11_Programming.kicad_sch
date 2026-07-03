@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid 8064381c-653e-424b-816f-785180c9dcc4)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — Boot Config, SWD, LEDs, TP")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "Boot config resistors, SWD header, test points, status LEDs")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "PROGRAMMING & TEST — Sheet 11"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "SWD header (Tag-Connect TC2050) | BOOT_CFG resistors for boot mode selection"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Test points on all power rails | Status LEDs: Power, MCU-Alive, CAN-Active, Fault"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/SYSTEM_ARCHITECTURE.md | REUSE_MATRIX.md rows T1-T6"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/11_programming/" (page "12"))
+  )
+)

@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid c9995795-0fea-4cc1-97e6-5db92d11a2ef)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — MCU Core, Debug & Memory")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "S32K344, 40MHz xtal, decoupling, boot cfg, SWD, status LEDs")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "MCU CORE — S32K344 | Sheet 02"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "NXP S32K344 | 2MB Flash | 512KB SRAM | 4x CAN FD | ARM Cortex-M7 @ 160MHz"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "40 MHz crystal | PLL to 160 MHz | 257-QFP | External watchdog (TPS3850)"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/MCU_SELECTION.md | NXP S32K344-EVB | AN13537"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/02_mcu_debug_memory/" (page "3"))
+  )
+)

@@ -1,0 +1,29 @@
+(kicad_sch (version 20240108) (generator "eeschema")
+  (uuid 10b1b917-30c9-4446-aa14-22dc1a8b37ef)
+  (paper "A3")
+  (title_block
+    (title "7100CPT ECU — CAN FD x4")
+    (date "2026-07-03")
+    (rev "0.1")
+    (company "${COMPANY}")
+    (comment 1 "CAN FD x4 (TJA1043), CM chokes (ACT45B-510), split termination")
+    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
+    (comment 4 "REUSE_MATRIX.md — NXP Reference Following")
+    (comment 5 "-40C to +85C | IP67 Target | 6-Layer")
+  )
+  (lib_symbols)
+  (symbol_instances)
+  (text "CAN FD INTERFACE — Sheet 03"
+    (at 25 24 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
+  (text "4x CAN FD channels | TJA1043GT/3 transceivers | 5 Mbps FD data rate"
+    (at 25 30 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "CM choke (ACT45B-510-2P-TL003) per channel | Split termination (60+60 Ohm +4.7nF)"
+    (at 25 36 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
+  (text "Ref: docs/hardware/CAN_DESIGN.md | REUSE_MATRIX.md rows C1-C4"
+    (at 25 42 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  (sheet_instances
+    (path "/03_can/" (page "4"))
+  )
+)

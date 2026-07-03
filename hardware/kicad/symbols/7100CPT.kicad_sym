@@ -1,0 +1,153 @@
+(kicad_symbol_lib (version 20240108) (generator "eeschema")
+  ;; ──────────────────────────────────────────────────────────────
+  ;; 7100CPT ECU Platform — Project Symbol Library
+  ;; ──────────────────────────────────────────────────────────────
+  ;; All custom symbols for the 7100CPT ECU schematic.
+  ;; Standard symbols come from KiCad's built-in libraries.
+  ;;
+  ;; Symbols needed per sheet:
+  ;;   01_Power:    Custom power supply blocks
+  ;;   02_MCU:      S32K344 (if no built-in available)
+  ;;   03_CAN:      Custom CAN termination blocks
+  ;;   04_USB:      USB-C connector symbol
+  ;;   05_Inputs:   Custom WBO2 block
+  ;;   06_Injectors: TLE8888 injector driver
+  ;;   07_Ignition:  IGBT gate driver block
+  ;;   08_Outputs:   DRV8873, relay driver blocks
+  ;;   09_Protection: TPS3850 watchdog block
+  ;;   10_Connectors: AMPSEAL 34-pin symbol
+  ;;   11_Programming: Tag-Connect TC2050 debug header
+  ;;
+  ;; Reference: docs/hardware/COMPONENT_SELECTION.md
+  ;;            docs/hardware/REUSE_MATRIX.md
+  ;; ──────────────────────────────────────────────────────────────
+
+  ;; ─── S32K344 MCU (257-QFP) ────────────────────────────────────
+  (symbol "S32K344_257QFP"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "S32K344" (at 0 -25.4 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:S32K344-257QFP" (at 0 25.4 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "https://www.nxp.com/S32K344" (at 0 50.8 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "NXP" (at 0 76.2 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "S32K344_0_1"
+      (rectangle (start -50.8 -25.4) (end 50.8 25.4)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+    (symbol "S32K344_1_1"
+      (rectangle (start -50.8 -25.4) (end 50.8 25.4)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── TLE8888 Injector Driver ─────────────────────────────────
+  (symbol "TLE8888"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "TLE8888" (at 0 -25.4 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:TLE8888-PG-DSO-36" (at 0 25.4 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 50.8 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "Infineon" (at 0 76.2 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "TLE8888_0_1"
+      (rectangle (start -38.1 -19.05) (end 38.1 19.05)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── TPS3850 External Watchdog ────────────────────────────────
+  (symbol "TPS3850"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "TPS3850" (at 0 -12.7 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:TPS3850-VSON-10" (at 0 12.7 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 25.4 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "TI" (at 0 38.1 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "TPS3850_0_1"
+      (rectangle (start -25.4 -12.7) (end 25.4 12.7)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── 34-Pin AMPSEAL Connector ─────────────────────────────
+  (symbol "AMPSEAL_34"
+    (property "Reference" "J" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "AMPSEAL_16_35POS" (at 0 -19.05 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:AMPSEAL-16-35POS" (at 0 19.05 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 38.1 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "TE Connectivity" (at 0 57.15 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "AMPSEAL_34_0_1"
+      (rectangle (start -31.75 -19.05) (end 31.75 19.05)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── Ignition IGBT Driver Block ───────────────────────────────
+  (symbol "IGBT_DRIVER_6CH"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "IGBT_DRIVER_6CH" (at 0 -19.05 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 0 19.05 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 38.1 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "IGBT_DRIVER_0_1"
+      (rectangle (start -38.1 -19.05) (end 38.1 19.05)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── ETC H-Bridge (DRV8873) ───────────────────────────────────
+  (symbol "ETC_DRV8873"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "DRV8873" (at 0 -12.7 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:DRV8873-HTSSOP-24" (at 0 12.7 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 25.4 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "TI" (at 0 38.1 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "DRV8873_0_1"
+      (rectangle (start -31.75 -12.7) (end 31.75 12.7)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── WBO2 Controller (CJ125) ──────────────────────────────────
+  (symbol "WBO2_CJ125"
+    (property "Reference" "U" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "CJ125" (at 0 -12.7 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:CJ125-SSOP-24" (at 0 12.7 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 25.4 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Manufacturer" "Bosch" (at 0 38.1 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "CJ125_0_1"
+      (rectangle (start -31.75 -12.7) (end 31.75 12.7)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+
+  ;; ─── Tag-Connect TC2050 Debug ─────────────────────────────────
+  (symbol "TC2050"
+    (property "Reference" "J" (at 0 0 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "TC2050-IDC" (at 0 -7.62 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "7100CPT:TC2050" (at 0 7.62 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "https://www.tag-connect.com" (at 0 15.24 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "TC2050_0_1"
+      (rectangle (start -12.7 -5.08) (end 12.7 5.08)
+        (stroke (width 0.254) (type default)) (fill (type background)))
+    )
+  )
+)
+
