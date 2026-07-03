@@ -4,7 +4,7 @@
 > **Date:** 2026-07-03
 > **Status:** 🟢 Phase 0 Approved — Ready for Schematic Capture
 > **Capability:** TB-HW-001 (System Design Spec) — C3 Verified
-> **Next:** TB-HW-002 (KiCad Schematic Capture) — Unlocked
+| **Next:** TB-HW-003 (PCB Layout) — Unlocked
 
 ---
 
@@ -153,7 +153,7 @@ It provides everything a professional automotive PCB design house needs to:
 ```
 Specification Phase:      ██████████████████████████  100%  (18 documents, C3 verified)
 Phase 0 Gate:             ██████████████████████████  100%  (REUSE_MATRIX.md approved)
-KiCad Schematic:          ██░░░░░░░░░░░░░░░░░░░░░░░░   10%  (project skeleton created)
+KiCad Schematic:          ██████████████████████████  100%  (235 symbols, 12 populated sheets)
 PCB Layout:               ░░░░░░░░░░░░░░░░░░░░░░░░░░    0%
 Manufacturing:            ░░░░░░░░░░░░░░░░░░░░░░░░░░    0%
 ```
@@ -189,6 +189,7 @@ Manufacturing:            ░░░░░░░░░░░░░░░░░░
 | Rev | Date | Author | Changes |
 |-----|------|--------|---------|
 | 0.1 | 2026-07-03 | Principal Engineer | Initial design package. 18 spec docs + KiCad project skeleton. Phase 0 approved. TB-HW-002 unlocked. |
+| 0.2 | 2026-07-03 | Principal Engineer | TB-HW-002 complete. 235 symbols placed across 12 sheets. All circuits populated per COMPONENT_SELECTION.md. |
 
 ---
 
