@@ -110,7 +110,8 @@ pub fn write_raw(state: State<SerialState>, path: String, data: Vec<u8>) -> Resu
 
     port.write_all(&data)
         .map_err(|e| format!("Write error on {}: {}", path, e))?;
-    port.flush().map_err(|e| format!("Flush error on {}: {}", path, e))?;
+    port.flush()
+        .map_err(|e| format!("Flush error on {}: {}", path, e))?;
     Ok(())
 }
 
@@ -310,7 +311,11 @@ fn read_exact(port: &mut Box<dyn SerialPort>, buf: &mut [u8]) -> Result<(), Stri
             Ok(0) => return Err("Connection closed by ECU".to_string()),
             Ok(n) => offset += n,
             Err(ref e) if e.kind() == std::io::ErrorKind::TimedOut => {
-                return Err(format!("Timeout after reading {}/{} bytes", offset, buf.len()));
+                return Err(format!(
+                    "Timeout after reading {}/{} bytes",
+                    offset,
+                    buf.len()
+                ));
             }
             Err(e) => return Err(format!("Read error: {}", e)),
         }
