@@ -11,11 +11,13 @@
 | Metric | Value |
 |--------|-------|
 | **Version** | 0.1.0-dev |
-| **Current Sprint** | Engineering Execution |
+| **Sprint** | Engineering Execution |
 | **Current TB** | TB-005 — USB Transport |
 | **Architecture** | FROZEN |
+| **rusEFI submodule** | `7abb688` (33 commits behind `0c955db`) |
+| **Sync procedure** | Documented — `04_Firmware/UPSTREAM_SYNC.md` |
 | **Active Branch** | `feature/tb-004-rusefi-protocol-adapter` |
-| **Latest Commit** | `debbf21` |
+| **Latest Commit** | `ab118ca` |
 | **Next Action** | Implement UsbTransport — detect, connect, heartbeat, disconnect |
 
 ---

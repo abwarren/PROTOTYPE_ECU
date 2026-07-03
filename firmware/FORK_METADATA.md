@@ -5,13 +5,34 @@
 | Field | Value |
 |-------|-------|
 | **Repository** | https://github.com/rusefi/rusefi |
-| **Fork Commit Hash** | `8540e44142d837e991e89efc062f8be3feadde8c` |
+| **Integration method** | Git submodule at `firmware/upstream/` |
 | **Fork Date** | 2026-06-30 |
+| **Fork Point (upstream base)** | `8540e44` (2026-06-30) |
+| **Local HEAD** | `7abb688` |
+| **Upstream HEAD** | `0c955db` (2026-07-02) |
+| **Behind upstream** | ~33 commits |
 | **Upstream Branch** | `master` |
 | **Remote URL** | https://github.com/rusefi/rusefi.git |
-| **Working Tree** | Clean (except FORK_METADATA.md) |
 | **Upstream License** | GPL-3.0 |
-| **Upstream Version** | Latest (firmware/development) |
+
+## Local Patches
+
+| SHA | Description | File | Upstream Status |
+|-----|-------------|------|-----------------|
+| `7abb688` | Add `-Wno-error=shadow` for GCC 12+ compatibility | `firmware/Makefile` (+2 lines) | Not submitted |
+
+This patch follows the existing pattern (`-Wno-error=tautological-compare`)
+and is a candidate for upstream contribution.
+
+## Sync Procedure
+
+See `04_Firmware/UPSTREAM_SYNC.md` for the documented procedure covering:
+- Checking current state
+- Fast-forward (no local patches)
+- Rebase (with GCC 12 patch)
+- Build verification
+- Rollback
+- Upstream contribution process
 
 ## Directory Layout
 
@@ -34,28 +55,24 @@ firmware/upstream/
 
 | Tool | Notes |
 |------|-------|
-| **Compiler** | ARM GCC Embedded (arm-none-eabi-gcc) |
+| **Compiler** | ARM GCC Embedded 12.3 (arm-none-eabi-gcc) |
 | **Build System** | GNU Make + Python scripts |
 | **MCU** | STM32F4/F7/H7 series |
+| **Target** | STM32F407 Discovery (f407-discovery) |
 | **Debug** | OpenOCD + GDB |
 | **CI** | GitHub Actions (Docker-based) |
 
-## Supported Boards
-
-rusEFI supports multiple hardware variants including:
-- Proteus (STM32F7)
-- MicroRusEFi (STM32F4)
-- Hellen boards (various)
-- Custom board configurations
-
-## Build Instructions (Upstream)
+## Build Instructions
 
 ```bash
-cd firmware
+export PATH="/home/wa/tools/gcc-12/bin:/home/wa/tools/java/bin:/home/wa/tools/7zip:/home/wa/tools/mtools/usr/bin:/usr/sbin:$PATH"
+export JAVA_HOME="/home/wa/tools/java"
+cd firmware/upstream/firmware
 make -j$(nproc)
 ```
 
 ## License Note
 
-This directory contains the unmodified upstream rusEFI source code, licensed under GPL-3.0.
-All modifications for this platform are in `firmware/platform/` and are documented in ADR-0002.
+This directory contains the rusEFI source code as a Git submodule, licensed
+under GPL-3.0. The submodule tracks upstream `master`. Local modifications are
+limited to the GCC 12 build compatibility patch and are documented above.

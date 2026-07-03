@@ -15,7 +15,7 @@
 | ED-002 | rusEFI output binary still named `rusefi.bin`, not `7100cpt.bin` | Low | High | Small | Firmware | 🟡 Open |
 | ED-003 | USB descriptor string verification not yet performed | Low | Low | Small | Studio | 🟡 Open |
 | ED-004 | No automated CI/CD pipeline for Studio build | Medium | Medium | Medium | DevOps | 🟡 Open |
-| ED-005 | rusEFI upstream sync procedure not documented | Medium | High | Small | Firmware | 🟡 Open |
+| ED-005 | rusEFI upstream sync procedure not documented | Medium | High | Small | Firmware | 🟢 Addressed — `04_Firmware/UPSTREAM_SYNC.md` |
 | ED-006 | Tauri app identifier still uses old namespace `com.prototype-ecu.studio` | Low | Low | Small | Studio | 🟡 Open |
 
 ### Hardware

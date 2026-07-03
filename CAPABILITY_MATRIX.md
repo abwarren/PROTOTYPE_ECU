@@ -24,7 +24,7 @@ A capability advances one level at a time. No skipped levels.
 
 | # | Capability | Level | TB | Evidence |
 |---|-----------|-------|-----|----------|
-| 1 | Firmware builds | C3 | TB-001 | Build log: `rusefi.bin` 727 KB, QA verified |
+| 1 | Firmware builds | C3 | TB-001 | Clean build 2026-07-03: `rusefi.bin` 744KB, ARM ELF |
 | 2 | Studio launches | C3 | TB-002 | Tauri window, dark theme, branding, QA verified |
 | 3 | Application core | C2 | TB-002A | 7 service interfaces, BrandProvider |
 | 4 | Comm architecture | C0 | TB-003 | 3-layer: Service → Protocol → Transport |
