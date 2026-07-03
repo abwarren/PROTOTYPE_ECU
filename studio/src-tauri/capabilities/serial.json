@@ -1,0 +1,8 @@
+{
+  "identifier": "serial-commands",
+  "description": "Serial port communication commands for ECU transport",
+  "windows": ["main"],
+  "permissions": [
+    "core:default"
+  ]
+}

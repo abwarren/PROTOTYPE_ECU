@@ -1,0 +1,10 @@
+# Cross-compilation configuration for Windows MSVC target
+# Uses cargo-xwin (installed) which bundles MSVC CRT and Windows SDK
+
+[target.x86_64-pc-windows-msvc]
+# xwin provides the MSVC linker, CRT, and Windows SDK
+# No system packages required
+
+[env]
+# Ensure xwin doesn't need network on every build
+XWIN_CACHE_DIR = { value = "/home/wa/.xwin-cache", relative = true }

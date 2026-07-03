@@ -150,9 +150,7 @@ export class RusEFIProtocolAdapter implements EcuProtocol {
   ): Promise<CalTable> {
     const payload = new TextEncoder().encode(tableId);
     const frame = createTSFrame(RUSEFI_CMD.READ_PAGE, payload);
-    const response = await transport.sendFrame(conn, frame);
-    const text = new TextDecoder().decode(response);
-
+    void await transport.sendFrame(conn, frame);
     // Parse TS page response — format TBD by actual firmware
     // Stub: return empty table structure
     return {

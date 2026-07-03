@@ -48,10 +48,7 @@ fn discover_ports() -> Result<DiscoverResult, String> {
             path: p.port_name.clone(),
             name: format!(
                 "{} ({})",
-                p.port_name
-                    .split('/')
-                    .last()
-                    .unwrap_or(&p.port_name),
+                p.port_name.split('/').last().unwrap_or(&p.port_name),
                 p.port_name
             ),
         })
@@ -61,14 +58,22 @@ fn discover_ports() -> Result<DiscoverResult, String> {
 }
 
 #[tauri::command]
-fn open_port(path: String, baud_rate: u32, state: State<SerialState>) -> Result<OpenResult, String> {
+fn open_port(
+    path: String,
+    baud_rate: u32,
+    state: State<SerialState>,
+) -> Result<OpenResult, String> {
     let port = serialport::new(&path, baud_rate)
         .timeout(std::time::Duration::from_millis(500))
         .open()
         .map_err(|e| format!("Failed to open {}: {}", path, e))?;
 
     let handle = path.clone();
-    state.active_ports.lock().unwrap().insert(handle.clone(), port);
+    state
+        .active_ports
+        .lock()
+        .unwrap()
+        .insert(handle.clone(), port);
 
     Ok(OpenResult { handle })
 }
@@ -95,7 +100,11 @@ fn write_port(handle: String, data: Vec<u8>, state: State<SerialState>) -> Resul
 }
 
 #[tauri::command]
-fn read_port(handle: String, timeout_ms: u64, state: State<SerialState>) -> Result<Vec<u8>, String> {
+fn read_port(
+    handle: String,
+    timeout_ms: u64,
+    state: State<SerialState>,
+) -> Result<Vec<u8>, String> {
     let mut ports = state.active_ports.lock().unwrap();
     let port = ports
         .get_mut(&handle)
