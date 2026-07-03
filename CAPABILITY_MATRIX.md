@@ -32,17 +32,18 @@ A capability advances one level at a time. No skipped levels.
 
 | 6 | USB transport (implementation) | C1 | TB-005A | UsbTransport.ts, state machine, Rust serial cmds, TS:0err, Vite:OK |
 | 7 | USB transport (verified) | C0 | TB-005B | Binary + demo: detect, connect, heartbeat, disconnect |
-| 8 | ECU discovery | C0 | TB-006 | Architecture defined |
-| 9 | ECU handshake | C0 | TB-007 | Architecture defined |
-| 10 | Live telemetry | C0 | TB-008 | Architecture defined |
-| 11 | Calibration read | C0 | TB-009 | Architecture defined |
-| 12 | Calibration write | C0 | TB-010 | Architecture defined |
-| 13 | Diagnostics | C0 | TB-011 | Architecture defined |
-| 14 | Firmware flash | C0 | TB-012 | Architecture defined |
-| 15 | Calibration DB save | C0 | TB-013 | Architecture defined |
-| 16 | Calibration DB load | C0 | TB-014 | Architecture defined |
-| 17 | Tuning session report | C0 | TB-015 | Architecture defined |
-| 18 | Cloud sync | C0 | TB-016 | Architecture defined |
+| 8 | Windows CI pipeline | C0 | TB-CI-001 | NEXT — `.github/workflows/windows-build.yml` created, push to trigger |
+| 9 | ECU discovery | C0 | TB-006 | Architecture defined |
+| 10 | ECU handshake | C0 | TB-007 | Architecture defined |
+| 11 | Live telemetry | C0 | TB-008 | Architecture defined |
+| 12 | Calibration read | C0 | TB-009 | Architecture defined |
+| 13 | Calibration write | C0 | TB-010 | Architecture defined |
+| 14 | Diagnostics | C0 | TB-011 | Architecture defined |
+| 15 | Firmware flash | C0 | TB-012 | Architecture defined |
+| 16 | Calibration DB save | C0 | TB-013 | Architecture defined |
+| 17 | Calibration DB load | C0 | TB-014 | Architecture defined |
+| 18 | Tuning session report | C0 | TB-015 | Architecture defined |
+| 19 | Cloud sync | C0 | TB-016 | Architecture defined |
 
 ---
 

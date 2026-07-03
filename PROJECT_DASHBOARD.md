@@ -12,7 +12,7 @@
 |--------|-------|
 | **Version** | 0.1.0-dev |
 | **Sprint** | Engineering Execution |
-| **Current TB** | TB-005B — USB Transport Verification |
+| **Current TB** | TB-CI-001 — Windows Build Pipeline |
 | **Architecture** | FROZEN |
 | **rusEFI submodule** | `7abb688` (33 commits behind `0c955db`) |
 | **Sync procedure** | Documented — `04_Firmware/UPSTREAM_SYNC.md` |
@@ -46,7 +46,8 @@ Manufacturing ░░░░░░░░░░░░░░░░░░░░░░
 | TB-003 | Comm architecture | ✅ C0 | 3-layer design |
 | TB-004 | Protocol adapter | ✅ C1 | Stub committed |
 | TB-005A | USB Transport (impl) | ✅ C1 | UsbTransport.ts, state machine, TS:0err |
-| TB-005B | USB Transport (verify) | ⬚ NEXT | Binary + demo gate |
+| TB-005B | USB Transport (verify) | ⬚ | Binary + demo gate |
+| TB-CI-001 | Windows CI Pipeline | ⬚ NEXT | GitHub Actions → 7100CPT-Setup.exe |
 | TB-006 | ECU Discovery | ⬚ | Scan, identify, version |
 | TB-007 | Handshake | ⬚ | HELLO, timeout, retry |
 | TB-008 | Live Telemetry | ⬚ | RPM, CLT, TPS streaming |
@@ -81,7 +82,8 @@ Manufacturing ░░░░░░░░░░░░░░░░░░░░░░
 
 PARALLEL TRACK (no TB dependency)
 
-  TB-HW-002 KiCad Schematic  (unlocked, runs independently)
+  TB-CI-001 Windows CI Pipeline  (multiplies all subsequent TBs)
+  TB-HW-002 KiCad Schematic      (unlocked, runs independently)
 ```
 
 **What can be parallelized:** TB-HW-002 (hardware) runs independently of

@@ -14,7 +14,7 @@
 | **Maturity Level** | 3: Engineering Execution |
 | **Active Branch** | `feature/tb-004-rusefi-protocol-adapter` |
 | **Phase** | Engineering Execution (2026-07-03) |
-| **Next Action** | TB-005B — produce native binary, demo gate: detect/connect/heartbeat/disconnect |
+| **Next Action** | TB-CI-001 — push triggers Windows build, verify green workflow |
 
 ---
 
