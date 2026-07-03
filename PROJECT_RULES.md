@@ -340,6 +340,8 @@ require QA review:
 | `CAPABILITY_MATRIX.md` | Verified capabilities with evidence |
 | `PROJECT_STATUS.md` | Detailed component-level progress |
 | `DECISION_LOG.md` | Significant engineering decisions and rationale |
+| `ENGINEERING_DEBT.md` | Known debt, prioritized |
+| `ENGINEERING_STANDARDS.md` | Single reference for all engineering standards |
 | `CURRENT_STATE.md` | Agent shared state — session startup |
 | `BRANDING.md` | Product naming authority |
 | `SESSION_HANDOFF.md` | Session-to-session continuity |

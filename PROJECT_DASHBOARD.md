@@ -126,6 +126,7 @@ on separate workstreams.
 | [PROJECT_STATUS.md](11_Documentation/PROJECT_STATUS.md) | Detailed progress |
 | [DECISION_LOG.md](docs/engineering/DECISION_LOG.md) | Why decisions were made |
 | [ENGINEERING_DEBT.md](ENGINEERING_DEBT.md) | Known debt, prioritized |
+| [ENGINEERING_STANDARDS.md](docs/engineering/ENGINEERING_STANDARDS.md) | Single reference — all engineering standards |
 | [CURRENT_STATE.md](CURRENT_STATE.md) | Agent shared state |
 | [BRANDING.md](BRANDING.md) | Product identity |
 | [README.md](README.md) | Project overview |
