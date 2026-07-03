@@ -367,3 +367,17 @@ Tracked per sprint. Measured, not estimated.
 
 **KPIs are updated in PROJECT_DASHBOARD.md at the end of every sprint.**
 
+---
+
+## 14. Commit Policy
+
+Every commit must achieve at least one of:
+
+- **Increase capability** — advance a capability in CAPABILITY_MATRIX.md (C0→C1→C2→C3→C4)
+- **Improve quality** — fix a bug, reduce technical debt, add a test, pass a QA gate
+- **Reduce risk** — close a risk in RISK_REGISTER.md or resolve an ENGINEERING_DEBT.md item
+
+If a commit does none of these, it probably should not be part of the current
+sprint. Architecture documents, governance updates, and process changes are
+complete as of 2026-07-03. Future work ships capabilities.
+

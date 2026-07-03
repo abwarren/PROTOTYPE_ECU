@@ -48,7 +48,43 @@ Manufacturing ░░░░░░░░░░░░░░░░░░░░░░
 | TB-007 | Handshake | ⬚ | HELLO, timeout, retry |
 | TB-008 | Live Telemetry | ⬚ | RPM, CLT, TPS streaming |
 | TB-009 | Calibration Read | ⬚ | Read table, checksum |
-| TB-HW-002 | KiCad Schematic | ⬚ | 12 sheets, ERC clean |
+
+---
+
+## Capability Dependency Graph
+
+```
+                    TB-005 USB Transport
+                           │
+                           ▼
+                    TB-006 ECU Discovery
+                           │
+                           ▼
+                    TB-007 Handshake
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+     TB-008 Live Telemetry      Calibration Read (TB-009)
+              │                         │
+              │                         ▼
+              │               Calibration Write (TB-010)
+              │                         │
+              └───────────┬─────────────┘
+                          ▼
+                  Diagnostics (TB-011)
+                          │
+                          ▼
+                  Firmware Flash (TB-012)
+
+PARALLEL TRACK (no TB dependency)
+
+  TB-HW-002 KiCad Schematic  (unlocked, runs independently)
+```
+
+**What can be parallelized:** TB-HW-002 (hardware) runs independently of
+software TB-005–012. Within software, nothing is parallel until after
+TB-007 (Handshake) — then Telemetry and Calibration Read can proceed
+on separate workstreams.
 
 ---
 
@@ -87,6 +123,7 @@ Manufacturing ░░░░░░░░░░░░░░░░░░░░░░
 | [CAPABILITY_MATRIX.md](CAPABILITY_MATRIX.md) | What works today |
 | [PROJECT_STATUS.md](11_Documentation/PROJECT_STATUS.md) | Detailed progress |
 | [DECISION_LOG.md](docs/engineering/DECISION_LOG.md) | Why decisions were made |
+| [ENGINEERING_DEBT.md](ENGINEERING_DEBT.md) | Known debt, prioritized |
 | [CURRENT_STATE.md](CURRENT_STATE.md) | Agent shared state |
 | [BRANDING.md](BRANDING.md) | Product identity |
 | [README.md](README.md) | Project overview |
