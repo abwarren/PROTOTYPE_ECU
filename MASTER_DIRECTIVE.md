@@ -7,7 +7,13 @@
 >
 > **Engineering Philosophy:** 7100CPT is developed as a production-grade platform from day one, while delivering working MVPs through small, complete vertical slices.
 >
-> **Phase:** Architecture Frozen → Capability Delivery (2026-07-03)
+> **Phase:** Engineering Execution (2026-07-03)
+>
+> **Mission:** The objective of this repository is to produce verified engineering
+> capability — not code, documents, or activity. Every session must end with one
+> or more capabilities that are measurably closer to production. Progress is
+> demonstrated through evidence, automated tests, QA validation, and updates
+> to the Capability Matrix.
 
 ---
 

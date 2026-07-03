@@ -9,12 +9,12 @@
 
 | Field | Value |
 |-------|-------|
-| **Sprint** | 7100CPT — Capability Delivery Phase |
-| **Milestone** | Architecture frozen — delivering capabilities |
-| **Maturity Level** | 2 → 3: Architecture Complete → Capability Delivery |
+| **Sprint** | 7100CPT — Engineering Execution |
+| **Milestone** | Architecture frozen — shipping capabilities |
+| **Maturity Level** | 3: Engineering Execution |
 | **Active Branch** | `feature/tb-004-rusefi-protocol-adapter` |
-| **Phase** | Architecture Frozen (2026-07-03) |
-| **Next Action** | TB-005 USB Transport |
+| **Phase** | Engineering Execution (2026-07-03) |
+| **Next Action** | TB-005 USB Transport — detect, connect, heartbeat, disconnect |
 
 ---
 

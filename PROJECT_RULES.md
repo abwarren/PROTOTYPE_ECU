@@ -322,3 +322,48 @@ A TB is not complete until every artifact exists.
 | 7 | **GitHub commit** | Committed, pushed, verified on remote |
 
 No skipped artifacts. No partial completion.
+
+---
+
+## 12. Governance Documents (Core Repository Documents)
+
+The following documents define how the project operates. Changes to these
+require QA review:
+
+| Document | Purpose |
+|----------|---------|
+| `README.md` | Project overview |
+| `MASTER_DIRECTIVE.md` | Specification contract — highest authority |
+| `PROJECT_RULES.md` | Engineering rules, workflows, policies |
+| `PROJECT_DASHBOARD.md` | First thing every agent opens — pulse, pipeline, risks |
+| `ROADMAP.md` | 5-track development roadmap |
+| `CAPABILITY_MATRIX.md` | Verified capabilities with evidence |
+| `PROJECT_STATUS.md` | Detailed component-level progress |
+| `DECISION_LOG.md` | Significant engineering decisions and rationale |
+| `CURRENT_STATE.md` | Agent shared state — session startup |
+| `BRANDING.md` | Product naming authority |
+| `SESSION_HANDOFF.md` | Session-to-session continuity |
+
+These are the governance layer. Everything else is supporting documentation,
+research, or implementation.
+
+---
+
+## 13. Engineering KPIs
+
+Tracked per sprint. Measured, not estimated.
+
+| KPI | Target | Current |
+|-----|--------|---------|
+| Tracer Bullet success rate | >95% | 100% (5/5 complete) |
+| TB Demo Gate pass rate | >90% | — (TB-005 onward) |
+| Regression rate | <2% | — (no production code yet) |
+| QA rejection rate | <10% | — (no TB submitted for QA yet) |
+| Build success rate | >98% | 100% (f407-discovery) |
+| Documentation coverage | 100% | 100% (all TBs documented) |
+| Capability coverage | Increasing every sprint | 5 verified, 12 designed |
+| Mean time to root cause | Decreasing | — |
+| Mean time to recovery | Decreasing | — |
+
+**KPIs are updated in PROJECT_DASHBOARD.md at the end of every sprint.**
+

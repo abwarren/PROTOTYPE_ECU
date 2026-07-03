@@ -107,16 +107,16 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 
 ---
 
-## Current Phase: 7100CPT Capability Delivery
+## Current Phase: 7100CPT Engineering Execution
 
 | Field | Value |
 |-------|-------|
 | **Governance** | FROZEN — 12 ADRs accepted |
 | **Engineering Model** | Two-Agent (Engineer + QA) |
 | **Architecture** | FROZEN (2026-07-03) |
-| **Phase** | Architecture Complete → Capability Delivery |
+| **Phase** | Engineering Execution — shipping capabilities |
 | **Tracer Bullets Complete** | 5 (TB-001, TB-002, TB-002A, TB-003, TB-004 + TB-HW-001) |
-| **Next** | TB-005 USB Transport — first capability demo |
+| **Next** | TB-005 USB Transport — detect, connect, heartbeat, disconnect |
 | **Metric** | 5 verified capabilities (see CAPABILITY_MATRIX.md) |
 
 ---
