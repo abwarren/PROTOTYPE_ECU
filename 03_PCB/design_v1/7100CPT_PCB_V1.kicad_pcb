@@ -1,0 +1,300 @@
+(kicad_pcb (version 20240108) (generator "7100CPT-PCB-gen")
+
+  (general
+    (thickness 1.6)
+  )
+
+  (page A4)
+  (title_block
+    (title "7100CPT ECU — PCB V1 (Prototype)")
+    (date "2026-07-05")
+    (rev "1.0")
+    (company "7100CPT Engineering")
+    (comment 1 "Simple 2-layer robust ECU PCB for prototype")
+  )
+
+  (layers
+    (0 "F.Cu" signal)
+    (31 "B.Cu" signal)
+    (36 "B.Paste" user)
+    (37 "F.Paste" user)
+    (44 "Dwgs.User" user)
+    (45 "Cmts.User" user)
+    (46 "Eco1.User" user)
+    (47 "Eco2.User" user)
+    (48 "Edge.Cuts" user)
+  )
+
+  (setup
+    (stackup
+      (layer "F.Cu" (type "copper" (thickness 0.035)))
+      (layer "dielectric 1" (type "prepreg" (thickness 1.53) (material "FR4")))
+      (layer "B.Cu" (type "copper" (thickness 0.035)))
+    )
+    (solder_mask
+      (min_width 0.1)
+    )
+    (solder_paste
+      (ratio -12)
+    )
+    (copper_finish "ENIG")
+  )
+
+  (net 0 "")
+  (net 1 "GND")
+  (net 2 "+5V")
+  (net 3 "+3.3V")
+  (net 4 "VBAT")
+  (net 5 "CAN0_H")
+  (net 6 "CAN0_L")
+  (net 7 "CAN1_H")
+  (net 8 "CAN1_L")
+  (net 9 "USB_D+")
+  (net 10 "USB_D-")
+  (net 11 "Injector_1")
+  (net 12 "Injector_2")
+  (net 13 "Injector_3")
+  (net 14 "Injector_4")
+  (net 15 "Injector_5")
+  (net 16 "Injector_6")
+  (net 17 "Injector_7")
+  (net 18 "Injector_8")
+  (net 19 "Ignition_1")
+  (net 20 "Ignition_2")
+  (net 21 "Ignition_3")
+  (net 22 "Ignition_4")
+  (net 23 "Ignition_5")
+  (net 24 "Ignition_6")
+  (net 25 "ETC_Motor+")
+  (net 26 "ETC_Motor-")
+  (net 27 "TPS_1")
+  (net 28 "TPS_2")
+  (net 29 "MAP")
+  (net 30 "CLT")
+  (net 31 "IAT")
+  (net 32 "WBO2_1")
+  (net 33 "WBO2_2")
+  (net 34 "Boost_Solenoid")
+  (net 35 "Tach_Out")
+  (net 36 "Relay_1")
+  (net 37 "Relay_2")
+  (net 38 "Relay_3")
+  (net 39 "Relay_4")
+  (net 40 "SWDIO")
+  (net 41 "SWCLK")
+  (net 42 "RESET")
+  (net 43 "VBAT_FUSED")
+
+  ; ============ DIMENSIONS ============
+  ; Board: 160mm x 110mm
+  ; 4 mounting holes: M4 at corners (6mm from edge)
+  ; Main connector along short edge
+  ; CAN connectors along long edge
+  ; USB-C on long edge opposite
+
+  ; ---- Board Outline ----
+  (gr_rect (start 0 0) (end 160 110) (layer "Edge.Cuts") (width 0.1))
+
+  ; ---- Mounting Holes (M4, 4.5mm drill, 8mm pad) ----
+  (gr_circle (center 6 6) (end 6 2.5) (layer "Edge.Cuts") (width 0.1))
+  (gr_circle (center 154 6) (end 154 2.5) (layer "Edge.Cuts") (width 0.1))
+  (gr_circle (center 6 104) (end 6 2.5) (layer "Edge.Cuts") (width 0.1))
+  (gr_circle (center 154 104) (end 154 2.5) (layer "Edge.Cuts") (width 0.1))
+
+  ; ---- Keep-Out Zone Labels ----
+  (gr_text "KEEP-OUT: BUCK INDUCTOR" (at 130 25) (layer "Cmts.User") (effects (font (size 2 2))))
+  (gr_text "KEEP-OUT: CRYSTAL 5mm" (at 80 50) (layer "Cmts.User") (effects (font (size 2 2))))
+  (gr_text "7100CPT ECU V1" (at 80 55 0) (layer "F.SilkS") (effects (font (size 3 3) bold)))
+  (gr_text "REV 1.0 — 2026-07-05" (at 80 59 0) (layer "F.SilkS") (effects (font (size 1.5 1.5))))
+  (gr_text "NXP S32K344" (at 80 63 0) (layer "F.SilkS") (effects (font (size 1.5 1.5))))
+  (gr_text "6-36V IN" (at 15 5 0) (layer "F.SilkS") (effects (font (size 1.5 1.5))))
+
+  ; ---- Zone: GND Copper Pour (F.Cu) ----
+  (zone (net 1) (layer "F.Cu")
+    (fill_polygon (pts (xy 0 0) (xy 160 0) (xy 160 110) (xy 0 110)))
+    (priority 1)
+    (min_thickness 0.15)
+    (pad_options (thermal_bridge_width 0.5))
+  )
+
+  ; ---- Zone: GND Copper Pour (B.Cu) ----
+  (zone (net 1) (layer "B.Cu")
+    (fill_polygon (pts (xy 0 0) (xy 160 0) (xy 160 110) (xy 0 110)))
+    (priority 1)
+    (min_thickness 0.15)
+    (pad_options (thermal_bridge_width 0.5))
+  )
+
+  ; ============ COMPONENTS ============
+
+  ; ---- MAIN CONNECTOR: 42-Pin Header (simplified as 2x21 pin header) ----
+  ; Along left edge (x=5)
+  (module "Connector_PinHeader_2.54mm:PinHeader_2x21_P2.54mm_Horizontal"
+    (layer "F.Cu") (tedit 0)
+    (at 14 55 90)
+    (descr "Main harness connector — 42-pin (simplified as 2x21 header)")
+  )
+
+  ; ---- CAN0 CONNECTOR: 4-pin header ----
+  ; Top edge
+  (module "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 30 104 270)
+    (descr "CAN0 — Primary vehicle bus")
+  )
+
+  ; ---- CAN1 CONNECTOR ----
+  (module "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 50 104 270)
+    (descr "CAN1 — Secondary bus")
+  )
+
+  ; ---- USB-C CONNECTOR ----
+  ; Right edge, bottom area
+  (module "Connector_USB:USB_C_Receptacle_Molex_105450-0101"
+    (layer "F.Cu") (tedit 0)
+    (at 160 85 0)
+  )
+
+  ; ---- DEBUG HEADER (SWD 10-pin) ----
+  ; Bottom edge
+  (module "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 80 6 0)
+    (descr "SWD Debug — 10-pin 0.05in")
+  )
+
+  ; ---- POWER SECTION (top-right area) ----
+  ; Buck converter IC (LMR33630)
+  (module "Package_SOIC:SOIC-8_3.9x4.9mm_P1.27mm"
+    (layer "F.Cu") (tedit 0)
+    (at 130 20 0)
+    (descr "LMR33630 — Buck converter 12V→5V")
+  )
+
+  ; Buck inductor (6x6mm)
+  (module "Inductor_SMD:L_6x6mm"
+    (layer "F.Cu") (tedit 0)
+    (at 130 35 0)
+    (descr "Buck inductor — 10µH, 3A")
+  )
+
+  ; LDO (TPS7A1633)
+  (module "Package_SOIC:HVSSOP-8_3x3mm_P0.65mm"
+    (layer "F.Cu") (tedit 0)
+    (at 115 20 0)
+    (descr "TPS7A1633 — LDO 5V→3.3V")
+  )
+
+  ; Precision reference
+  (module "Package_SOIC:MSOP-8_3x3mm_P0.65mm"
+    (layer "F.Cu") (tedit 0)
+    (at 100 20 0)
+    (descr "REF5050 — 5.0V precision reference")
+  )
+
+  ; ---- MCU SECTION (center) ----
+  ; NXP S32K344 in LQFP-176
+  (module "Package_QFP:LQFP-176_24x24mm_P0.5mm"
+    (layer "F.Cu") (tedit 0)
+    (at 80 55 0)
+    (descr "NXP S32K344 — Main MCU")
+  )
+
+  ; ---- INJECTOR DRIVERS (bottom-left) ----
+  ; TLE8888
+  (module "Package_QFP:LQFP-64_10x10mm_P0.5mm"
+    (layer "F.Cu") (tedit 0)
+    (at 40 30 0)
+    (descr "TLE8888 — Peak & Hold injector driver")
+  )
+
+  ; ---- IGNITION DRIVERS (bottom area) ----
+  ; IGBT gate drive area
+  (module "Package_TO_SOT_SMD:TO-252-2"
+    (layer "F.Cu") (tedit 0)
+    (at 40 75 0)
+    (descr "ISL9V3040S3ST — IGBT ignition driver")
+  )
+
+  ; ---- ETC H-BRIDGE ----
+  (module "Package_SOIC:HTSSOP-24_4.4x7.8mm_P0.65mm"
+    (layer "F.Cu") (tedit 0)
+    (at 60 75 0)
+    (descr "DRV8873 — ETC H-bridge")
+  )
+
+  ; ---- CAN TRANSCEIVERS ----
+  ; TJA1043 near CAN0
+  (module "Package_SOIC:SOIC-14_3.9x8.7mm_P1.27mm"
+    (layer "F.Cu") (tedit 0)
+    (at 30 95 0)
+    (descr "TJA1043 — CAN FD transceiver 0")
+  )
+
+  ; TJA1043 near CAN1
+  (module "Package_SOIC:SOIC-14_3.9x8.7mm_P1.27mm"
+    (layer "F.Cu") (tedit 0)
+    (at 50 95 0)
+    (descr "TJA1043 — CAN FD transceiver 1")
+  )
+
+  ; ---- WATCHDOG ----
+  (module "Package_SON:VSON-10_3x3mm_P0.5mm"
+    (layer "F.Cu") (tedit 0)
+    (at 100 85 0)
+    (descr "TPS3850G33 — Watchdog timer")
+  )
+
+  ; ---- REVERSE POLARITY / SAFE STATE MOSFET ----
+  (module "Package_TO_SOT_SMD:TO-252-2"
+    (layer "F.Cu") (tedit 0)
+    (at 145 10 0)
+    (descr "IPD90P04P4L — P-MOSFET reverse polarity")
+  )
+
+  ; ---- OUTPUT CONNECTOR: Relay/Boost/Tach ----
+  ; Bottom-right edge
+  (module "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 130 104 270)
+    (descr "Aux outputs — relays, boost, tach")
+  )
+
+  ; ---- DIAGNOSTIC CONNECTOR (CAN2) ----
+  (module "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 65 104 270)
+    (descr "Diagnostic CAN")
+  )
+
+  ; ---- WBO2 CONNECTOR (CJ125 header) ----
+  (module "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+    (layer "F.Cu") (tedit 0)
+    (at 14 104 270)
+    (descr "Wideband O2 sensor interface")
+  )
+
+  ; ============ VIAS / STITCHING ============
+  (via (at 75 10) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+  (via (at 85 10) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+  (via (at 75 100) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+  (via (at 85 100) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+  (via (at 140 50) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+  (via (at 20 50) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 1))
+
+  ; ============ DESIGN NOTES ============
+  (gr_text "---
+PCB LAYOUT NOTES (do not place components in these areas):
+- Buck inductor (L1): 10mm radius keep-out on top layer (no analog traces)
+- Crystal (X1): 5mm radius keep-out all layers
+- MCU center at (80,55) — route all signals radially outward
+- Power traces: 0.5mm min width for 5V/3.3V, 1.5mm for VBAT
+- CAN: 120ohm diff pair, 0.25mm width, 0.25mm gap
+- USB: 90ohm diff pair, 0.3mm width, 0.2mm gap
+- Solder mask: green LPI
+- Copper finish: ENIG
+- All mounting holes: M4 screw, 4.5mm drill, 8mm copper pad
+---" (at 5 0 0) (layer "Cmts.User") (effects (font (size 1 1))))
+)
