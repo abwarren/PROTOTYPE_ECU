@@ -5,6 +5,96 @@
 
 ---
 
+## Enclosure Designs — 3 Prototypes
+
+![3 Prototype Enclosure Designs](enclosures/7100CPT_comparison.png)
+
+Three distinct enclosure designs matching reference styles from the design folder. Each has OpenSCAD source (parametric), STL (3D-printable mesh), and PNG render (1200×900).
+
+---
+
+### Design 1 — 7100CPT-S "Sleek Modern"
+
+**File:** `enclosures/7100CPT-S_sleek_modern.scad` | `.stl` | `.png`
+
+*Style inspiration: Dark charcoal + blue accent (ChatGPT ECU render)*
+
+**Dimensions:** 170mm × 120mm × 34mm
+
+| Feature | Detail |
+|---------|--------|
+| Body | Chamfered rectangular box, dark charcoal (#141C25) |
+| Accent | Blue (#5CA5E7) inset ring around top perimeter |
+| Vents | 6 vertical slots on right side |
+| Grooves | 3 parallel top grooves + 5 side accent grooves |
+| LED | Front-facing light pipe recess for status indicator |
+| Connectors | Left: 42-pin main, Top: 2× CAN, Right: USB-C, Bottom: SWD |
+| Mounting | 4 rubber feet (M3 standoffs internal) |
+| Material | CNC 6061-T6 aluminum, black hard anodized |
+| Construction | Two-piece, screw-down lid (12× M2.5 around perimeter) |
+
+---
+
+### Design 2 — 7100CPT-T "Tactical"
+
+**File:** `enclosures/7100CPT-T_tactical.scad` | `.stl` | `.png`
+
+*Style inspiration: Olive drab military (landscape render)*
+
+**Dimensions:** 180mm × 130mm × 42mm
+
+| Feature | Detail |
+|---------|--------|
+| Body | Trapezoidal cross-section, dark olive drab (#3C3A2E) |
+| Heatsink | 12 integral fins on top, 8mm tall, olive (#5B5230) |
+| Bumpers | 4× corner bumpers, 12mm radius, 6mm tall |
+| Accents | Bright green (#769728) marker strips on both sides |
+| Grips | Recessed grip grooves on both long sides (6 per side) |
+| Brackets | Heavy-duty slotted mounting brackets (top/bottom) |
+| Connectors | Left: 42-pin (recessed), Top: 2× CAN, Right: USB-C + LED |
+| Lid | 3mm plate, 8× M3 screws |
+| Material | Die-cast aluminum or CNC, olive drab epoxy powder coat |
+
+---
+
+### Design 3 — 7100CPT-R "Racing"
+
+**File:** `enclosures/7100CPT-R_racing.scad` | `.stl` | `.png`
+
+*Style inspiration: Black + red performance (pasted copper/red render)*
+
+**Dimensions:** 165mm × 115mm × 28mm (low profile)
+
+| Feature | Detail |
+|---------|--------|
+| Body | Aggressive chamfered edges, matte black (#131313) |
+| Accents | Red (#C92E31) strips + corner triangles + side gill highlights |
+| Vents | 6× top slots, 3mm × 30mm each |
+| Gills | 5 side gill slots on left edge |
+| Cuts | Angled corner cuts (15°) on front-left and rear-right |
+| LEDs | 3× front-facing status indicator cutouts |
+| Profile | 28mm total — slimmest of the three designs |
+| Connectors | Left: 42-pin, Top: 2× CAN, Right: USB-C, Bottom: SWD |
+| Weight | ~250g (lightest due to thin walls and cutouts) |
+| Material | 6061-T6 aluminum, black anodize, red anodized accents |
+
+---
+
+## Design Comparison
+
+| Feature | 7100CPT-S | 7100CPT-T | 7100CPT-R |
+|---------|-----------|-----------|-----------|
+| Size | 170×120×34 | 180×130×42 | 165×115×28 |
+| Style | Modern, clean | Rugged, tactical | Aggressive, racing |
+| Cooling | Side vents | Top fins (12) | Top slots + gills |
+| Weight | ~350g | ~500g | ~250g |
+| Sealing | Screw-down | Screw-down + bumpers | Screw-down |
+| Mounting | Rubber feet | Slotted brackets | Screw flanges |
+| Accent color | Blue (#5CA5E7) | Green (#769728) | Red (#C92E31) |
+| Best for | Show car, street | Off-road, military | Track, motorsport |
+
+---
+
 ## PCB Design (V1 — Simple & Robust)
 
 **File:** `design_v1/7100CPT_PCB_V1.kicad_pcb`
