@@ -3,7 +3,7 @@
 // send_command, query_ecu, query_ecu_crc
 
 use serde::Serialize;
-use serialport::SerialPort;
+use serialport::{SerialPort, SerialPortType};
 use std::collections::HashMap;
 use std::sync::Mutex;
 use std::time::Duration;
@@ -61,12 +61,21 @@ pub fn list_ports() -> Result<Vec<PortInfo>, String> {
                 "serial".to_string()
             };
 
+            let (serial_number, vid, pid) = match p.port_type {
+                SerialPortType::UsbPort(ref info) => (
+                    info.serial_number.clone(),
+                    Some(info.vid),
+                    Some(info.pid),
+                ),
+                _ => (None, None, None),
+            };
+
             PortInfo {
                 path: p.port_name.clone(),
                 name: p.port_name,
-                serial_number: p.serial_number,
-                vendor_id: p.vid,
-                product_id: p.pid,
+                serial_number,
+                vendor_id: vid,
+                product_id: pid,
                 transport,
             }
         })
@@ -252,7 +261,7 @@ pub fn send_frame(
         .map_err(|e| e.to_string())?;
 
     let mut header = [0u8; 3];
-    read_exact(port.as_mut(), &mut header)?;
+    read_exact(&mut **port, &mut header)?;
 
     let resp_size = u16::from_be_bytes([header[0], header[1]]) as usize;
     let resp_code = header[2];
@@ -265,12 +274,12 @@ pub fn send_frame(
     let resp_payload_len = resp_size.saturating_sub(1);
     let mut resp_payload = vec![0u8; resp_payload_len];
     if resp_payload_len > 0 {
-        read_exact(port.as_mut(), &mut resp_payload)?;
+        read_exact(&mut **port, &mut resp_payload)?;
     }
 
     // Read CRC32 tail
     let mut crc_buf = [0u8; 4];
-    read_exact(port.as_mut(), &mut crc_buf)?;
+    read_exact(&mut **port, &mut crc_buf)?;
     let received_crc = u32::from_be_bytes(crc_buf);
 
     // Verify CRC32 over response_code + payload
@@ -304,7 +313,7 @@ pub fn query_ecu_crc(state: State<SerialState>, path: String) -> Result<String, 
 }
 
 // Helper: reads exactly `buf.len()` bytes or returns an error
-fn read_exact(port: &mut Box<dyn SerialPort>, buf: &mut [u8]) -> Result<(), String> {
+fn read_exact(port: &mut dyn SerialPort, buf: &mut [u8]) -> Result<(), String> {
     let mut offset = 0;
     while offset < buf.len() {
         match port.read(&mut buf[offset..]) {
@@ -361,7 +370,7 @@ fn send_frame_inner(
         .map_err(|e| e.to_string())?;
 
     let mut header = [0u8; 3];
-    read_exact(port, &mut header)?;
+    read_exact(&mut **port, &mut header)?;
 
     let resp_size = u16::from_be_bytes([header[0], header[1]]) as usize;
     let resp_code = header[2];
@@ -373,11 +382,11 @@ fn send_frame_inner(
     let resp_payload_len = resp_size.saturating_sub(1);
     let mut resp_payload = vec![0u8; resp_payload_len];
     if resp_payload_len > 0 {
-        read_exact(port, &mut resp_payload)?;
+        read_exact(&mut **port, &mut resp_payload)?;
     }
 
     let mut crc_buf = [0u8; 4];
-    read_exact(port, &mut crc_buf)?;
+    read_exact(&mut **port, &mut crc_buf)?;
     let received_crc = u32::from_be_bytes(crc_buf);
 
     let mut hasher = crc32fast::Hasher::new();

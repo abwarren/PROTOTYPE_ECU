@@ -31,3 +31,6 @@ target/
 # Environment
 .env
 *.env.local
+studio/dist/
+studio/src-tauri/gen/
+studio/src-tauri/target/

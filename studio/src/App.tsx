@@ -1,263 +1,133 @@
-import { useBrand } from "../core/branding/BrandProvider";
-import { useState, useEffect, useCallback } from "react";
-import { UsbTransport } from "../core/transport/UsbTransport";
-import { RusEfiProtocol } from "../core/transport/RusEfiProtocol";
-import { EcuIdentity } from "../core/transport/EcuProtocol";
-import {
-  EcuDevice,
-  Connection,
-  ConnectionState,
-} from "../core/transport/EcuTransport";
+// App.tsx — Main application shell
+// Wires together: Sidebar, ConnectionBar, and page content
 
+import { useState, useCallback } from "react";
+import { useBrand } from "./core/branding/BrandProvider";
+import { UsbTransport } from "./core/transport/UsbTransport";
+import { RusEfiProtocol } from "./core/transport/RusEfiProtocol";
+import { EcuIdentity } from "./core/transport/EcuProtocol";
+import { EcuDevice, Connection, ConnectionState } from "./core/transport/EcuTransport";
+
+import Sidebar from "./components/Sidebar";
+import ConnectionBar from "./components/ConnectionBar";
+import Dashboard from "./components/Dashboard";
+import Calibration from "./components/Calibration";
+import Diagnostics from "./components/Diagnostics";
+import Settings from "./components/Settings";
+
+type PageTab = "dashboard" | "calibration" | "diagnostics" | "settings";
 type AppPhase = "idle" | "discovering" | "connecting" | "connected" | "error";
 
 function App() {
   const brand = useBrand();
+  const [page, setPage] = useState<PageTab>("dashboard");
   const [phase, setPhase] = useState<AppPhase>("idle");
-  const [ports, setPorts] = useState<EcuDevice[]>([]);
   const [identity, setIdentity] = useState<EcuIdentity | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [connection, setConnection] = useState<Connection | null>(null);
-  const [connState, setConnState] = useState<ConnectionState>(
-    ConnectionState.DISCONNECTED
-  );
+  const [error, setError] = useState<string | null>(null);
+  const [device, setDevice] = useState<EcuDevice | null>(null);
 
-  // Initialize transport + protocol + service once
+  // Initialize transport + protocol once
   const [ecu] = useState(() => {
     const transport = new UsbTransport();
     const protocol = new RusEfiProtocol(transport);
     return { transport, protocol };
   });
 
-  useEffect(() => {
-    // Listen for state changes
-    ecu.transport.onStateChange((state, err) => {
-      setConnState(state);
-      if (err) setError(`Transport: ${err.message}`);
-    });
-  }, []);
-
   // ---- Actions ----
-
   const handleDiscover = useCallback(async () => {
     setPhase("discovering");
     setError(null);
-
     try {
       const devices = await ecu.transport.discover();
-      setPorts(devices);
-      setPhase(devices.length > 0 ? "idle" : "error");
       if (devices.length === 0) {
-        setError(
-          "No serial ports found. Is the ECU connected via USB?"
-        );
+        setPhase("idle");
+        setError("No ECU found — connect via USB");
+      } else {
+        // Auto-connect to first device
+        await handleConnect(devices[0]);
       }
     } catch (err) {
       setPhase("error");
-      setError(`Discovery failed: ${err}`);
+      setError(String(err));
     }
-  }, []);
+  }, [ecu]);
 
-  const handleConnect = useCallback(
-    async (device: EcuDevice) => {
-      setPhase("connecting");
-      setError(null);
-
-      try {
-        const conn = await ecu.transport.connect(device);
-        setConnection(conn);
-
-        // Handshake — get ECU identity
-        const id = await ecu.protocol.handshake(ecu.transport, conn);
-        setIdentity(id);
-        setPhase("connected");
-      } catch (err) {
-        setPhase("error");
-        setError(`Connection failed: ${err}`);
-      }
-    },
-    [ecu]
-  );
+  const handleConnect = useCallback(async (dev: EcuDevice) => {
+    setPhase("connecting");
+    setError(null);
+    setDevice(dev);
+    try {
+      const conn = await ecu.transport.connect(dev);
+      setConnection(conn);
+      const id = await ecu.protocol.handshake(ecu.transport, conn);
+      setIdentity(id);
+      setPhase("connected");
+    } catch (err) {
+      setPhase("error");
+      setError(String(err));
+    }
+  }, [ecu]);
 
   const handleDisconnect = useCallback(async () => {
     if (!connection) return;
-
     try {
       await ecu.transport.disconnect(connection);
-    } catch (err) {
-      console.error("Disconnect error:", err);
-    }
-
+    } catch { /* ignore */ }
     setIdentity(null);
     setConnection(null);
+    setDevice(null);
     setPhase("idle");
   }, [connection, ecu]);
 
-  // ---- Loading State ----
-
+  // Loading state
   if (!brand) {
     return (
-      <div className="app-loading">
-        <div className="spinner" />
-        <p>Loading Prototype Studio...</p>
+      <div style={{
+        height: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "var(--bg-deep)", color: "var(--text-secondary)", flexDirection: "column", gap: 16,
+      }}>
+        <div style={{
+          width: 48, height: 48, border: "3px solid var(--border)",
+          borderTopColor: "var(--accent)", borderRadius: "50%",
+          animation: "spin 0.8s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
+          Loading 7100CPT Studio...
+        </span>
       </div>
     );
   }
 
-  // ---- Layout ----
-
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>{brand.productName}</h1>
-        <span className="version">v{brand.productVersion}</span>
-      </header>
-
-      <main className="app-main">
-        {/* Connection Panel */}
-        <div className="connection-panel">
-          <div className="panel-header">
-            <h2>ECU Connection</h2>
-            <span
-              className={`connection-badge ${
-                phase === "connected"
-                  ? "connected"
-                  : phase === "connecting"
-                    ? "connecting"
-                    : "disconnected"
-              }`}
-            >
-              {phase === "connected"
-                ? "Connected"
-                : phase === "connecting"
-                  ? "Connecting..."
-                  : "Disconnected"}
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="connection-actions">
-            <button
-              className="btn btn-primary"
-              onClick={handleDiscover}
-              disabled={phase === "discovering" || phase === "connecting"}
-            >
-              {phase === "discovering"
-                ? "Scanning..."
-                : "Discover ECUs"}
-            </button>
-
-            {connection && (
-              <button
-                className="btn btn-secondary"
-                onClick={handleDisconnect}
-              >
-                Disconnect
-              </button>
-            )}
-          </div>
-
-          {/* Error */}
+      <Sidebar active={page} onNavigate={setPage} />
+      <div className="main">
+        <ConnectionBar
+          connState={phase === "connected" ? ConnectionState.CONNECTED : phase === "connecting" || phase === "discovering" ? ConnectionState.CONNECTING : ConnectionState.DISCONNECTED}
+          identity={identity}
+          device={device}
+          phase={phase}
+          onDiscover={handleDiscover}
+          onDisconnect={handleDisconnect}
+        />
+        <div className="content">
           {error && (
-            <div className="error-box">
-              <span className="error-icon">{'\u26A0'}</span>
-              <span>{error}</span>
+            <div style={{
+              padding: "8px 16px", marginBottom: 16,
+              background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)",
+              borderRadius: 8, fontSize: 13, color: "#ef4444",
+            }}>
+              {error}
             </div>
           )}
-
-          {/* Port List */}
-          {ports.length > 0 && phase !== "connected" && (
-            <div className="port-list">
-              <h3>Available Ports ({ports.length})</h3>
-              {ports.map((p) => (
-                <div
-                  key={p.id}
-                  className="port-item"
-                  onClick={() => handleConnect(p)}
-                >
-                  <div className="port-name">{p.name}</div>
-                  <div className="port-details">
-                    {p.path}
-                    <span className="port-badge">{p.transport}</span>
-                  </div>
-                  <button
-                    className="btn btn-small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleConnect(p);
-                    }}
-                  >
-                    Connect
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          {page === "dashboard" && <Dashboard connected={phase === "connected"} />}
+          {page === "calibration" && <Calibration />}
+          {page === "diagnostics" && <Diagnostics />}
+          {page === "settings" && <Settings />}
         </div>
-
-        {/* ECU Identity Panel — visible when connected */}
-        {phase === "connected" && identity && (
-          <div className="identity-panel">
-            <h2>ECU Identity</h2>
-            <table className="identity-table">
-              <tbody>
-                <tr>
-                  <td>Vendor</td>
-                  <td>{identity.vendor}</td>
-                </tr>
-                <tr>
-                  <td>Board</td>
-                  <td className="highlight">{identity.board}</td>
-                </tr>
-                <tr>
-                  <td>Firmware</td>
-                  <td>{identity.firmware}</td>
-                </tr>
-                <tr>
-                  <td>Protocol</td>
-                  <td>v{identity.protocol}</td>
-                </tr>
-                <tr>
-                  <td>Signature</td>
-                  <td className="mono">{identity.serial}</td>
-                </tr>
-                <tr>
-                  <td>Features</td>
-                  <td>
-                    {identity.features.map((f: string) => (
-                      <span key={f} className="feature-tag">
-                        {f}
-                      </span>
-                    ))}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Navigation (keep existing) */}
-        {phase !== "connected" && (
-          <nav className="app-nav">
-            <button className="nav-item active">{'\uD83D\uDE97'} Garage</button>
-            <button className="nav-item">{'\uD83D\uDCCA'} Dashboard</button>
-            <button className="nav-item">{'\uD83D\uDD25'} Engine</button>
-            <button className="nav-item">{'\uD83D\uDCC8'} Live Charts</button>
-            <button className="nav-item">{'\uD83E\uDDE0'} AI Assistant</button>
-            <button className="nav-item">{'\uD83D\uDCCB'} Diagnostics</button>
-            <button className="nav-item">{'\u2699\uFE0F'} Firmware</button>
-            <button className="nav-item">{'\u2601\uFE0F'} Cloud</button>
-          </nav>
-        )}
-      </main>
-
-      <footer className="app-footer">
-        <span>{brand.companyName}</span>
-        <span>
-          Studio v{brand.productVersion}
-          {connState === ConnectionState.CONNECTED && " \u00B7 ECU Connected"}
-        </span>
-      </footer>
+      </div>
     </div>
   );
 }
