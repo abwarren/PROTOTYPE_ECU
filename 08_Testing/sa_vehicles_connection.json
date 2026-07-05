@@ -1,0 +1,10 @@
+{
+  "host": "localhost",
+  "port": 5432,
+  "database": "sa_vehicles",
+  "user": "ecu_app",
+  "password": "ecu7100cpt",
+  "ssl": false,
+  "pool_size": 5,
+  "connection_string": "postgresql://ecu_app:ecu7100cpt@localhost:5432/sa_vehicles"
+}
