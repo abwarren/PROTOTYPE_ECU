@@ -57,7 +57,7 @@ The ECU hardware is designed as a professional standalone ECU platform suitable 
 
 - **Material:** Aluminum (ADC12 die cast)
 - **Sealing:** IP67 (standard), IP6K9K (optional)
-- **Connectors:** Deutsch DTM (TE Connectivity)
+- **Connectors:** AMPSEAL 16 (TE Connectivity)
 - **Thermal:** Thermal pads to enclosure
 
 ## Interfaces

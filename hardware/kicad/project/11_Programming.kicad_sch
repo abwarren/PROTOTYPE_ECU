@@ -80,6 +80,13 @@
     (property "Reference" "TP8" (at 350 125 0) (effects (font (size 1.27 1.27))))
     (property "Value" "CAN0_L" (at 350 118.65 0) (effects (font (size 1.27 1.27))))
   )
+  ;; GND power symbol — wired to TP5
+  (symbol (lib_id "power:GND") (at 50 110 0) (unit 1)
+    (exclude_from_sim no) (in_bom no) (on_board no) (dnp no)
+    (uuid 7a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d)
+    (property "Reference" "#PWR" (at 50 110 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "GND" (at 50 107.46 0) (effects (font (size 1.27 1.27))))
+  )
   )
   (text "PROGRAMMING & TEST — Sheet 11" (at 25 250 0) (effects (font (size 3.0 3.0) bold) (justify left bottom)))
   (text "Tag-Connect TC2050 SWD | Boot Config | Test Points | Status LEDs" (at 25 244 0) (effects (font (size 1.5 1.5)) (justify left bottom)))
@@ -93,6 +100,9 @@
   (text "Production: Debug port fused off after programming (HSM lock) | SWD/JTAG disabled" (at 25 100 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
   (text "MCU Security: Challenge-response debug auth | HSM EVITA Full | Secure boot chain enabled" (at 25 92 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
   (text "Ref: docs/hardware/MCU_SELECTION.md §5-6 | NXP AN13537 §4 Debug & Security" (at 25 80 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+
+  ;; Wire: GND power symbol to TP5 test point
+  (wire (pts (xy 50 110) (xy 50 125)) (stroke (width 0) (type default) (color 0 0 0)))
 
 
   (sheet_instances
