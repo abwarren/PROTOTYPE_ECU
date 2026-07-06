@@ -8,6 +8,9 @@ firmware/upstream/firmware/build/
 # Dependencies and build tools
 /home/wa/tools/
 
+# Generated/untracked template directories
+Engineering_Template/
+
 # OS files
 .DS_Store
 Thumbs.db

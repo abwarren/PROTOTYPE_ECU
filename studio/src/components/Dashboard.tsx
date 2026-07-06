@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import TachGauge from "./TachGauge";
 import ArcGauge from "./ArcGauge";
 import BarGauge from "./BarGauge";
+import { RusEfiProtocol } from "../core/transport/RusEfiProtocol";
+import { UsbTransport } from "../core/transport/UsbTransport";
+import { Connection } from "../core/transport/EcuTransport";
 
 interface SensorData {
   rpm: number;
@@ -44,10 +47,11 @@ function simulateData(data: SensorData): SensorData {
 
 interface DashboardProps {
   connected: boolean;
-  // In future: receive live data from ECU service
+  ecu?: { transport: UsbTransport; protocol: RusEfiProtocol };
+  connection?: Connection | null;
 }
 
-export default function Dashboard({ connected }: DashboardProps) {
+export default function Dashboard({ connected, ecu, connection }: DashboardProps) {
   const [data, setData] = useState<SensorData>(DEFAULT_DATA);
   const [demoMode, setDemoMode] = useState(!connected);
 
@@ -55,6 +59,50 @@ export default function Dashboard({ connected }: DashboardProps) {
     setDemoMode(!connected);
   }, [connected]);
 
+  // Live ECU polling when connected
+  useEffect(() => {
+    if (!connected || !ecu || !connection) return;
+    const interval = setInterval(async () => {
+      try {
+        const channels = await ecu.protocol.readSensors(ecu.transport, connection, []);
+        const sensorData: SensorData = { ...DEFAULT_DATA };
+        for (const ch of channels) {
+          switch (ch.id) {
+            case "rpm":
+              sensorData.rpm = ch.value;
+              break;
+            case "coolantTemp":
+              sensorData.coolantTemp = ch.value;
+              break;
+            case "intakeAirTemp":
+              sensorData.intakeAirTemp = ch.value;
+              break;
+            case "throttlePos":
+              sensorData.throttlePos = ch.value;
+              break;
+            case "batteryVoltage":
+              sensorData.batteryVoltage = ch.value;
+              break;
+            case "map":
+              sensorData.map = ch.value;
+              break;
+            case "afr":
+              sensorData.afr = ch.value;
+              break;
+            case "oilPressure":
+              sensorData.oilPressure = ch.value;
+              break;
+          }
+        }
+        setData(sensorData);
+      } catch (err) {
+        console.error("[Dashboard] read error:", err);
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [connected, ecu, connection]);
+
+  // Demo mode polling when not connected
   useEffect(() => {
     if (!demoMode) return;
     const interval = setInterval(() => {

@@ -94,7 +94,7 @@ function App() {
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          Loading {brand ? brand.productName + " Studio" : "ECU Studio"}...
+          Loading ECU Studio...
         </span>
       </div>
     );
@@ -122,8 +122,19 @@ function App() {
               {error}
             </div>
           )}
-          {page === "dashboard" && <Dashboard connected={phase === "connected"} />}
-          {page === "calibration" && <Calibration />}
+          {page === "dashboard" && (
+            <Dashboard
+              connected={phase === "connected"}
+              ecu={ecu}
+              connection={connection}
+            />
+          )}
+          {page === "calibration" && (
+            <Calibration
+              ecu={ecu}
+              connection={connection}
+            />
+          )}
           {page === "diagnostics" && <Diagnostics />}
           {page === "settings" && <Settings />}
         </div>

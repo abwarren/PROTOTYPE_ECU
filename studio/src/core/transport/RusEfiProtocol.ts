@@ -18,13 +18,60 @@ const TS_OUTPUT_COMMAND = 0x4f; // 'O' — read output channels
 const TS_READ_COMMAND = 0x52; // 'R' — read calibration page
 // TB-004+ will use: TS_CHUNK_WRITE_COMMAND (0x57 'W'), TS_BURN_COMMAND (0x42 'B')
 const TS_GET_TEXT = 0x47; // 'G' — get text protocol (returns \n-delimited text)
+const TS_CHUNK_WRITE_COMMAND = 0x57; // 'W' — write calibration data
+const TS_BURN_COMMAND = 0x42; // 'B' — commit written data to flash
 
 // rusEFI calibration page IDs
 const TS_PAGE_SETTINGS = 0x0000;
 // TB-005+ will use: TS_PAGE_SCATTER_OFFSETS (0x0100), TS_PAGE_LTFT_TRIMS (0x0200), TS_PAGE_SECOND_TABLES (0x0300)
 
+// ---- Board-Aware Channel Layout ----
+
+interface ChannelDef {
+  offset: number;
+  size: "u16" | "s16";
+  scale: number;
+  unit: string;
+  name: string;
+}
+
+interface BoardChannelLayout {
+  boardPattern: RegExp; // matches board name from signature
+  channels: Record<string, ChannelDef>;
+}
+
+const BOARD_LAYOUTS: BoardChannelLayout[] = [
+  {
+    boardPattern: /f407/,
+    channels: {
+      rpm: { offset: 0, size: "u16", scale: 1, unit: "rpm", name: "RPM" },
+      coolantTemp: { offset: 6, size: "s16", scale: 0.1, unit: "°C", name: "Coolant Temp" },
+      intakeAirTemp: { offset: 8, size: "s16", scale: 0.1, unit: "°C", name: "Intake Air Temp" },
+      throttlePos: { offset: 10, size: "s16", scale: 0.1, unit: "%", name: "Throttle Position" },
+      batteryVoltage: { offset: 4, size: "u16", scale: 0.01, unit: "V", name: "Battery Voltage" },
+      map: { offset: 12, size: "u16", scale: 0.1, unit: "kPa", name: "MAP" },
+      afr: { offset: 112, size: "u16", scale: 0.001, unit: "λ", name: "AFR" },
+      oilPressure: { offset: 232, size: "u16", scale: 0.1, unit: "psi", name: "Oil Pressure" },
+    },
+  },
+  {
+    boardPattern: /proteus/i,
+    channels: {
+      rpm: { offset: 0, size: "u16", scale: 1, unit: "rpm", name: "RPM" },
+      coolantTemp: { offset: 8, size: "s16", scale: 0.1, unit: "°C", name: "Coolant Temp" },
+      intakeAirTemp: { offset: 10, size: "s16", scale: 0.1, unit: "°C", name: "Intake Air Temp" },
+      throttlePos: { offset: 12, size: "s16", scale: 0.1, unit: "%", name: "Throttle Position" },
+      batteryVoltage: { offset: 4, size: "u16", scale: 0.01, unit: "V", name: "Battery Voltage" },
+      map: { offset: 14, size: "u16", scale: 0.1, unit: "kPa", name: "MAP" },
+      afr: { offset: 128, size: "u16", scale: 0.001, unit: "λ", name: "AFR" },
+      oilPressure: { offset: 248, size: "u16", scale: 0.1, unit: "psi", name: "Oil Pressure" },
+    },
+  },
+];
+
 export class RusEfiProtocol implements EcuProtocol {
   private transport: UsbTransport;
+  private detectedLayout: BoardChannelLayout | null = null;
 
   constructor(transport: UsbTransport) {
     this.transport = transport;
@@ -43,7 +90,7 @@ export class RusEfiProtocol implements EcuProtocol {
     const rawSig = await this.transport.querySignature(devicePath);
     console.log("[RusEfiProtocol] Raw signature:", rawSig);
 
-    // Step 2: Parse the signature into EcuIdentity
+    // Step 2: Parse the signature into EcuIdentity (also sets detectedLayout)
     const identity = this.parseSignature(rawSig);
 
     // Step 3: Send CRC-framed 'S' to confirm protocol mode
@@ -129,11 +176,61 @@ export class RusEfiProtocol implements EcuProtocol {
 
   async writeCalibration(
     _transport: EcuTransport,
-    _conn: Connection,
-    _table: CalTable
+    conn: Connection,
+    table: CalTable
   ): Promise<void> {
-    // Write + burn sequence — to be implemented in TB-005
-    console.log("[RusEfiProtocol] writeCalibration — not yet implemented");
+    const devicePath = conn.device.path;
+    const page = TS_PAGE_SETTINGS;
+
+    // Flatten the 2D table data into a byte array (uint16 LE)
+    // rusEFI stores calibration tables as uint16_t values in little-endian
+    const flatValues: number[] = [];
+    for (const row of table.data) {
+      for (const val of row) {
+        // Clamp to uint16 range
+        const clamped = Math.max(0, Math.min(65535, Math.round(val)));
+        flatValues.push(clamped & 0xff);        // low byte
+        flatValues.push((clamped >> 8) & 0xff); // high byte
+      }
+    }
+
+    const dataBytes = new Uint8Array(flatValues);
+    const offset = 0;
+    const count = dataBytes.length;
+
+    // Step 1: Chunk Write — send the data to the ECU
+    // Payload: page(2) + offset(2) + count(2) + data(N)
+    const writePayload = new Uint8Array(2 + 2 + 2 + count);
+    const writeView = new DataView(writePayload.buffer);
+    writeView.setUint16(0, page, false);       // big-endian
+    writeView.setUint16(2, offset, false);     // big-endian
+    writeView.setUint16(4, count, false);      // big-endian
+    writePayload.set(dataBytes, 6);
+
+    console.log(
+      `[RusEfiProtocol] Writing ${count} bytes to page ${page}, offset ${offset}`
+    );
+
+    await this.transport.sendCommand(
+      devicePath,
+      TS_CHUNK_WRITE_COMMAND,
+      writePayload
+    );
+
+    // Step 2: Burn — commit the written data to flash
+    // Payload: page(2)
+    const burnPayload = new Uint8Array(2);
+    const burnView = new DataView(burnPayload.buffer);
+    burnView.setUint16(0, page, false); // big-endian
+
+    console.log(`[RusEfiProtocol] Burning page ${page}`);
+    await this.transport.sendCommand(
+      devicePath,
+      TS_BURN_COMMAND,
+      burnPayload
+    );
+
+    console.log("[RusEfiProtocol] Calibration write + burn complete");
   }
 
   // ---- Diagnostics ----
@@ -200,6 +297,8 @@ export class RusEfiProtocol implements EcuProtocol {
    *
    * Example:
    *   "rusEFI f407-discovery 2024.06.15.release_20240615"
+   *
+   * Also sets detectedLayout based on the board name.
    */
   private parseSignature(raw: string): EcuIdentity {
     // Remove null terminators and whitespace
@@ -212,6 +311,19 @@ export class RusEfiProtocol implements EcuProtocol {
 
     const board = match ? match[1] : "unknown";
     const firmware = match ? match[2] : "0.0.0";
+
+    // Detect board layout from the board name
+    this.detectedLayout =
+      BOARD_LAYOUTS.find((layout) => layout.boardPattern.test(board)) ?? null;
+    if (this.detectedLayout) {
+      console.log(
+        `[RusEfiProtocol] Detected board layout: ${board} (${Object.keys(this.detectedLayout.channels).length} channels)`
+      );
+    } else {
+      console.warn(
+        `[RusEfiProtocol] No matching board layout for "${board}" — sensors will be empty`
+      );
+    }
 
     return {
       vendor: "rusEFI",
@@ -239,17 +351,13 @@ export class RusEfiProtocol implements EcuProtocol {
   /**
    * Parse rusEFI output channel binary data into sensor readings.
    *
+   * Uses the board layout detected during handshake to determine the correct
+   * offsets, sizes, and scales for each sensor channel. This ensures correct
+   * readings regardless of which rusEFI board is connected.
+   *
    * The rusEFI output channels struct (tsOutputChannels / output_channels_s)
-   * is defined in firmware/console/binary/output_channels.txt and generated
-   * into live_data_fragments.h. Key offsets (f407-discovery):
-   *
-   * Offset 0:  rpm (scalar, U16, scale=1)
-   * Offset 6:  coolantTemperature (scalar, S16, scale=0.1) — actually varies
-   * Offset 8:  intakeAirTemperature (scalar, S16, scale=0.1) — approximate
-   * Offset 10: throttlePosition (scalar, S16, scale=0.1) — approximate
-   *
-   * For TB-003, we do best-effort parsing. Full struct-aware parsing
-   * requires the generated field metadata from tunerstudio.template.ini.
+   * is defined in firmware/console/binary/output_channels.txt and varies by
+   * board (f407-discovery, proteus, etc.).
    */
   private parseLiveData(
     data: Uint8Array,
@@ -263,70 +371,39 @@ export class RusEfiProtocol implements EcuProtocol {
       data.byteLength
     );
 
-    // Best-effort parsing of common channels at approximate offsets
-    // These are correct for f407-discovery rusEFI output channels layout
-    try {
-      // RPM: U16 at offset 0 (confirmed from tsOutputChannels struct)
-      if (data.length >= 2) {
-        const rpm = view.getUint16(0, true); // little-endian
-        channels.push({
-          id: "rpm",
-          name: "RPM",
-          value: rpm,
-          unit: "rpm",
-          timestamp: now,
-        });
+    // If no board layout was detected during handshake, return empty
+    if (!this.detectedLayout) {
+      console.warn("[RusEfiProtocol] parseLiveData: no detected board layout");
+      return channels;
+    }
+
+    // Parse each known channel using the detected board's layout
+    for (const [id, def] of Object.entries(this.detectedLayout.channels)) {
+      const endOffset = def.size === "u16" ? def.offset + 2 : def.offset + 2;
+      if (data.length < endOffset) {
+        // Not enough data — skip this channel rather than crash
+        continue;
       }
 
-      // CLT: typically offset 6, S16 * 0.1
-      if (data.length >= 8) {
-        const cltRaw = view.getInt16(6, true);
-        channels.push({
-          id: "clt",
-          name: "Coolant Temp",
-          value: cltRaw * 0.1,
-          unit: "°C",
-          timestamp: now,
-        });
+      let raw: number;
+      try {
+        if (def.size === "u16") {
+          raw = view.getUint16(def.offset, true); // little-endian (ARM target)
+        } else {
+          raw = view.getInt16(def.offset, true); // little-endian
+        }
+      } catch (err) {
+        console.warn(`[RusEfiProtocol] Failed to parse channel "${id}" at offset ${def.offset}:`, err);
+        continue;
       }
 
-      // IAT: typically offset 8
-      if (data.length >= 10) {
-        const iatRaw = view.getInt16(8, true);
-        channels.push({
-          id: "iat",
-          name: "Intake Air Temp",
-          value: iatRaw * 0.1,
-          unit: "°C",
-          timestamp: now,
-        });
-      }
-
-      // TPS: typically offset 10
-      if (data.length >= 12) {
-        const tpsRaw = view.getInt16(10, true);
-        channels.push({
-          id: "tps",
-          name: "Throttle Position",
-          value: tpsRaw * 0.1,
-          unit: "%",
-          timestamp: now,
-        });
-      }
-
-      // Battery voltage: typically offset 4
-      if (data.length >= 6) {
-        const vbattRaw = view.getUint16(4, true);
-        channels.push({
-          id: "vbatt",
-          name: "Battery Voltage",
-          value: vbattRaw * 0.01,
-          unit: "V",
-          timestamp: now,
-        });
-      }
-    } catch (err) {
-      console.error("[RusEfiProtocol] Live data parse error:", err);
+      channels.push({
+        id,
+        name: def.name,
+        value: raw * def.scale,
+        unit: def.unit,
+        timestamp: now,
+      });
     }
 
     // Filter if specific channels requested

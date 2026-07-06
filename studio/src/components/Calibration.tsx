@@ -1,7 +1,10 @@
 // Calibration — Fuel VE and ignition table editor
 // Unique: dark heat-map table with cell editing
+// Reads/writes from ECU via protocol, saves/loads from file
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
+import { RusEfiProtocol } from "../core/transport/RusEfiProtocol";
+import { Connection } from "../core/transport/EcuTransport";
 
 // Demo fuel VE table — 8x8 typical for rusEFI
 function makeDemoTable(): number[][] {
@@ -11,7 +14,6 @@ function makeDemoTable(): number[][] {
   for (let y = 0; y < rows; y++) {
     const row: number[] = [];
     for (let x = 0; x < cols; x++) {
-      // Create a realistic VE curve: higher in center, lower at edges
       const cy = y / (rows - 1);
       const cx = x / (cols - 1);
       const base = 60 + 40 * Math.sin(cx * Math.PI) * Math.sin(cy * Math.PI);
@@ -35,16 +37,33 @@ function heatColor(val: number): string {
 
 type TableType = "ve" | "ignition";
 
-export default function Calibration() {
+interface CalibrationProps {
+  ecu?: { transport: any; protocol: RusEfiProtocol };
+  connection?: Connection | null;
+}
+
+export default function Calibration({ ecu, connection }: CalibrationProps) {
   const [activeTable, setActiveTable] = useState<TableType>("ve");
   const [veTable, setVeTable] = useState<number[][]>(makeDemoTable);
+  const [ignTable, setIgnTable] = useState<number[][]>(makeDemoTable);
   const [selected, setSelected] = useState<{ x: number; y: number } | null>(null);
   const [editValue, setEditValue] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const showMessage = useCallback((msg: string, _isError?: boolean) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(null), 3000);
+  }, []);
+
+  const currentTable = activeTable === "ve" ? veTable : ignTable;
+  const setCurrentTable = activeTable === "ve" ? setVeTable : setIgnTable;
 
   const handleCellClick = useCallback((x: number, y: number) => {
     setSelected({ x, y });
-    setEditValue(String(veTable[y][x]));
-  }, [veTable]);
+    setEditValue(String(currentTable[y][x]));
+  }, [currentTable]);
 
   const handleCellEdit = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEditValue(e.target.value);
@@ -54,13 +73,133 @@ export default function Calibration() {
     if (!selected) return;
     const val = parseFloat(editValue);
     if (isNaN(val)) return;
-    setVeTable((prev) => {
+    setCurrentTable((prev) => {
       const next = prev.map((r) => [...r]);
       next[selected.y][selected.x] = val;
       return next;
     });
     setSelected(null);
-  }, [selected, editValue]);
+  }, [selected, editValue, setCurrentTable]);
+
+  // ---- Read from ECU ----
+  const handleReadFromECU = useCallback(async () => {
+    if (!ecu || !connection) {
+      showMessage("Connect to ECU first", true);
+      return;
+    }
+    setLoading(true);
+    try {
+      const cal = await ecu.protocol.readCalibration(
+        ecu.transport,
+        connection,
+        activeTable === "ve" ? "ve_table" : "ignition_table"
+      );
+      // Convert flat data array back to 8x8 grid
+      if (cal.data && cal.data.length > 0) {
+        const raw = cal.data[0]; // Comes as [[length]]
+        if (Array.isArray(raw)) {
+          // Raw binary — rebuild from parsed values
+          const grid: number[][] = [];
+          for (let y = 0; y < 8; y++) {
+            const row: number[] = [];
+            for (let x = 0; x < 8; x++) {
+              const idx = y * 8 + x;
+              row.push(raw[idx] ?? 50);
+            }
+            grid.push(row);
+          }
+          setCurrentTable(grid);
+        }
+      }
+      showMessage("Read from ECU — table loaded");
+    } catch (err) {
+      showMessage(`Read failed: ${err}`, true);
+    } finally {
+      setLoading(false);
+    }
+  }, [ecu, connection, activeTable, setCurrentTable, showMessage]);
+
+  // ---- Write to ECU ----
+  const handleWriteToECU = useCallback(async () => {
+    if (!ecu || !connection) {
+      showMessage("Connect to ECU first", true);
+      return;
+    }
+    setLoading(true);
+    try {
+      const tableData: number[][] = currentTable;
+      await ecu.protocol.writeCalibration(
+        ecu.transport,
+        connection,
+        {
+          id: activeTable === "ve" ? "ve_table" : "ignition_table",
+          name: activeTable === "ve" ? "Fuel VE Table" : "Ignition Timing Table",
+          type: activeTable === "ve" ? "fuel_ve" : "ignition",
+          axisX: { label: "RPM", values: RPM_AXIS },
+          axisY: { label: "MAP", values: MAP_AXIS },
+          data: tableData,
+        }
+      );
+      showMessage("Written to ECU — burn complete");
+    } catch (err) {
+      showMessage(`Write failed: ${err}`, true);
+    } finally {
+      setLoading(false);
+    }
+  }, [ecu, connection, activeTable, currentTable, showMessage]);
+
+  // ---- Save to File ----
+  const handleSaveToFile = useCallback(() => {
+    try {
+      const payload = {
+        type: activeTable,
+        axisRPM: RPM_AXIS,
+        axisMAP: MAP_AXIS,
+        data: currentTable,
+        exportedAt: new Date().toISOString(),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${activeTable}_table_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showMessage("Saved to file");
+    } catch (err) {
+      showMessage(`Save failed: ${err}`, true);
+    }
+  }, [activeTable, currentTable, showMessage]);
+
+  // ---- Load from File ----
+  const handleLoadFromFile = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileSelected = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const payload = JSON.parse(text);
+      if (payload.data && Array.isArray(payload.data) && payload.data.length === 8) {
+        setCurrentTable(payload.data);
+        showMessage("Loaded from file");
+      } else {
+        showMessage("Invalid table file format", true);
+      }
+    } catch (err) {
+      showMessage(`Load failed: ${err}`, true);
+    }
+    // Reset so the same file can be re-selected
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, [setCurrentTable, showMessage]);
+
+  // ---- Reset to Default ----
+  const handleReset = useCallback(() => {
+    setCurrentTable(makeDemoTable());
+    showMessage("Reset to default values");
+  }, [setCurrentTable, showMessage]);
 
   return (
     <div className="page-enter">
@@ -69,11 +208,24 @@ export default function Calibration() {
         <p>Fuel & ignition table editor — click a cell to edit</p>
       </div>
 
+      {/* Status message */}
+      {message && (
+        <div style={{
+          padding: "8px 16px", marginBottom: 16,
+          background: message.includes("failed") ? "rgba(239,68,68,0.1)" : "rgba(52,211,153,0.1)",
+          border: `1px solid ${message.includes("failed") ? "rgba(239,68,68,0.3)" : "rgba(52,211,153,0.3)"}`,
+          borderRadius: 8, fontSize: 13,
+          color: message.includes("failed") ? "#ef4444" : "#34d399",
+        }}>
+          {message}
+        </div>
+      )}
+
       <div className="cal-container">
-        {/* LEFT: VE Table */}
+        {/* LEFT: Table */}
         <div className="cal-panel">
           <h3>
-            Fuel VE Table
+            {activeTable === "ve" ? "Fuel VE Table" : "Ignition Timing Table"}
             {activeTable !== "ve" && (
               <span style={{ color: "#4a5a78", fontSize: 11, marginLeft: 8 }}>
                 (click to switch)
@@ -91,7 +243,7 @@ export default function Calibration() {
                 </tr>
               </thead>
               <tbody>
-                {veTable.map((row, y) => (
+                {currentTable.map((row, y) => (
                   <tr key={y}>
                     <th>{MAP_AXIS[y]}</th>
                     {row.map((val, x) => (
@@ -124,10 +276,15 @@ export default function Calibration() {
             <span style={{ fontSize: 11, color: "#4a5a78", alignSelf: "center" }}>
               Click cell to edit · Enter to commit · Esc to cancel
             </span>
+            {loading && (
+              <span style={{ fontSize: 11, color: "#00d4b0", marginLeft: "auto" }}>
+                Communicating with ECU...
+              </span>
+            )}
           </div>
         </div>
 
-        {/* RIGHT: Table info & controls */}
+        {/* RIGHT: Table Controls */}
         <div className="cal-panel">
           <h3>Table Controls</h3>
 
@@ -150,19 +307,41 @@ export default function Calibration() {
           </div>
 
           <div className="cal-controls" style={{ flexDirection: "column", gap: 8 }}>
-            <button className="cal-btn primary" style={{ width: "100%" }}>
-              Read from ECU
+            <button
+              className="cal-btn primary"
+              style={{ width: "100%" }}
+              onClick={handleReadFromECU}
+              disabled={loading}
+            >
+              {loading ? "Reading..." : "Read from ECU"}
             </button>
-            <button className="cal-btn" style={{ width: "100%" }}>
-              Write to ECU
+            <button
+              className="cal-btn"
+              style={{ width: "100%" }}
+              onClick={handleWriteToECU}
+              disabled={loading}
+            >
+              {loading ? "Writing..." : "Write to ECU"}
             </button>
-            <button className="cal-btn" style={{ width: "100%" }}>
+            <button
+              className="cal-btn"
+              style={{ width: "100%" }}
+              onClick={handleSaveToFile}
+            >
               Save to File
             </button>
-            <button className="cal-btn" style={{ width: "100%" }}>
+            <button
+              className="cal-btn"
+              style={{ width: "100%" }}
+              onClick={handleLoadFromFile}
+            >
               Load from File
             </button>
-            <button className="cal-btn danger" style={{ width: "100%" }}>
+            <button
+              className="cal-btn danger"
+              style={{ width: "100%" }}
+              onClick={handleReset}
+            >
               Reset to Default
             </button>
           </div>
@@ -188,6 +367,15 @@ export default function Calibration() {
           )}
         </div>
       </div>
+
+      {/* Hidden file input for loading calibration files */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={handleFileSelected}
+      />
     </div>
   );
 }

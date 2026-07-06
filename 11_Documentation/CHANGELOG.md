@@ -1,89 +1,68 @@
 # Changelog
 
-All notable changes to the ECU Platform Core are documented here.
+All notable changes to the ECU Platform Core project are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/),
-and this project adheres to the Documentation-Driven Development (DDD) policy.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+---
+
+## [0.1.0-dev] — 2026-07-07
 
 ### Added
-
-#### Repository & Structure
-- `branding/` directory with BrandManager (`brand.json`, logos, icons, themes, colors, splash, fonts)
-- `docs/` extended structure: firmware, studio, cloud, hardware, bootloader, protocol, manufacturing, testing, deployment, api, diagrams, decisions, history, investor, onboarding
-- `ADR/` directory with 4 Architecture Decision Records
-- `firmware/upstream/` — rusEFI fork (commit `8540e44142d837e991e89efc062f8be3feadde8c`)
-- `firmware/platform/` — placeholder for platform firmware modifications
-- `research/` corpus migrated from `01_Research/`
-- `studio/`, `cloud/`, `mobile/`, `hardware/`, `sdk/`, `core/` directories
-
-#### Documentation
-- Root documents: `README.md`, `ARCHITECTURE.md`, `ROADMAP.md`, `BUILD.md`
-- Policy documents: `LICENSE_NOTES.md`, `CONTRIBUTING.md`, `DECISIONS.md`
-- Tracking documents: `PROJECT_STATUS.md`, `TECH_DEBT.md`, `CHANGELOG.md`
-- 9 architecture documents (brand-neutral)
-- rusEFI Architecture Audit (16 modules with source-verified file paths)
-- Daily Engineering Log (`docs/history/2026-06-30.md`)
-
-#### Architecture Decisions
-- `ADR/0001-white-label-platform-architecture.md`
-- `ADR/0002-rusefi-fork-strategy.md`
-- `ADR/0003-v1-ui-strategy.md`
-- `ADR/0004-brand-manager-pattern.md`
-
-#### Engineering Policy
-- Documentation-Driven Development (DDD) policy adopted
-- Definition of Done checklist implemented
-- Quality gate requirements established
-
-### Changed
-
-#### Build & Toolchain
-- Firmware build toolchain verified and installed: ARM GCC 12.3.Rel1, Java 11.0.23 (Temurin), 7-Zip 23.01, mtools 4.0.43
-- `firmware/upstream/firmware/Makefile`: Added `-Wno-error=shadow` for GCC 12.x compatibility
-- `scripts/build-firmware.sh`: Created, reviewed, and fixed (JAVA_HOME export, ARM GCC auto-detection, diagnostic messaging)
-- `-Werror=shadow` fix committed inside firmware/upstream submodule (commit `7abb688`)
-
-#### Repository Structure
-- Git repository initialized at root (`361f3a4`)
-- `firmware/upstream` configured as git submodule (commit `8540e44`)
-- `.gitignore` created with build output and toolchain exclusions
-- `.github/workflows/ddd-check.yml`: GitHub Actions DDD quality gate CI
-- **Restructured into 18 numbered directories:** `01_Architecture/` through `18_Roadmap/`
-- All documentation migrated from flat `docs/` layout into organized numbered directories
-- Legacy directories cleaned up (`research/`, `01_Research/`, `10_Documentation/` removed)
-- Landing pages created in key directories (`01_Architecture/`, `04_Firmware/`, `17_Decisions/`, `11_Documentation/`)
-- `START_HERE.md`: Repository entry point created
-- `SESSION.md`: Session handoff document created
-
-#### Governance & Agent System
-- **Multi-agent R&D system documented** at `11_Documentation/engineering/agent-system.md`
-  - 11 specialized agents with roles and directory ownership
-  - Standardized START→END agent workflow
-  - Agent locking (file ownership per agent)
-  - Branch strategy (feature branches per agent)
-  - Quality gate checklist (10 checks, 90/100 minimum)
-- `PROJECT_RULES.md`: Added (governance, workflow, locking, branch strategy)
-- `CODING_STANDARDS.md`: Added (language-specific coding conventions)
-- `CURRENT_STATE.md`: Added (shared project state for all agents)
-- `TODO.md`: Added (task tracking)
-
-#### DDD Quality Gate
-- `scripts/ddd-check.sh`: Updated from 36 to 40 checks
-- Validates all 18 directories are populated
-- New shared files (CURRENT_STATE.md, PROJECT_RULES.md, CODING_STANDARDS.md, TODO.md) now checked
+- BrandProvider loads brand.json via Vite/Tauri asset path (not broken fetch)
+- BrandProvider reads theme colors from brand.json (dark theme)
+- Board-aware output channel layout registry for rusEFI protocol (f407-discovery, proteus_f7)
+- Dashboard polls live ECU sensor data when connected (250ms interval)
+- Calibration page: "Read from ECU" button functional (reads calibration data)
+- Calibration page: "Write to ECU" button functional (sends TS chunk write + burn)
+- Calibration page: "Save to File" / "Load from File" with JSON format
+- Calibration page: status messages for read/write/save/load operations
+- CHANGELOG.md
+- .env.example with documented environment variables
+- Branding asset placeholder directories (.gitkeep)
+- Studio builds for f407-discovery board confirmed
 
 ### Fixed
+- BrandProvider no longer uses broken fetch("/branding/brand.json") — now served from Vite public/
+- Hardcoded "7100CPT Studio" replaced with brandConfig.productName from brand.json
+- Stale `greet` Tauri command removed from lib.rs
+- tauri.conf.json productName/identifier use ECU Platform branding
+- Tauri window title updated to match brand
+- Sensor offset parsing now board-aware (not hardcoded for f407-discovery only)
+- Duplicate directories consolidated (06_Cloud/ → cloud/)
+- .gitignore covers studio/node_modules, studio/src-tauri/target, Engineering_Template
 
-- **D-009:** Build toolchain fully installed — ARM GCC 12.3, Java 11, 7-Zip, mtools all working
-- `-Werror=shadow` with GCC 12+ on rusEFI source code — suppressed until code is refactored
-- Investor docs (16 files) restored from git history after cleanup
-- Management docs restored and migrated to `11_Documentation/management/`
+---
 
-### Upcoming
+## [0.1.0-alpha] — 2026-07-05
 
-- [ ] Firmware brand separation (replace all rusEFI customer-facing strings)
-- [ ] Firmware identity system (versioning, board IDs, device IDs)
-- [ ] Configuration profiles (NA, Turbo, Supercharged, Motorcycle)
-- [ ] Studio scaffold (Electron + React + TypeScript)
+### Added
+- Complete Studio UI overhaul with dark cyber-automotive theme
+- Native binary builds with Tauri 2
+- Communication layer: USB transport, TunerStudio binary protocol
+- Serial port management (list, open, close, read, write, CRC-framed commands)
+- 12-sheet KiCad schematic design with NXP S32K344
+- 3 prototype ECU enclosure designs
+- Hardware EMC strategy, protection circuits, CAN design docs
+- SA vehicle database schema + seed data
+- QA evidence package and tracer bullet methodology
+
+### Fixed
+- STL files re-rendered as binary (8x smaller than ASCII)
+- Repository restructured to 18-directory multi-agent system
+- Build toolchain: ARM GCC 10.3.1, Java for code generation
+
+---
+
+## [0.0.1] — 2026-07-01
+
+### Added
+- Initial project scaffold
+- rusEFI firmware submodule (commit 8540e44)
+- Firmware build pipeline for f407-discovery
+- Architecture Decision Records (ADRs) 0001-0012
+- MASTER_DIRECTIVE engineering constitution
+- Repository manifest, governance framework
+- Session handoff system
+- QA engineering review process
