@@ -52,22 +52,15 @@ Per ADR-0007, ADR-0008, ADR-0009 — governance is complete. The following are f
 
 ---
 
-## Next Action: TB-001
+## Next Action: Slice 5 — Error Recovery & Quality
 
-**Tracer Bullet 001 — Firmware Builds Under Prototype ECU Project**
+**Goal:** Protocol timeout/retry/reconnect logic + unit tests.
 
 Steps:
-1. Configure rusEFI build for Prototype ECU
-2. Apply branding injection (brand.json → firmware strings)
-3. Compile successfully for f407-discovery
-4. Verify binary output
-5. Document build pipeline
-6. Push to GitHub
-
-**P0 Quick Wins (15 minutes — do first):**
-1. Fix .gitmodules URL → `https://github.com/rusefi/rusefi.git`
-2. Fix CI branches → add `master`
-3. Discard submodule generated artifacts
+1. Add retry wrapper with exponential backoff to UsbTransport.sendCommand()
+2. Add reconnection state machine to EcuTransport interface + UsbTransport
+3. Add vitest config and protocol unit tests
+4. Wire reconnection UI into Dashboard + ConnectionBar
 
 ---
 

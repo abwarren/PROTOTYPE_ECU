@@ -7,23 +7,24 @@
 
 ## Phase 1 — Foundation (Current)
 
-| Priority | Task | Owner | Status |
-|----------|------|-------|--------|
-| P1 | Brand separation — replace rusEFI strings with brand.json | Agent 3 | ❌ Not started |
-| P1 | Firmware identity system (versioning, board IDs) | Agent 3 | ❌ Not started |
-| P2 | Studio scaffold (Electron + React + TypeScript) | Agent 4 | ❌ Not started |
-| P2 | Complete empty directories (Compliance, BOM, Datasheets, Suppliers) | Agent 10 | 🔴 Placeholder READMEs |
-| P3 | Dockerize build environment | Agent 3 | ❌ Not started |
+| Priority | Task | Status |
+|----------|------|--------|
+| P1 | S1: Brand Pipeline — BrandProvider Tauri fix, hardcoded strings replaced | ✅ Done |
+| P1 | S2: Sensor Data Pipeline — Board-aware layouts, live dashboard | ✅ Done |
+| P1 | S3: Calibration Write Pipeline — Write + burn, save/load file | ✅ Done |
+| P1 | S4: Repository cleanup — Duplicates, .env.example, .gitignore, CHANGELOG | ✅ Done |
+| P1 | S5: Error Recovery & Quality — Retry, timeout, reconnect, tests | 🔴 In Progress |
+| P2 | S6: Dockerize build environment | ❌ Not started |
 
 ## Phase 2 — Studio V1 (Next)
 
-| Task | Owner | Priority |
-|------|-------|----------|
-| Studio scaffold | Agent 4 | P1 |
-| Dashboard with live gauges | Agent 4 | P1 |
-| USB CDC communication | Agent 3, 4 | P1 |
-| Basic calibration tools | Agent 4 | P2 |
-| Console protocol replacement | Agent 3 | P2 |
+| Task | Priority |
+|------|----------|
+| Studio scaffold | P1 |
+| Dashboard with live gauges | P1 |
+| USB CDC communication | P1 |
+| Basic calibration tools | P2 |
+| Console protocol replacement | P2 |
 
 ## Known Issues
 
