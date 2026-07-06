@@ -4,11 +4,6 @@ use serial::SerialState;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! Welcome to Prototype Studio.", name)
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -16,7 +11,6 @@ pub fn run() {
             ports: Mutex::new(HashMap::new()),
         })
         .invoke_handler(tauri::generate_handler![
-            greet,
             serial::list_ports,
             serial::open_port,
             serial::close_port,
@@ -27,5 +21,5 @@ pub fn run() {
             serial::query_ecu_crc,
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Prototype Studio");
+        .expect("error while running ECU Studio");
 }

@@ -1,5 +1,6 @@
 import { EcuDevice, ConnectionState } from "../core/transport/EcuTransport";
 import { EcuIdentity } from "../core/transport/EcuProtocol";
+import { useBrand } from "../core/branding/BrandProvider";
 
 interface ConnectionBarProps {
   connState: ConnectionState;
@@ -13,6 +14,7 @@ interface ConnectionBarProps {
 export default function ConnectionBar({
   identity, device, onDiscover, onDisconnect, phase,
 }: ConnectionBarProps) {
+  const brand = useBrand();
   const isConnecting = phase === "discovering" || phase === "connecting";
   const isConnected = phase === "connected";
 
@@ -38,9 +40,11 @@ export default function ConnectionBar({
       )}
       {device && <span className="conn-identity">{device.path}</span>}
 
-      <div className="conn-bar-spacer" />
+      <span className="conn-bar-spacer" />
 
-      <span className="brand-text">7100CPT Studio</span>
+      <span className="brand-text">
+        {brand ? brand.productName + " Studio" : "ECU Studio"}
+      </span>
 
       <div style={{ flex: 1 }} />
 

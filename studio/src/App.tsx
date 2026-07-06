@@ -94,7 +94,7 @@ function App() {
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-          Loading 7100CPT Studio...
+          Loading {brand ? brand.productName + " Studio" : "ECU Studio"}...
         </span>
       </div>
     );
