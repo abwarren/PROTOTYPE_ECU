@@ -1,6 +1,6 @@
 # 7100CPT PCB V1 — Design Notes
 
-> **Last updated:** 2026-07-07
+> **Last updated:** 2026-07-11
 
 ## Layer Stackup Decision
 
@@ -20,23 +20,46 @@ in DESIGN_PACKAGE.md calls for **6-layer**.
 
 **Gate:** Move to 6-layer when TB-HW-003 (PCB Layout V2) begins.
 
+## Fixes Applied (2026-07-11)
+
+### Connector Migration (42-pin Deutsch → 35-pin AMPSEAL 16)
+- Created AMPSEAL16_35PIN symbol in 7100CPT.kicad_sym
+- Replaced DTM_42PIN on Sheet 10 with AMPSEAL16_35PIN (J1)
+- Signal mapping consolidated: grounds merged from 4→3 per signal class
+- Dropped from original 42-pin set: KNOCK2, OP, RELAY_SP (moved to spare/NC)
+- Added WBO2-specific 4-pin Deutsch DTM connectors (J6, J7) for sensor pigtails
+- Updated INTERFACE_SPECIFICATION.md with new pinout
+
+### Library Path Fix
+- sym-lib-table: ${KIPRJMOD}/symbols/ → ${KIPRJMOD}/../symbols/
+- fp-lib-table: ${KIPRJMOD}/footprints/ → ${KIPRJMOD}/../footprints/
+- Resolves KiCad not finding custom symbols/footprints
+
+### MCU Reference Alignment
+- All 11 sheets: comment 2 updated from "NXP S32K344" to "STM32F407VG"
+- Cover sheet ASCII art and BOM summary updated to STM32F407VG
+
+### Sheet 11 Wiring
+- Added global labels (+3V3, SWDIO, SWCLK, SWO, ~RESET, +5V)
+- Wired TC2050 debug header through series resistors to global labels
+- Connected test points to respective power/signal rails
+
 ## Known Issues
 
 ### Wiring Gaps
-- 10_Connectors: Connector symbols (J1A/J1B via DTM_42PIN) are placed but have no
-  wire segments — they must be wired to their respective signal nets
-- 11_Programming: TC2050, resistors, and test points are placed but lack wire connections
-  to power rails and MCU debug signals
+- 10_Connectors: Signal labels placed but AMPSEAL pins not yet wired to bus labels
+  (hierarchical connectivity via global labels pending full sheet cross-reference)
+- Cover sheet block diagram is ASCII text, not KiCad symbol instances
+- 35-pin AMPSEAL footprint (7100CPT:AMPSEAL-16-35) not yet created in footprint library
 
-### Connector Symbol Migration
-- Sheet 10 currently uses DTM_42PIN custom symbols (from the original 42-pin Deutsch design)
-- These must be replaced with a 34-pin AMPSEAL 16 symbol and footprint
-- The existing DTM_42PIN symbol in 7100CPT.kicad_sym can serve as a template
-- Open items:
-  - Create AMPSEAL-16-35POS symbol in 7100CPT.kicad_sym
-  - Replace J1A/J1B symbol instances on Sheet 10
-  - Wire the 34 signal pins to their respective nets
+### Signal Consolidation from 42-pin → 35-pin AMPSEAL
+- Dropped signals that are optional for V1 prototype:
+  - KNOCK2 (dual-knock deferred)
+  - OP (oil pressure — FP retained as priority)
+  - RELAY_SP (spare relay position)
+- WBO2 moved to dedicated 4-pin Deutsch DTM pigtails (J6, J7) — better sensor placement
 
-### Cover Sheet
-- Block diagram is ASCII text, not KiCad symbol instances — purely decorative
-- Should be converted to proper hierarchical sheet symbols when time permits
+### Connector Symbol Migration — Future
+- Create AMPSEAL-16-35 footprint in 7100CPT.pretty
+- Add WBO2 connector footprint (DTM06-4S)
+- Wire cross-sheet global labels on Sheet 10 to complete signal routing

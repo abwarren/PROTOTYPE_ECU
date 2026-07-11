@@ -3,7 +3,7 @@
     {
       "name": "7100CPT",
       "type": "KiCad",
-      "uri": "${KIPRJMOD}/footprints/7100CPT.pretty",
+      "uri": "${KIPRJMOD}/../footprints/7100CPT.pretty",
       "options": "",
       "description": "7100CPT ECU project footprint library"
     }

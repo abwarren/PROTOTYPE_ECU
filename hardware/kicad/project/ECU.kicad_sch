@@ -8,7 +8,7 @@
     (company "${COMPANY}")
     (comment 1 "12 Hierarchical Sheets")
     (comment 2 "Architecture: Phase 0 Approved | REUSE_MATRIX.md gate passed")
-    (comment 3 "NXP S32K344-EVB reference | AN13537 | CISPR 25 Class 3")
+    (comment 3 "STM32F407VG-EVAL reference | AN13537 | CISPR 25 Class 3")
     (comment 4 "IPC Class 3 | High-Tg FR-4 TG170+ | ENIG | 1.6 mm")
     (comment 5 "-40C to +85C | IP67 Target | 6-Layer | 2oz Power, 1oz Signal")
   )
@@ -108,7 +108,7 @@
     (at 25 24 0)
     (effects (font (size 3.0 3.0) bold) (justify left bottom))
   )
-  (text "NXP S32K344 | 12 Hierarchical Sheets | IPC Class 3"
+  (text "STM32F407VG | 12 Hierarchical Sheets | IPC Class 3"
     (at 25 30 0)
     (effects (font (size 2.0 2.0)) (justify left bottom))
   )

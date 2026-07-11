@@ -7,7 +7,7 @@
     (rev "0.2")
     (company "${COMPANY}")
     (comment 1 "Analog (RC filtered), knock (TLE2072), WBO2 (CJ125 x2), digital")
-    (comment 2 "NXP S32K344 | rusEFI Firmware | IPC Class 3")
+    (comment 2 "STM32F407VG | rusEFI Firmware | IPC Class 3")
     (comment 3 "High-Tg FR-4 (TG170+) | ENIG | 1.6 mm")
     (comment 4 "Phase 0 Approved | REUSE_MATRIX gate passed")
     (comment 5 "-40C to +85C | IP67 Target | 6-Layer")

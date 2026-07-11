@@ -1,58 +1,60 @@
 # INTERFACE_SPECIFICATION.md — Pinouts & Connector Assignments
 
-> **Date:** 2026-07-01
+> **Date:** 2026-07-11
+> **Status:** Updated — 42-pin Deutsch → 35-pin AMPSEAL 16 migration complete
 
 ---
 
-## 1. Main Harness Connector — 42-Pin Deutsch DTM
+## 1. Main Harness Connector — 35-Pin AMPSEAL 16
 
-**Connector:** TE Connectivity DTM06-12SA (receptacle, 12-position) × 4 banks or equivalent 42-position.
-**Mating:** DTM04-12PB (plug) with gold-plated sockets.
+**Connector:** TE Connectivity AMPSEAL 16, 35-position
+- Plug housing: 1-967648-1 (male pins)
+- Receptacle: 1-967647-1 (female sockets)
+- **Mating:** Gold-plated socket cavities, 14-22 AWG per pin function
 
 | Pin | Signal | Type | Notes |
 |-----|--------|------|-------|
-| A1 | VBAT | Power input | 6–36V |
-| A2 | GND | Power return | High-current |
-| A3 | GND | Power return | |
-| A4 | Injector 1 | Output | P&H driver |
-| A5 | Injector 2 | Output | |
-| A6 | Injector 3 | Output | |
-| A7 | Injector 4 | Output | |
-| B1 | Injector 5 | Output | |
-| B2 | Injector 6 | Output | |
-| B3 | Injector 7 | Output | |
-| B4 | Injector 8 | Output | |
-| B5 | GND (Injectors) | Power return | Dedicated return |
-| B6 | Ignition 1 | Output | IGBT gate |
-| B7 | Ignition 2 | Output | |
-| C1 | Ignition 3 | Output | |
-| C2 | Ignition 4 | Output | |
-| C3 | Ignition 5 | Output | |
-| C4 | Ignition 6 | Output | |
-| C5 | Ignition 7 | Output | |
-| C6 | Ignition 8 | Output | |
-| C7 | GND (Ignition) | Power return | |
-| D1 | ETC Motor + | Output | H-bridge, 3A max |
-| D2 | ETC Motor − | Output | |
-| D3 | TPS #1 | Analog input | 0–5V, ratiometric |
-| D4 | TPS #2 | Analog input | Safety redundant |
-| D5 | MAP Sensor | Analog input | 0–5V |
-| D6 | CLT (Coolant Temp) | Analog input | NTC thermistor |
-| D7 | IAT (Intake Air Temp) | Analog input | NTC thermistor |
-| E1 | WBO2 #1 Lambda | Analog input | 0–5V from CJ125 |
-| E2 | WBO2 #1 Heater − | Output | 12V PWM, 2A |
-| E3 | WBO2 #2 Lambda | Analog input | |
-| E4 | WBO2 #2 Heater − | Output | |
-| E5 | Knock Sensor #1 | Analog input | Differential |
-| E6 | Knock Sensor #2 | Analog input | |
-| E7 | Fuel Pressure | Analog input | 0–5V |
-| F1 | Oil Pressure | Analog input | 0–5V |
-| F2 | Boost Solenoid | Output | PWM low-side, 2A |
-| F3 | Tach Output | Output | High-side, 12V |
-| F4 | Relay 1 (Fuel Pump) | Output | Low-side, 5A |
-| F5 | Relay 2 (Radiator Fan) | Output | Low-side, 5A |
-| F6 | Relay 3 (A/C Clutch) | Output | Low-side, 3A |
-| F7 | Relay 4 (Spare) | Output | Low-side |
+| 1 | VBAT | Power input | 6–36V, 15A max |
+| 2 | GND_PWR | Power return | High-current ground |
+| 3 | INJ1 | Output | Peak & hold driver |
+| 4 | INJ2 | Output | |
+| 5 | INJ3 | Output | |
+| 6 | INJ4 | Output | |
+| 7 | INJ5 | Output | |
+| 8 | INJ6 | Output | |
+| 9 | INJ7 | Output | |
+| 10 | INJ8 | Output | |
+| 11 | GND_INJ | Power return | Injector dedicated ground |
+| 12 | IGN1 | Output | IGBT gate drive |
+| 13 | IGN2 | Output | |
+| 14 | IGN3 | Output | |
+| 15 | IGN4 | Output | |
+| 16 | IGN5 | Output | |
+| 17 | IGN6 | Output | |
+| 18 | IGN7 | Output | |
+| 19 | IGN8 | Output | |
+| 20 | GND_IGN | Power return | Ignition dedicated ground |
+| 21 | ETC_P | Output | H-bridge, 3A max |
+| 22 | ETC_N | Output | |
+| 23 | TPS1 | Analog input | 0–5V, ratiometric |
+| 24 | TPS2 | Analog input | Safety redundant |
+| 25 | MAP | Analog input | 0–5V |
+| 26 | CLT | Analog input | NTC thermistor |
+| 27 | IAT | Analog input | NTC thermistor |
+| 28 | BOOST | Output | PWM low-side, 2A |
+| 29 | TACH | Output | High-side, 12V |
+| 30 | RELAY_FP | Output | Fuel pump relay, low-side 5A |
+| 31 | RELAY_FAN | Output | Radiator fan relay, low-side 5A |
+| 32 | RELAY_AC | Output | A/C clutch relay, low-side 3A |
+| 33 | SENS_GND | Power return | Sensor ground |
+| 34 | FP | Analog input | 0–5V fuel pressure |
+| 35 | NC | — | Spare |
+
+**Design decisions vs previous 42-pin Deutsch DTM:**
+- Consolidated power grounds: 3 pins → PWR_GND + dedicated INJ/IGN/SENS returns
+- WBO2 signals moved to dedicated 4-pin Deutsch DTM pigtails (J6, J7)
+- Dropped: KNOCK2 (dual-knock deferred), OP (oil pressure), RELAY_SP (spare)
+- Total: 34 active signals + 1 NC spare
 
 ---
 
@@ -67,7 +69,7 @@
 | 3 | CAN_L | |
 | 4 | VBAT (fused, optional) | For bus-powered devices |
 
-*Two connectors: CAN0 (primary powertrain), CAN1 (body bus).*
+*Two connectors: CAN0 (J3, primary powertrain), CAN1 (J4, body bus).*
 
 ---
 
@@ -84,50 +86,67 @@
 
 ---
 
-## 4. USB-C Connector
+## 4. WBO2 Sensor Connectors — 2x 4-Pin Deutsch DTM
+
+**Connector:** TE Connectivity DTM06-4S per sensor
+
+| Pin | Signal | Notes |
+|-----|--------|-------|
+| 1 | GND | Sensor ground |
+| 2 | LAMBDA | 0–5V from CJ125 |
+| 3 | HEATER | 12V PWM, 2A |
+| 4 | VBAT | Fused sensor power |
+
+*Two connectors: J6 (WBO2 #1), J7 (WBO2 #2). LSU 4.9 4-wire wideband.*
+
+---
+
+## 5. USB-C Connector
 
 **Connector:** Molex 105450-0101 (mid-mount, 16-pin SMT)
 
-| Pin | Signal |
-|-----|--------|
-| A6/B6 | USB D+ |
-| A7/B7 | USB D- |
-| A5/B5 | CC (5.1kΩ to GND) |
-| A1/A12/B1/B12 | GND |
-| Shell | Shield (1MΩ || 100nF to GND) |
+| Signal | Notes |
+|--------|-------|
+| USB D+/D- | Via 22R series, TPD2EUSB30 ESD |
+| CC | 5.1kΩ to GND (UFP device mode) |
+| VBUS | TPS25200 eFuse, 5V/2.5A |
+| Shield | 1MΩ || 100nF to GND |
 
 ---
 
-## 5. Debug Header — 10-Pin 0.05" (SWD)
+## 6. Debug Header — 10-Pin 0.05" (SWD)
 
-| Pin | Signal |
-|-----|--------|
-| 1 | VTref (3.3V) |
-| 2 | SWDIO |
-| 3 | GND |
-| 4 | SWCLK |
-| 5 | GND |
-| 6 | SWO (optional) |
-| 7 | NC |
-| 8 | NC |
-| 9 | GND |
-| 10 | RESET |
+**Connector:** Tag-Connect TC2050-IDC (no-connector footprint)
+
+| Pin | Signal | Notes |
+|-----|--------|-------|
+| 1 | VTref (3.3V) | Target reference voltage |
+| 2 | SWDIO | 22R series |
+| 3 | GND | |
+| 4 | SWCLK | 22R series |
+| 5 | GND | |
+| 6 | SWO (optional) | |
+| 7 | NC | |
+| 8 | NC | |
+| 9 | GND | |
+| 10 | ~RESET | |
 
 ---
 
-## 6. Pin Summary
+## 7. Pin Summary
 
 | Connector | Pins Used | Pins Total | Spare |
 |-----------|----------|------------|-------|
-| Main Harness (42-pin) | 35 | 42 | 7 |
-| CAN × 2 | 8 | 8 | 0 |
-| Diagnostic | 4 | 4 | 0 |
+| Main Harness (35-pin AMPSEAL) | 34 | 35 | 1 |
+| CAN × 2 (4-pin Deutsch) | 8 | 8 | 0 |
+| Diagnostic (4-pin Deutsch) | 4 | 4 | 0 |
+| WBO2 × 2 (4-pin Deutsch) | 8 | 8 | 0 |
 | USB-C | 4 | 16 | 12 |
 | Debug (internal) | 5 | 10 | 5 |
 
 ---
 
-## 7. Wire Gauge Recommendations
+## 8. Wire Gauge Recommendations
 
 | Signal | AWG | Notes |
 |--------|-----|-------|
@@ -138,3 +157,4 @@
 | CAN bus | 22 | Twisted pair, 120Ω |
 | ETC motor | 18 | Up to 3A |
 | Relay output | 18 | Up to 5A |
+| WBO2 heater | 20 | 2A PWM each |
