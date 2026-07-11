@@ -61,7 +61,7 @@ It provides everything a professional automotive PCB design house needs to:
 | # | Document | Purpose | Status |
 |---|----------|---------|--------|
 | 1 | SYSTEM_ARCHITECTURE.md | Block diagram, sheet hierarchy, design rules | ✅ |
-| 2 | MCU_SELECTION.md | NXP S32K344 justification, pin allocation, clock | ✅ |
+| 2 | MCU_SELECTION.md | STM32F407VG justification, pin allocation, clock | ✅ |
 | 3 | POWER_ARCHITECTURE.md | 6-36V input → Buck → LDO tree, power budget | ✅ |
 | 4 | PROTECTION_CIRCUITS.md | TVS, load dump, ESD, reverse polarity, watchdog | ✅ |
 | 5 | CAN_DESIGN.md | CAN FD ×4, TJA1043, CM chokes, termination | ✅ |
@@ -92,7 +92,7 @@ It provides everything a professional automotive PCB design house needs to:
 | ECU.kicad_sch | Root schematic — 12 hierarchical sheet symbols |
 | 00_Cover.kicad_sch | Revision history, block diagram, BOM summary |
 | 01_Power.kicad_sch | Power architecture — reverse polarity, buck, LDO, VREF |
-| 02_MCU_Debug_Memory.kicad_sch | S32K344 core, clock, decoupling, boot, debug |
+| 02_MCU_Debug_Memory.kicad_sch | STM32F407VG core, clock, decoupling, boot, debug |
 | 03_CAN.kicad_sch | CAN FD ×4, TJA1043, CM chokes, termination |
 | 04_USB.kicad_sch | USB-C, ESD, CC resistors |
 | 05_Inputs_WBO2.kicad_sch | Analog inputs, WBO2 (CJ125), knock |
@@ -104,7 +104,7 @@ It provides everything a professional automotive PCB design house needs to:
 | 11_Programming.kicad_sch | Boot config, SWD, test points, LEDs |
 | sym-lib-table | Symbol library table → symbols/7100CPT.kicad_sym |
 | fp-lib-table | Footprint library table → footprints/7100CPT.pretty/ |
-| symbols/7100CPT.kicad_sym | Custom symbols (S32K344, TLE8888, TPS3850, etc.) |
+| symbols/7100CPT.kicad_sym | Custom symbols (STM32F407VG, TLE8888, TPS3850, etc.) |
 | footprints/7100CPT.pretty/ | Custom footprints (to be populated during TB-HW-002) |
 
 ### Supporting Documents
@@ -122,7 +122,7 @@ It provides everything a professional automotive PCB design house needs to:
 |-----|-------|--------------------|
 | ADR-0003 | rusEFI as firmware foundation | Unmodified upstream — adapter pattern isolates firmware |
 | ADR-0004 | V1 differentiator is Studio | Hardware is production-grade but not exotic |
-| D-004 | Reuse Matrix Phase 0 Gate | All MCU circuits follow NXP reference designs |
+| D-004 | Reuse Matrix Phase 0 Gate | All MCU circuits follow STM32/ST reference designs |
 | D-005 | rusEFI firmware unchanged | Hardware must support rusEFI protocol over USB CDC |
 
 ## 7. Manufacturing Services Requested
