@@ -24,8 +24,8 @@ It provides everything a professional automotive PCB design house needs to:
 |----------|-------|
 | Product | 7100CPT Engine Control Unit |
 | Type | Standalone Programmable ECU |
-| Platform | NXP S32K344 (ARM Cortex-M7) |
-| Firmware | rusEFI-derived (GPL-3.0 upstream) |
+| Platform | STM32F407VG (ARM Cortex-M4) |
+| Firmware | rusEFI-derived (GPL-3.0 upstream) — f407-discovery target |
 | Application | Professional tuning, motorsport, OEM retrofit |
 | Brand | 7100CPT |
 
