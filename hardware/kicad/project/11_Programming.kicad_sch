@@ -101,8 +101,30 @@
   (text "MCU Security: Challenge-response debug auth | HSM EVITA Full | Secure boot chain enabled" (at 25 92 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
   (text "Ref: docs/hardware/MCU_SELECTION.md §5-6 | NXP AN13537 §4 Debug & Security" (at 25 80 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
 
+  ;; Global labels — connect to MCU debug signals via parent sheet
+  (global_label "+3V3" (shape input) (at 100 228 0) (effects (font (size 1.27 1.27))) (uuid 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d))
+  (global_label "SWDIO" (shape bidirectional) (at 130 225 0) (effects (font (size 1.27 1.27))) (uuid 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e))
+  (global_label "SWCLK" (shape input) (at 130 215 0) (effects (font (size 1.27 1.27))) (uuid 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f))
+  (global_label "SWO" (shape output) (at 130 205 0) (effects (font (size 1.27 1.27))) (uuid 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a))
+  (global_label "~RESET" (shape input) (at 130 195 0) (effects (font (size 1.27 1.27))) (uuid 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b))
+  (global_label "+5V" (shape input) (at 150 165 0) (effects (font (size 1.27 1.27))) (uuid 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c))
+
   ;; Wire: GND power symbol to TP5 test point
+  ;; Wire: TC2050 VTref (pin 1) → +3V3 global label
+  ;; Wire: SWDIO (pin 2) → R120 (100,215) → global
+  ;; Wire: SWCLK (pin 4) → R121 (100,195) → global
+  ;; Wire: SWO (pin 6) → global
+  ;; Wire: ~RESET (pin 10) → global
+  ;; Wire: +3V3 → TP1 (50,150)
+  ;; Wire: +5V → TP2 (150,150)
   (wire (pts (xy 50 110) (xy 50 125)) (stroke (width 0) (type default) (color 0 0 0)))
+  (wire (pts (xy 100 215) (xy 100 228)) (stroke (width 0) (type default)))
+  (wire (pts (xy 130 215) (xy 130 225)) (stroke (width 0) (type default)))
+  (wire (pts (xy 130 195) (xy 130 215)) (stroke (width 0) (type default)))
+  (wire (pts (xy 100 195) (xy 130 205)) (stroke (width 0) (type default)))
+  (wire (pts (xy 130 185) (xy 130 195)) (stroke (width 0) (type default)))
+  (wire (pts (xy 50 165) (xy 50 150)) (stroke (width 0) (type default)))
+  (wire (pts (xy 150 165) (xy 150 150)) (stroke (width 0) (type default)))
 
 
   (sheet_instances
