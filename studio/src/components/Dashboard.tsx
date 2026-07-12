@@ -18,14 +18,14 @@ interface SensorData {
   map: number;
   oilPressure: number;
   fuelPressure: number;
-  afr: number;
+  lambdaValue: number;
   boost: number;
 }
 
 const DEFAULT_DATA: SensorData = {
   rpm: 0, coolantTemp: 82, intakeAirTemp: 35, throttlePos: 0,
-  batteryVoltage: 13.8, map: 101, oilPressure: 45, fuelPressure: 58,
-  afr: 14.7, boost: 0,
+  batteryVoltage: 13.8, map: 101, oilPressure: 310, fuelPressure: 400,
+  lambdaValue: 1.0, boost: 0,
 };
 
 // Demo mode: simulates live data when no ECU connected
@@ -38,9 +38,9 @@ function simulateData(data: SensorData): SensorData {
     throttlePos: Math.max(0, Math.min(100, data.throttlePos + (Math.random() - 0.5) * 3)),
     batteryVoltage: Math.max(12, Math.min(15, data.batteryVoltage + (Math.random() - 0.5) * 0.3)),
     map: Math.max(50, Math.min(150, data.map + (Math.random() - 0.5) * 3)),
-    oilPressure: Math.max(0, Math.min(80, data.oilPressure + (Math.random() - 0.5) * 2)),
-    fuelPressure: Math.max(40, Math.min(70, data.fuelPressure + (Math.random() - 0.5) * 1.5)),
-    afr: Math.max(10, Math.min(20, data.afr + (Math.random() - 0.5) * 0.3)),
+    oilPressure: Math.max(100, Math.min(600, data.oilPressure + (Math.random() - 0.5) * 20)),
+    fuelPressure: Math.max(200, Math.min(600, data.fuelPressure + (Math.random() - 0.5) * 15)),
+    lambdaValue: Math.max(0.7, Math.min(1.3, data.lambdaValue + (Math.random() - 0.5) * 0.02)),
     boost: Math.max(-10, Math.min(30, data.boost + (Math.random() - 0.5) * 1)),
   };
 }
@@ -86,8 +86,8 @@ export default function Dashboard({ connected, ecu, connection }: DashboardProps
             case "map":
               sensorData.map = ch.value;
               break;
-            case "afr":
-              sensorData.afr = ch.value;
+            case "lambdaValue":
+              sensorData.lambdaValue = ch.value;
               break;
             case "oilPressure":
               sensorData.oilPressure = ch.value;
@@ -127,10 +127,10 @@ export default function Dashboard({ connected, ecu, connection }: DashboardProps
 
       {/* Arc gauges row */}
       <div className="gauge-grid">
-        <ArcGauge label="Coolant" value={data.coolantTemp} unit="\u00B0C" max={130} warning={95} danger={105} />
+        <ArcGauge label="Coolant" value={data.coolantTemp} unit="°C" max={130} warning={95} danger={105} />
         <ArcGauge label="Intake Air" value={data.intakeAirTemp} unit="\u00B0C" max={70} warning={55} danger={65} />
         <ArcGauge label="MAP" value={data.map} unit="kPa" min={50} max={150} warning={130} danger={145} />
-        <ArcGauge label="Oil Press" value={data.oilPressure} unit="psi" max={80} warning={20} danger={10} />
+        <ArcGauge label="Oil Press" value={data.oilPressure} unit="kPa" max={600} warning={200} danger={100} />
       </div>
 
       {/* Bar gauges row */}
@@ -138,8 +138,8 @@ export default function Dashboard({ connected, ecu, connection }: DashboardProps
         <BarGauge label="Throttle" value={data.throttlePos} unit="%" warning={85} danger={95} />
         <BarGauge label="Boost" value={data.boost} unit="psi" max={30} warning={20} danger={28} />
         <BarGauge label="Battery" value={data.batteryVoltage} unit="V" min={11} max={15} warning={12.2} danger={11.5} />
-        <BarGauge label="AFR" value={data.afr} unit="\u03BB" min={10} max={20} warning={16} danger={18} />
-        <BarGauge label="Fuel Press" value={data.fuelPressure} unit="psi" max={80} warning={68} danger={75} />
+        <BarGauge label="Lambda" value={data.lambdaValue} unit="λ" min={0.65} max={1.3} warning={1.1} danger={1.2} />
+        <BarGauge label="Fuel Press" value={data.fuelPressure} unit="kPa" max={600} warning={500} danger={550} />
       </div>
     </div>
   );

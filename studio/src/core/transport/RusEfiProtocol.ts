@@ -42,16 +42,17 @@ interface BoardChannelLayout {
 
 const BOARD_LAYOUTS: BoardChannelLayout[] = [
   {
+    // f407-discovery — validated against rusefi_f407-discovery.ini output channels
     boardPattern: /f407/,
     channels: {
-      rpm: { offset: 0, size: "u16", scale: 1, unit: "rpm", name: "RPM" },
-      coolantTemp: { offset: 6, size: "s16", scale: 0.1, unit: "°C", name: "Coolant Temp" },
-      intakeAirTemp: { offset: 8, size: "s16", scale: 0.1, unit: "°C", name: "Intake Air Temp" },
-      throttlePos: { offset: 10, size: "s16", scale: 0.1, unit: "%", name: "Throttle Position" },
-      batteryVoltage: { offset: 4, size: "u16", scale: 0.01, unit: "V", name: "Battery Voltage" },
-      map: { offset: 12, size: "u16", scale: 0.1, unit: "kPa", name: "MAP" },
-      afr: { offset: 112, size: "u16", scale: 0.001, unit: "λ", name: "AFR" },
-      oilPressure: { offset: 232, size: "u16", scale: 0.1, unit: "psi", name: "Oil Pressure" },
+      rpm: { offset: 4, size: "u16", scale: 1, unit: "rpm", name: "RPM" },
+      batteryVoltage: { offset: 40, size: "u16", scale: 0.001, unit: "V", name: "Battery Voltage" },
+      coolantTemp: { offset: 16, size: "s16", scale: 0.01, unit: "°C", name: "Coolant Temp" },
+      intakeAirTemp: { offset: 18, size: "s16", scale: 0.01, unit: "°C", name: "Intake Air Temp" },
+      throttlePos: { offset: 24, size: "s16", scale: 0.01, unit: "%", name: "Throttle Position" },
+      map: { offset: 34, size: "u16", scale: 1 / 30, unit: "kPa", name: "MAP" },
+      lambdaValue: { offset: 38, size: "u16", scale: 0.0001, unit: "λ", name: "Lambda" },
+      oilPressure: { offset: 44, size: "u16", scale: 1 / 30, unit: "kPa", name: "Oil Pressure" },
     },
   },
   {
