@@ -56,16 +56,17 @@ const BOARD_LAYOUTS: BoardChannelLayout[] = [
     },
   },
   {
+    // proteus layout — NOT VALIDATED against current firmware
     boardPattern: /proteus/i,
     channels: {
       rpm: { offset: 0, size: "u16", scale: 1, unit: "rpm", name: "RPM" },
-      coolantTemp: { offset: 8, size: "s16", scale: 0.1, unit: "°C", name: "Coolant Temp" },
-      intakeAirTemp: { offset: 10, size: "s16", scale: 0.1, unit: "°C", name: "Intake Air Temp" },
-      throttlePos: { offset: 12, size: "s16", scale: 0.1, unit: "%", name: "Throttle Position" },
-      batteryVoltage: { offset: 4, size: "u16", scale: 0.01, unit: "V", name: "Battery Voltage" },
-      map: { offset: 14, size: "u16", scale: 0.1, unit: "kPa", name: "MAP" },
-      afr: { offset: 128, size: "u16", scale: 0.001, unit: "λ", name: "AFR" },
-      oilPressure: { offset: 248, size: "u16", scale: 0.1, unit: "psi", name: "Oil Pressure" },
+      batteryVoltage: { offset: 40, size: "u16", scale: 0.001, unit: "V", name: "Battery Voltage" },
+      coolantTemp: { offset: 16, size: "s16", scale: 0.01, unit: "°C", name: "Coolant Temp" },
+      intakeAirTemp: { offset: 18, size: "s16", scale: 0.01, unit: "°C", name: "Intake Air Temp" },
+      throttlePos: { offset: 24, size: "s16", scale: 0.01, unit: "%", name: "Throttle Position" },
+      map: { offset: 34, size: "u16", scale: 1 / 30, unit: "kPa", name: "MAP" },
+      lambdaValue: { offset: 38, size: "u16", scale: 0.0001, unit: "λ", name: "Lambda" },
+      oilPressure: { offset: 44, size: "u16", scale: 1 / 30, unit: "kPa", name: "Oil Pressure" },
     },
   },
 ];
