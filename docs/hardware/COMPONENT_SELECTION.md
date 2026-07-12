@@ -21,12 +21,11 @@
 
 | Parameter | Value |
 |-----------|-------|
-| Part | NXP S32K344EHT1VPBST (or equivalent) |
-| Package | HLQFP176, exposed pad |
-| Temp | −40°C to +125°C (AEC-Q100 Grade 1) |
-| Lead time | 26+ weeks (check availability) |
-| Alt #1 | S32K342 (lower spec — 1 MB Flash, 256 KB SRAM) |
-| Alt #2 | STM32H743 (industrial, for prototype only) |
+| Part | STM32F407VGT6 (STM32F407VG, LQFP-100) |
+| Package | LQFP-100, exposed pad |
+| Temp | −40°C to +85°C (industrial) |
+| Lead time | 8-12 weeks (good availability) |
+| Alt #1 | STM32F405VG (lower perf, same package) |
 
 ### Power
 
