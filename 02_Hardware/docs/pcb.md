@@ -51,7 +51,7 @@ Design and manufacture the ECU printed circuit board, providing the physical pla
 
 | Interface | Connector | Type |
 |-----------|-----------|------|
-| Main harness | 42-pin Deutsch DTM | Sealed |
+| Main harness | 34-pin AMPSEAL 16 | Sealed |
 | CAN bus | 4-pin Deutsch DTM | Sealed |
 | USB | USB-C | CDC ACM |
 | Antenna | FAKRA | BLE/WiFi/LTE |

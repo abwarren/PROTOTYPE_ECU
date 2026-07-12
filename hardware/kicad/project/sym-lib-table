@@ -1,0 +1,15 @@
+{
+  "libs": [
+    {
+      "name": "7100CPT",
+      "type": "KiCad",
+      "uri": "${KIPRJMOD}/../symbols/7100CPT.kicad_sym",
+      "options": "",
+      "description": "7100CPT ECU project symbol library"
+    }
+  ],
+  "meta": {
+    "version": 7
+  },
+  "name": "sym-lib-table"
+}

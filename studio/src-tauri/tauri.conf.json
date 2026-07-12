@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicedoc/tauri/main/core/tauri-config-schema/schema.json",
-  "productName": "Prototype Studio",
+  "productName": "ECU Platform Core Studio",
   "version": "0.1.0",
-  "identifier": "com.prototype-ecu.studio",
+  "identifier": "com.ecuplatform.studio",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "Prototype Studio",
+        "title": "ECU Platform Core Studio",
         "width": 1280,
         "height": 800,
         "minWidth": 1024,

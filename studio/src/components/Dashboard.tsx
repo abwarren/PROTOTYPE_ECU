@@ -1,0 +1,146 @@
+// Dashboard — Main monitoring view
+// Unique design: center tachometer surrounded by arc gauges and bar gauges
+
+import { useEffect, useState } from "react";
+import TachGauge from "./TachGauge";
+import ArcGauge from "./ArcGauge";
+import BarGauge from "./BarGauge";
+import { RusEfiProtocol } from "../core/transport/RusEfiProtocol";
+import { UsbTransport } from "../core/transport/UsbTransport";
+import { Connection } from "../core/transport/EcuTransport";
+
+interface SensorData {
+  rpm: number;
+  coolantTemp: number;
+  intakeAirTemp: number;
+  throttlePos: number;
+  batteryVoltage: number;
+  map: number;
+  oilPressure: number;
+  fuelPressure: number;
+  lambdaValue: number;
+  boost: number;
+}
+
+const DEFAULT_DATA: SensorData = {
+  rpm: 0, coolantTemp: 82, intakeAirTemp: 35, throttlePos: 0,
+  batteryVoltage: 13.8, map: 101, oilPressure: 310, fuelPressure: 400,
+  lambdaValue: 1.0, boost: 0,
+};
+
+// Demo mode: simulates live data when no ECU connected
+function simulateData(data: SensorData): SensorData {
+  return {
+    ...data,
+    rpm: Math.max(0, data.rpm + (Math.random() - 0.5) * 200),
+    coolantTemp: Math.max(70, Math.min(105, data.coolantTemp + (Math.random() - 0.5) * 2)),
+    intakeAirTemp: Math.max(20, Math.min(50, data.intakeAirTemp + (Math.random() - 0.5) * 1.5)),
+    throttlePos: Math.max(0, Math.min(100, data.throttlePos + (Math.random() - 0.5) * 3)),
+    batteryVoltage: Math.max(12, Math.min(15, data.batteryVoltage + (Math.random() - 0.5) * 0.3)),
+    map: Math.max(50, Math.min(150, data.map + (Math.random() - 0.5) * 3)),
+    oilPressure: Math.max(100, Math.min(600, data.oilPressure + (Math.random() - 0.5) * 20)),
+    fuelPressure: Math.max(200, Math.min(600, data.fuelPressure + (Math.random() - 0.5) * 15)),
+    lambdaValue: Math.max(0.7, Math.min(1.3, data.lambdaValue + (Math.random() - 0.5) * 0.02)),
+    boost: Math.max(-10, Math.min(30, data.boost + (Math.random() - 0.5) * 1)),
+  };
+}
+
+interface DashboardProps {
+  connected: boolean;
+  ecu?: { transport: UsbTransport; protocol: RusEfiProtocol };
+  connection?: Connection | null;
+}
+
+export default function Dashboard({ connected, ecu, connection }: DashboardProps) {
+  const [data, setData] = useState<SensorData>(DEFAULT_DATA);
+  const [demoMode, setDemoMode] = useState(!connected);
+
+  useEffect(() => {
+    setDemoMode(!connected);
+  }, [connected]);
+
+  // Live ECU polling when connected
+  useEffect(() => {
+    if (!connected || !ecu || !connection) return;
+    const interval = setInterval(async () => {
+      try {
+        const channels = await ecu.protocol.readSensors(ecu.transport, connection, []);
+        const sensorData: SensorData = { ...DEFAULT_DATA };
+        for (const ch of channels) {
+          switch (ch.id) {
+            case "rpm":
+              sensorData.rpm = ch.value;
+              break;
+            case "coolantTemp":
+              sensorData.coolantTemp = ch.value;
+              break;
+            case "intakeAirTemp":
+              sensorData.intakeAirTemp = ch.value;
+              break;
+            case "throttlePos":
+              sensorData.throttlePos = ch.value;
+              break;
+            case "batteryVoltage":
+              sensorData.batteryVoltage = ch.value;
+              break;
+            case "map":
+              sensorData.map = ch.value;
+              break;
+            case "lambdaValue":
+              sensorData.lambdaValue = ch.value;
+              break;
+            case "oilPressure":
+              sensorData.oilPressure = ch.value;
+              break;
+          }
+        }
+        setData(sensorData);
+      } catch (err) {
+        console.error("[Dashboard] read error:", err);
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [connected, ecu, connection]);
+
+  // Demo mode polling when not connected
+  useEffect(() => {
+    if (!demoMode) return;
+    const interval = setInterval(() => {
+      setData((prev) => simulateData(prev));
+    }, 200);
+    return () => clearInterval(interval);
+  }, [demoMode]);
+
+  return (
+    <div className="page-enter">
+      <div className="page-header">
+        <h1>Dashboard</h1>
+        <p>{demoMode ? "DEMO MODE — connect to ECU for live data" : "Live telemetry"}</p>
+      </div>
+
+      {/* Main tachometer row */}
+      <div className="gauge-grid">
+        <div className="gauge-card wide" style={{ padding: "12px 24px" }}>
+          <TachGauge rpm={data.rpm} maxRpm={8000} redline={7000} />
+        </div>
+      </div>
+
+      {/* Arc gauges row */}
+      <div className="gauge-grid">
+        <ArcGauge label="Coolant" value={data.coolantTemp} unit="°C" max={130} warning={95} danger={105} />
+        <ArcGauge label="Intake Air" value={data.intakeAirTemp} unit="\u00B0C" max={70} warning={55} danger={65} />
+        <ArcGauge label="MAP" value={data.map} unit="kPa" min={50} max={150} warning={130} danger={145} />
+        <ArcGauge label="Oil Press" value={data.oilPressure} unit="kPa" max={600} warning={200} danger={100} />
+      </div>
+
+      {/* Bar gauges row */}
+      <div className="gauge-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))" }}>
+        <BarGauge label="Throttle" value={data.throttlePos} unit="%" warning={85} danger={95} />
+        <BarGauge label="Boost" value={data.boost} unit="psi" max={30} warning={20} danger={28} />
+        <BarGauge label="Battery" value={data.batteryVoltage} unit="V" min={11} max={15} warning={12.2} danger={11.5} />
+        <BarGauge label="Lambda" value={data.lambdaValue} unit="λ" min={0.65} max={1.3} warning={1.1} danger={1.2} />
+        <BarGauge label="Fuel Press" value={data.fuelPressure} unit="kPa" max={600} warning={500} danger={550} />
+      </div>
+    </div>
+  );
+}

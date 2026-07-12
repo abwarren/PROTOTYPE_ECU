@@ -1,0 +1,30 @@
+# KiCad generated outputs (NOT source files)
+fabrication/*
+!fabrication/.gitkeep
+
+# Generated exports
+*.zip
+*.gbr
+*.drl
+*.net
+*.pos
+*.csv
+bom/*
+manufacturing/*
+assembly/*
+documentation/*
+3d/*
+
+# Backups
+*.bak
+*-backups/
+*-save/
+_doc/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# KiCad lock files
+*.kicad_prl
+fp-info-cache

@@ -8,6 +8,9 @@ firmware/upstream/firmware/build/
 # Dependencies and build tools
 /home/wa/tools/
 
+# Generated/untracked template directories
+Engineering_Template/
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -31,3 +34,16 @@ target/
 # Environment
 .env
 *.env.local
+studio/dist/
+studio/src-tauri/gen/
+studio/src-tauri/target/
+
+# Firmware releases (downloaded copies — source is GitHub)
+firmware/releases/latest/*.bin
+!firmware/releases/latest/rusefi_local_build*
+firmware/releases/latest/*.srec
+!firmware/releases/latest/rusefi_local_build*
+firmware/releases/latest/*.ini
+firmware/releases/latest/readme.html
+firmware/releases/latest/console/
+firmware/releases/full/

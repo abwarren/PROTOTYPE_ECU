@@ -8,48 +8,61 @@
 ## Overall Progress
 
 ```
-Repository       ████████████████░░░░░  58%
-Firmware         ██████░░░░░░░░░░░░░░░  22%
-Studio           ████░░░░░░░░░░░░░░░░░  15%
-Cloud            █░░░░░░░░░░░░░░░░░░░░   5%
+Repository       █████████████████████░  72%
+Firmware         ████████░░░░░░░░░░░░░░  32%
+Studio           ████████░░░░░░░░░░░░░░  30%
+Hardware         ██████████░░░░░░░░░░░░  35%  (SDS complete, schematic pending)
+Cloud            █░░░░░░░░░░░░░░░░░░░░   3%
 Mobile           █░░░░░░░░░░░░░░░░░░░░   3%
-Hardware         █░░░░░░░░░░░░░░░░░░░░   3%
-Documentation    ██████████████████░░░░  68%
+Documentation    ████████████████████░░  78%
 Manufacturing    ░░░░░░░░░░░░░░░░░░░░░   0%
 Testing          ░░░░░░░░░░░░░░░░░░░░░   0%
 ```
 
 ## Per-Component Status
 
-### Firmware — 28% ███████░░░░░░░░░░░░░░░
+### Firmware — 32%
 
 | Component | Status | Progress |
 |-----------|--------|----------|
 | Repository Setup | ✅ Complete | 100% |
 | rusEFI Fork | ✅ Complete | 100% |
+| Firmware Build | ✅ TB-001 — f407-discovery binary verified | 100% |
+| Build Pipeline | ✅ Documented at 04_Firmware/BUILD_PIPELINE.md | 100% |
 | Architecture Audit | ✅ Complete | 100% |
 | Brand Abstraction | ✅ Complete | 100% |
 | Brand Separation | ❌ Not Started | 0% |
-| Firmware Build | ✅ **Complete** — STM32F407 Discovery binary verified: `rusefi.elf` (26.5 MB), `rusefi.bin` (744 KB), `rusefi.hex` (2 MB) | 100% |
 | Firmware Identity | ❌ Not Started | 0% |
 | Configuration Profiles | ❌ Not Started | 0% |
 | Module Replacement | ❌ Not Started | 0% |
 
-### Studio — 15% ████░░░░░░░░░░░░░░░░░
+### Studio — 30%
 
 | Component | Status | Progress |
 |-----------|--------|----------|
 | Architecture Docs | ✅ Complete | 100% |
-| Scaffold | ❌ Not Started | 0% |
-| Dashboard UI | ❌ Not Started | 0% |
-| Calibration Tools | ❌ Not Started | 0% |
+| Scaffold (Tauri/React/TS) | ✅ TB-002 — builds, dark theme, branding | 100% |
+| Application Core | ✅ TB-002A — 7 service interfaces, BrandProvider | 100% |
+| Communication Layer | ✅ TB-003 — 3-layer architecture (Service/Protocol/Transport) | 100% |
+| Dashboard UI | ❌ TB-004 pending | 0% |
+| Calibration Tools | ❌ TB-005 pending | 0% |
 | Diagnostics UI | ❌ Not Started | 0% |
 | Datalogging | ❌ Not Started | 0% |
-| Branding Integration | ❌ Not Started | 0% |
 | Plugin System | ❌ Not Started | 0% |
 | Installer | ❌ Not Started | 0% |
 
-### Cloud — 5% █░░░░░░░░░░░░░░░░░░░░
+### Hardware — 35%
+
+| Component | Status | Progress |
+|-----------|--------|----------|
+| Architecture Docs | ✅ Complete | 100% |
+| System Design Spec (SDS) | ✅ TB-HW-001 — 16 docs, NXP S32K344 | 100% |
+| KiCad Schematic | ⬚ TB-HW-002 pending | 0% |
+| PCB Layout | ⬚ TB-HW-003 pending | 0% |
+| Manufacturing Package | ⬚ TB-HW-004 pending | 0% |
+| Enclosure Design | ❌ Not Started | 0% |
+
+### Cloud — 3%
 
 | Component | Status | Progress |
 |-----------|--------|----------|
@@ -58,72 +71,47 @@ Testing          ░░░░░░░░░░░░░░░░░░░░░
 | Authentication | ❌ Not Started | 0% |
 | Telemetry Ingestion | ❌ Not Started | 0% |
 | OTA Infrastructure | ❌ Not Started | 0% |
-| Web Portal | ❌ Not Started | 0% |
 
-### Mobile — 3% █░░░░░░░░░░░░░░░░░░░░
+### Mobile — 3%
 
 | Component | Status | Progress |
 |-----------|--------|----------|
 | Architecture Docs | ✅ Complete | 100% |
 | Scaffold | ❌ Not Started | 0% |
 
-### Hardware — 3% █░░░░░░░░░░░░░░░░░░░░
+### Documentation — 78%
 
 | Component | Status | Progress |
 |-----------|--------|----------|
-| Architecture Docs | ✅ Complete | 100% |
-| PCB Design | ❌ Not Started | 0% |
-| Enclosure Design | ❌ Not Started | 0% |
-| Manufacturing Package | ❌ Not Started | 0% |
-
-### Documentation — 75% ████████████████████░░░
-
-| Component | Status | Progress |
-|-----------|--------|----------|
-| Root Documents | ✅ Complete | 100% |
-| Architecture Docs (9) | ✅ Complete | 100% |
-| Architecture Audit | ✅ Complete | 100% |
-| ADR Records | ✅ Complete (4) | 100% |
-| Daily Engineering Log | ✅ Complete | 100% |
-| CHANGELOG | ✅ Complete | 100% |
-| Research Corpus | ✅ Complete | 100% |
-| DDD Policy | ✅ Complete | 100% |
-| Module Documentation | ✅ Complete (7 modules) | 100% |
-| Hardware Module Docs | ✅ Complete (PCB, enclosure) | 100% |
-| Studio Module Docs | ✅ Complete (dashboard, calibration) | 100% |
-| Onboarding Guide | ✅ Complete | 100% |
-| **Management Docs** | ✅ Complete (9 docs) | 100% |
-| **Workshop Docs** | ✅ Complete (6 docs) | 100% |
-| **Investor Docs** | ✅ Complete (17 docs) | 100% |
-| **Reporting Framework** | ✅ Complete (templates) | 100% |
-| **Knowledge Base Restructure** | ✅ Complete (5-audience) | 100% |
-| **Repository Restructure** | ✅ Complete (18 directories) | 100% |
-| **Governance Files** | ✅ Complete (4 files: CURRENT_STATE, PROJECT_RULES, CODING_STANDARDS, TODO) | 100% |
-| **Agent System** | ✅ Complete (11 agents, workflow, locking, branches) | 100% |
-| **Shared Project Files** | ✅ Complete (9 files, validated by DDD gate) | 100% |
+| Root Documents (13) | ✅ Complete | 100% |
+| Architecture Docs (20) | ✅ Complete | 100% |
+| ADRs (12, all Accepted) | ✅ Complete | 100% |
+| Engineering KPIs | ✅ Complete | 100% |
+| Session Handoffs (3) | ✅ Complete | 100% |
+| Hardware Specs (16) | ✅ Complete | 100% |
+| Quality Audits (10) | ✅ Complete | 100% |
+| QA Backlog | ✅ Active | 100% |
+| Workshop Docs (6) | ✅ Complete | 100% |
+| Investor Docs (17) | ✅ Complete | 100% |
+| Management Docs (9) | ✅ Complete | 100% |
+| Research Corpus (32) | ✅ Complete | 100% |
+| Tracer Bullet Evidence | ✅ Started (TB-001–003, TB-HW-001–004) | 75% |
 | API Documentation | ❌ Not Started | 0% |
 | Diagram Library | ❌ Not Started | 0% |
 
-## Current Phase: Phase 1 — Foundation
+---
 
-### Dates
-- **Start:** 2026-06-30
-- **Target:** 2026-07-15
-- **Status:** Day 1 — On Track
+## Current Phase: MVP Foundation
 
-### Phase 1 Goals
-- [x] Repository structure created
-- [x] Brand abstraction layer (branding/brand.json)
-- [x] Root documentation (10 files)
-- [x] Research corpus migrated
-- [x] Architecture documentation (9 docs)
-- [x] Architecture audit (16 modules)
-- [x] ADR records (4)
-- [x] DDD policy adopted
-- [x] rusEFI fork builds successfully
-- [ ] Brand separation complete
-- [ ] Firmware versioned
+| Field | Value |
+|-------|-------|
+| **Governance** | FROZEN — 12 ADRs accepted |
+| **Engineering Model** | Two-Agent (Engineer + QA) |
+| **Tracer Bullets Complete** | 4 (TB-001, TB-002, TB-002A, TB-HW-001) |
+| **Tracer Bullets In Progress** | 2 (TB-003 — awaiting hardware verification, TB-HW-001 — SDS complete) |
+
+---
 
 ## Known Issues
 
-See [TECH_DEBT.md](./TECH_DEBT.md) for the full technical debt log.
+See [TECH_DEBT.md](./TECH_DEBT.md) and [qa/QA_BACKLOG.md](../qa/QA_BACKLOG.md).
